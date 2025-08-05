@@ -292,20 +292,21 @@
             <p class="copyright">&copy; 2025 Command Results. All rights reserved.</p>
         </div>
     </footer>
-        <!-- Install Notification Banner -->
-        <div id="install-notification">
-            <div class="install-icon">📱</div>
-            <div class="install-content">
-            <h3>Install BVA Program</h3>
-            <p>Get faster access and work offline with our app</p>
-            <div class="install-buttons">
-                <button id="install-btn" class="install-btn primary">Install Now</button>
-                <button id="later-btn" class="install-btn secondary">Later</button>
+    <!-- PWA Install Notification -->
+    <div id="install-notification">
+        <div class="install-header">
+            <div class="install-title">
+                <i class="fas fa-download"></i>
+                <span>Install BVA App</span>
             </div>
-            </div>
-            <button class="close-install" id="close-install">×</button>
+            <button class="close-install" id="close-install">&times;</button>
         </div>
-    </body>
+        <p>Add BVA to your home screen for quick access and offline use.</p>
+        <div class="install-buttons">
+            <button class="install-btn" id="install-btn">Install Now</button>
+            <button class="later-btn" id="later-btn">Later</button>
+        </div>
+    </div>
 <script src="app.js"></script>
 <script>
     // Service worker registration
