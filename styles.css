@@ -883,3 +883,26 @@ footer {
         max-width: 100%;
     }
 }
+/* Add to styles.css */
+.video-container {
+    max-width: 800px;
+    height: 450px;
+    margin: 0 auto 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 
+                0 10px 10px -5px rgba(0,0,0,0.04);
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .video-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-container {
+        height: 250px;
+    }
+}
