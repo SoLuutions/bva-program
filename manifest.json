@@ -1,6 +1,6 @@
 {
     "name": "Business Value Accelerator",
-    "short_name": "BVA Program",
+    "short_name": "BVA",
     "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
