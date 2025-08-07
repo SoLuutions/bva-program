@@ -222,3 +222,131 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Command Results Pricing Module loaded');
+  
+  // Updated pricing data with new links
+  const pricingData = {
+    online: {
+      bvaApp: {
+        monthly: {
+          price: 47,
+          link: "https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583"
+        },
+        annual: {
+          price: 497,
+          link: "https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401587"
+        }
+      },
+      bvaWorkbooks: {
+        monthly: {
+          price: 47,
+          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598"
+        },
+        annual: {
+          price: 497,
+          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401600"
+        }
+      }
+    }
+  };
+
+  // Toggle functionality for Online Training
+  const onlineToggle = document.getElementById('online-toggle');
+  const monthlyLabelOnline = document.getElementById('monthly-label-online');
+  const annualLabelOnline = document.getElementById('annual-label-online');
+  const onlineDiscount = document.getElementById('online-discount');
+  const bvaAppPrice = document.getElementById('bva-app-price');
+  const bvaWorkbooksPrice = document.getElementById('bva-workbooks-price');
+  const bvaAppTerms = document.getElementById('bva-app-terms');
+  const bvaWorkbooksTerms = document.getElementById('bva-workbooks-terms');
+  const bvaAppButton = document.getElementById('bva-app-enroll-button');
+  const bvaWorkbooksButton = document.getElementById('bva-workbooks-enroll-button');
+
+  let onlineIsAnnual = false;
+
+  function updateOnlinePricing() {
+    const bvaAppPlan = onlineIsAnnual ? 'annual' : 'monthly';
+    const bvaWorkbooksPlan = onlineIsAnnual ? 'annual' : 'monthly';
+    
+    if (onlineIsAnnual) {
+      bvaAppPrice.textContent = `$${pricingData.online.bvaApp.annual.price} one-time payment`;
+      bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.annual.price} one-time payment`;
+      
+      // Update terms with consistent bullet style
+      bvaAppTerms.innerHTML = `
+        <ul>
+          <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+          <li>Cancel any time in the first 30 days</li>
+        </ul>
+      `;
+      
+      bvaWorkbooksTerms.innerHTML = `
+        <ul>
+          <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+          <li>Cancel any time in the first 30 days</li>
+        </ul>
+      `;
+    } else {
+      bvaAppPrice.textContent = `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
+      bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month for 12 months`;
+      
+      // Update terms with consistent bullet style
+      bvaAppTerms.innerHTML = `
+        <ul>
+          <li>Billed monthly for 12 months</li>
+          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+          <li>Cancel any time in the first 30 days</li>
+        </ul>
+      `;
+      
+      bvaWorkbooksTerms.innerHTML = `
+        <ul>
+          <li>Billed monthly for 12 months</li>
+          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+          <li>Cancel any time in the first 30 days</li>
+        </ul>
+      `;
+    }
+    
+    bvaAppButton.href = pricingData.online.bvaApp[bvaAppPlan].link;
+    bvaWorkbooksButton.href = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
+    
+    if (onlineIsAnnual) {
+      onlineDiscount.style.display = 'inline';
+      monthlyLabelOnline.classList.remove('active');
+      annualLabelOnline.classList.add('active');
+      onlineToggle.classList.add('annual');
+    } else {
+      onlineDiscount.style.display = 'none';
+      monthlyLabelOnline.classList.add('active');
+      annualLabelOnline.classList.remove('active');
+      onlineToggle.classList.remove('annual');
+    }
+  }
+
+  onlineToggle.addEventListener('click', function() {
+    onlineIsAnnual = !onlineIsAnnual;
+    updateOnlinePricing();
+  });
+
+  // Initialize pricing displays
+  updateOnlinePricing();
+  
+  // Add toggle functionality to labels for better UX
+  monthlyLabelOnline.addEventListener('click', function() {
+    if (onlineIsAnnual) {
+      onlineIsAnnual = false;
+      updateOnlinePricing();
+    }
+  });
+  
+  annualLabelOnline.addEventListener('click', function() {
+    if (!onlineIsAnnual) {
+      onlineIsAnnual = true;
+      updateOnlinePricing();
+    }
+  });
+});
