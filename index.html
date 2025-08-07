@@ -20,24 +20,23 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-container">
-                <div class="logo">
-                    <img src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" alt="BVA Program Logo" style="height: 50px;">
-                </div>
-                <div class="nav-buttons-container">
-                    <div class="nav-buttons">
-                        <a href="#offerings" class="btn btn-secondary">View Plans</a>
+        <header>
+            <div class="container">
+                <div class="header-container">
+                    <div class="logo">
+                        <img src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" alt="BVA Program Logo" style="height: 50px;">
                     </div>
-                    <div class="nav-buttons">
-                        <a href="https://command-results.passion.io/login" class="btn btn-secondary">Log In</a>
+                    <div class="nav-buttons-container">
+                        <div class="nav-buttons">
+                            <a href="#offerings" class="btn btn-secondary">View Plans</a>
+                        </div>
+                        <div class="nav-buttons">
+                            <a href="https://command-results.passion.io/login" class="btn btn-secondary" id="auth-button">Log In</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>   
+        </header>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -91,7 +90,7 @@
             </div>
             
             <div class="cta-buttons">
-                <a href="https://command-results.passion.io/app/products/285969" class="btn btn-primary">
+                <a href="https://command-results.passion.io/app/products/285969" class="btn btn-primary" id="hero-free-app-button">
                     <i class="fas fa-gift"></i> Get Free Lean-Agile App
                 </a>
                 <a href="#offerings" class="btn btn-secondary">
@@ -425,22 +424,22 @@
             </div>
         </div>
     </section>
-
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <h2>Ready to Accelerate Your Business Value?</h2>
-            <p>Join thousands of organizations that have transformed their productivity and profitability with BVA</p>
-            <div class="cta-buttons">
-                <a href="https://command-results.passion.io/app/products/285969" class="btn btn-primary" style="background: #F4A261;">
-                    <i class="fas fa-gift"></i> Get Free App
-                </a>
-                <a href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03" class="btn btn-secondary">
-                    <i class="fas fa-calendar-alt"></i> Schedule Consultation
-                </a>
-            </div>
+    
+<!-- Final CTA -->
+<section class="final-cta">
+    <div class="container">
+        <h2>Ready to Accelerate Your Business Value?</h2>
+        <p>Join thousands of organizations that have transformed their productivity and profitability with BVA</p>
+        <div class="cta-buttons">
+            <a href="https://command-results.passion.io/app/products/285969" class="btn btn-primary" style="background: #F4A261;" id="final-free-app-button">
+                <i class="fas fa-gift"></i> Get Free App
+            </a>
+            <a href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03" class="btn btn-secondary">
+                <i class="fas fa-calendar-alt"></i> Schedule Consultation
+            </a>
         </div>
-    </section>
+    </div>
+</section>
     
     <!-- Footer -->
     <footer>
@@ -491,7 +490,7 @@
                     playButton.style.display = 'none';
                 }, 300);
             });
-        }
+        }   
     });
 </script>
 </body>

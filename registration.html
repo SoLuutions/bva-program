@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Free Lean-Agile App | Command Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="registration_styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <a href="index.html" aria-label="Go to homepage">
+                        <img src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png"
+                            alt="Command Results Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Registration Form -->
+    <div class="registration-container">
+        <div class="registration-card">
+            <div class="registration-header">
+                <h1>Register for Free Access</h1>
+                <p>Get instant access to our Lean-Agile Foundations App</p>
+            </div>
+            
+            <form id="registrationForm" class="registration-form">
+                <!-- Form fields -->
+                <div class="form-group">
+                    <label for="name" class="required">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="required">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company (Optional)</label>
+                    <input type="text" id="company" name="company">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone (Optional)</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-lock"></i> Access Free App
+                </button>
+            </form>
+            <p class="terms">
+                By clicking "Access Free App", you agree to our 
+                <a href="#">Terms of Service</a> and 
+                <a href="#">Privacy Policy</a>.
+
+            <div class="app-preview">
+                <div class="app-feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    Mobile Access
+                </div>
+                <div class="app-feature">
+                    <i class="fas fa-certificate"></i>
+                    Free Certificate
+                </div>
+                <div class="app-feature">
+                    <i class="fas fa-graduation-cap"></i>
+                    Self-Paced Learning
+                </div>
+            </div>
+        </div>
+
+        <div class="confirmation-message" id="confirmationMessage">
+            <h2>Registration Successful!</h2>
+            <p>Thank you for registering for the Lean-Agile Foundations App.</p>
+            <p>We're redirecting you to the app now...</p>
+            <div class="redirect-notice">
+                <i class="fas fa-info-circle"></i> If you are not redirected automatically,
+                <a href="https://command-results.passion.io/app/products/285969" id="appLink">click here</a>
+            </div>
+            <div class="loader" id="loader"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <p class="copyright">&copy; 2025 Command Results. All rights reserved.</p>
+        </div>
+    </footer>
+<script src="registration.js"></script>
+</body>
+</html>
