@@ -207,3 +207,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       }
   });
 });
+// Enhanced video interaction
+document.addEventListener('DOMContentLoaded', function () {
+  const playButton = document.querySelector('.play-indicator');
+  const videoContainer = document.querySelector('.video-container');
+
+  // Remove play button when video is clicked
+  if (videoContainer && playButton) {
+    videoContainer.addEventListener('click', function () {
+      playButton.style.opacity = '0';
+      setTimeout(() => {
+        playButton.style.display = 'none';
+      }, 300);
+    });
+  }
+});

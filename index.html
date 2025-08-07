@@ -44,16 +44,52 @@
         <div class="container">
             <div class="tagline">THE BUSINESS VALUE ACCELERATOR PROGRAM</div>
             <h1>Deliver 20-50% Productivity Gains</h1>
-            <p>Practical Lean-Agile without big framework bloat.asas Real results in 90 days.</p>
-            <!-- In Hero section, after tagline and before CTA buttons -->
-            <div class="video-container">
-                1212
-                <iframe src="https://fast.wistia.net/embed/iframe/d6rdjc4nbs?videoFoam=true" 
-                        allowtransparency="true" frameborder="0" scrolling="no" 
-                        class="wistia_embed" name="wistia_embed" allowfullscreen=""
-                        style="width: 100%; height: 100%; border: none; border-radius: 12px;">
-                </iframe>
+            <p>Practical Lean-Agile without big framework bloat. Real results in 90 days.</p>
+            
+            <!-- Enhanced Video Introduction -->
+            <div class="video-intro-section">
+                <div class="video-intro-header">
+                    <div class="video-intro-badge">🎯 See It In Action</div>
+                    <h2 class="video-intro-title">See How Teams Transform in 90 Days</h2>
+                    <p class="video-intro-description">
+                        Watch this 90-second overview to discover how the Business Value Accelerator Program 
+                        eliminates complexity while delivering measurable productivity gains—no framework bloat, just results.
+                    </p>
+                </div>
+                
+                <div class="video-container">
+                    <div class="play-indicator" onclick="this.style.display='none'"></div>
+                    <iframe src="https://fast.wistia.net/embed/iframe/d6rdjc4nbs?videoFoam=true" 
+                            allowtransparency="true" 
+                            frameborder="0" 
+                            scrolling="no" 
+                            class="wistia_embed" 
+                            name="wistia_embed" 
+                            allowfullscreen
+                            allow="autoplay; encrypted-media">
+                    </iframe>
+                </div>
+                
+                <div class="video-benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">⚡</div>
+                        <div class="benefit-text">90-Second Overview</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <div class="benefit-text">Real Results Shown</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚀</div>
+                        <div class="benefit-text">No Framework Bloat</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📈</div>
+                        <div class="benefit-text">Proven ROI Method</div>
+                    </div>
+                </div>
             </div>
+            
             <div class="cta-buttons">
                 <a href="https://command-results.passion.io/app/products/285969" class="btn btn-primary">
                     <i class="fas fa-gift"></i> Get Free Lean-Agile App
@@ -376,5 +412,22 @@
             .then(reg => console.log('Service worker registered:', reg))
             .catch(err => console.error('Service worker registration failed:', err));
     }
+    
+    // Enhanced video interaction
+    document.addEventListener('DOMContentLoaded', function() {
+        const playButton = document.querySelector('.play-indicator');
+        const videoContainer = document.querySelector('.video-container');
+        
+        // Remove play button when video is clicked
+        if (videoContainer && playButton) {
+            videoContainer.addEventListener('click', function() {
+                playButton.style.opacity = '0';
+                setTimeout(() => {
+                    playButton.style.display = 'none';
+                }, 300);
+            });
+        }
+    });
 </script>
+</body>
 </html>
