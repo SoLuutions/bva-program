@@ -79,7 +79,7 @@ function showInstallNotification(force = false) {
     if (installNotification.classList.contains('show')) {
       installNotification.classList.remove('show');
     }
-  }, 15000);
+  }, 30000);
 
   // Clear timeout if user interacts
   installNotification.addEventListener('click', () => {
@@ -96,7 +96,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // Show notification quickly - just 3 seconds
   setTimeout(() => {
     showInstallNotification();
-  }, 3000);
+  }, 30000);
 });
 
 // Fallback: Show notification even without beforeinstallprompt
