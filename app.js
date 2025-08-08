@@ -397,3 +397,19 @@ document.addEventListener('DOMContentLoaded', function () {
     faqFreeAppButton.href = registrationPage;
   }
 });
+// Newsletter form submission logic
+document.addEventListener('DOMContentLoaded', function () {
+  const newsletterForm = document.getElementById('newsletterForm');
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletterEmail').value;
+
+      console.log('Subscribing email:', email);
+
+      alert("Thank you for subscribing! You'll receive our next newsletter soon.");
+      newsletterForm.reset();
+    });
+  }
+});
