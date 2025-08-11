@@ -106,7 +106,8 @@
                 <ol>
                     <li>Open this site in Chrome or Edge.</li>
                     <li>Click the <strong>Install</strong> icon in the address bar (or the <strong>⋮</strong> menu &gt;
-                        <strong>Install app</strong>).</li>
+                        <strong>Install app</strong>).
+                    </li>
                     <li>Follow the prompt to install.</li>
                 </ol>
             </div>
@@ -155,13 +156,18 @@
 
         <script src="app.js"></script>
         <script src="registration.js"></script>
+        <!-- Stable SW registration (no timestamp param; prevents refresh loops) -->
         <script>
-            // Ensure the page is controlled by a SW so install can trigger
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service worker registered:', reg))
-                    .catch(err => console.error('Service worker registration failed:', err));
-            }
+            (function () {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                        .then(reg => console.log('[SW] registered for registration page', reg.scope))
+                        .catch(err => console.warn('[SW] registration failed', err));
+
+                    // IMPORTANT: Do not auto-reload on controllerchange here.
+                    // If you had code like window.location.reload() on controllerchange, remove it.
+                }
+            })();
         </script>
         <script src="registration.js"></script>
 </body>
