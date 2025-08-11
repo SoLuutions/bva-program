@@ -64,6 +64,14 @@ window.addEventListener('load', () => {
 });
 
 installBtn.addEventListener('click', async () => {
+  // If not installed, send them to registration first
+  if (!isAppInstalled()) {
+    installNotification.classList.remove('show');
+    window.location.href = '/registration.html';
+    return;
+  }
+
+  // If installed, preserve normal behavior or no-op
   if (deferredPrompt) {
     try {
       deferredPrompt.prompt();
@@ -72,13 +80,14 @@ installBtn.addEventListener('click', async () => {
       if (outcome === 'accepted') {
         localStorage.setItem('pwa-install-accepted', Date.now().toString());
       }
-    } catch (error) {
+    } catch {
       installNotification.classList.remove('show');
     }
   } else {
     installNotification.classList.remove('show');
   }
 });
+
 
 laterBtn.addEventListener('click', () => {
   installNotification.classList.remove('show');
@@ -291,3 +300,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+function routeGetAppLinks() {
+  if (isAppInstalled()) return;
+
+  // Candidate selectors for "Get App" actions (expand if needed)
+  const candidates = [
+    '#hero-free-app-button',        // "Get Started Free" in hero:contentReference[oaicite:2]{index=2}
+    '#final-free-app-button',       // "Get Started Free" in final CTA:contentReference[oaicite:3]{index=3}
+    'a.btn',                        // buttons styled as .btn
+    'a.cr-button'                   // pricing buttons
+  ];
+
+  const textIsGetApp = (t) => /get\s*(app|started)/i.test(t);
+
+  const handled = new Set();
+
+  candidates.forEach(sel => {
+    document.querySelectorAll(sel).forEach(a => {
+      if (handled.has(a)) return;
+      const text = (a.textContent || '').trim();
+      if (!textIsGetApp(text)) return;
+
+      a.addEventListener('click', (e) => {
+        if (!isAppInstalled()) {
+          e.preventDefault();
+          window.location.href = '/registration.html';
+        }
+      }, { capture: true });
+
+      handled.add(a);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', routeGetAppLinks);
