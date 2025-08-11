@@ -79,17 +79,32 @@
             </div>
         </div>
 
-        <div class="confirmation-message" id="confirmationMessage">
+        <div class="confirmation-message" id="confirmationMessage" style="display:none;">
             <h2>Registration Successful!</h2>
-            <p>Thank you for registering for the Lean-Agile Foundations App.</p>
-            <p>We're redirecting you to the app now...</p>
-            <div class="redirect-notice">
-                <i class="fas fa-info-circle"></i> If you are not redirected automatically,
-                <a href="https://command-results.passion.io/app/products/285969" id="appLink">click here</a>
+            <p>Great! Next step: install the app on your device for fast access.</p>
+          
+            <div id="installPanel" style="margin-top:1rem; display:none;">
+              <button id="installAppBtn" class="btn btn-primary">
+                <i class="fas fa-download"></i> Install App
+              </button>
+              <p id="installHint" style="margin-top:0.5rem;"></p>
             </div>
-            <div class="loader" id="loader"></div>
-        </div>
-    </div>
+          
+            <div id="iosInstructions" style="display:none; margin-top:1rem;">
+              <h3>iOS (Safari) instructions</h3>
+              <ol>
+                <li>Tap the <strong>Share</strong> icon in Safari.</li>
+                <li>Choose <strong>Add to Home Screen</strong>.</li>
+                <li>Tap <strong>Add</strong> to finish.</li>
+              </ol>
+            </div>
+          
+            <div class="redirect-notice" style="margin-top:1rem;">
+              <i class="fas fa-info-circle"></i>
+              Already installed? <a href="https://command-results.passion.io/app/products/285969" id="appLink">Open the app</a>
+            </div>
+          </div>
+          
 
     <!-- Footer -->
     <footer>

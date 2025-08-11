@@ -1,4 +1,4 @@
-// app.js (refactored, merged)
+// app.js (refactored, merged, with stricter "installed" checks)
 // ------------------------------------------------------------
 // Utilities
 // ------------------------------------------------------------
@@ -49,7 +49,7 @@ function initSmoothScroll() {
 // ------------------------------------------------------------
 let deferredPrompt;
 
-/** Detect if PWA is installed (retained) */
+/** Detect if PWA is installed (retained from your app.js) */
 function isAppInstalled() {
   return window.matchMedia('(display-mode: standalone)').matches ||
     navigator.standalone ||
@@ -57,9 +57,11 @@ function isAppInstalled() {
 }
 
 function showInstallNotification(force = false) {
-  const installNotification = $('#install-notification');
+  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:0]{index=0}
   if (!installNotification) return;
-  if (isAppInstalled()) return;
+
+  // Extra guards: never show if installed (session or persisted flag)
+  if (isAppInstalled() || localStorage.getItem('pwa-installed') === 'true') return;
 
   const dismissedTime = localStorage.getItem('pwa-install-dismissed');
   const now = Date.now();
@@ -74,71 +76,75 @@ function showInstallNotification(force = false) {
 }
 
 function initInstallPromptFlows() {
-  const installNotification = $('#install-notification');
-  const installBtn = $('#install-btn');
+  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:1]{index=1}
+  const installBtn = $('#install-btn');                   // index.html:contentReference[oaicite:2]{index=2}
   const laterBtn = $('#later-btn');
   const closeBtn = $('#close-install');
 
   // Show prompt later when browser fires it
   window.addEventListener('beforeinstallprompt', (e) => {
+    // If installed, don’t capture or show anything
+    if (isAppInstalled() || localStorage.getItem('pwa-installed') === 'true') return;
     e.preventDefault();
     deferredPrompt = e;
     // Nudge user after 30s if not installed yet
-    setTimeout(showInstallNotification, 30000);
+    setTimeout(() => { if (!isAppInstalled()) showInstallNotification(); }, 30000);
   });
 
-  // Nudge on load if there's no deferred prompt
+  // Nudge on load if there's no deferred prompt and not installed
   window.addEventListener('load', () => {
     setTimeout(() => {
-      if (!deferredPrompt && !isAppInstalled()) showInstallNotification(true);
+      if (!deferredPrompt && !isAppInstalled() && localStorage.getItem('pwa-installed') !== 'true') {
+        showInstallNotification(true);
+      }
     }, 5000);
   });
 
-  // Primary action: if not installed, route to registration; if installed, fall back to default flow
+  // Primary action:
+  // If not installed, our Get App UX may route to registration first (see initGetAppUX).
+  // If installed or user proceeds, use native prompt where available.
   bindOnce(installBtn, 'click', async (e) => {
-    if (!isAppInstalled()) {
-      e.preventDefault();
-      if (installNotification) installNotification.classList.remove('show');
-      window.location.href = '/registration.html';
+    if (isAppInstalled() || localStorage.getItem('pwa-installed') === 'true') {
+      installNotification?.classList.remove('show');
       return;
     }
+    if (!deferredPrompt) { 
+      installNotification?.classList.remove('show'); 
+      return; 
+    }
 
-    // If already installed or allowed to install, keep original behavior
-    if (deferredPrompt) {
-      try {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (installNotification) installNotification.classList.remove('show');
-        if (outcome === 'accepted') {
-          localStorage.setItem('pwa-install-accepted', Date.now().toString());
-        }
-      } catch {
-        if (installNotification) installNotification.classList.remove('show');
+    try {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      installNotification?.classList.remove('show');
+      if (outcome === 'accepted') {
+        localStorage.setItem('pwa-install-accepted', Date.now().toString());
       }
-    } else {
-      if (installNotification) installNotification.classList.remove('show');
+    } catch {
+      installNotification?.classList.remove('show');
     }
   });
 
   bindOnce(laterBtn, 'click', () => {
-    if (!installNotification) return;
-    installNotification.classList.remove('show');
+    installNotification?.classList.remove('show');
     localStorage.setItem('pwa-install-dismissed', Date.now().toString());
     setTimeout(() => {
       localStorage.removeItem('pwa-install-dismissed');
-      if (!isAppInstalled()) showInstallNotification(true);
+      if (!isAppInstalled() && localStorage.getItem('pwa-installed') !== 'true') {
+        showInstallNotification(true);
+      }
     }, 1800000); // 30 minutes
   });
 
   bindOnce(closeBtn, 'click', () => {
-    if (!installNotification) return;
-    installNotification.classList.remove('show');
+    installNotification?.classList.remove('show');
     localStorage.setItem('pwa-install-dismissed', Date.now().toString());
   });
 
-  // Persist installed state
+  // Persist installed state & hide banner immediately when installed
   window.addEventListener('appinstalled', () => {
     localStorage.setItem('pwa-installed', 'true');
+    $('#install-notification')?.classList.remove('show');
   });
 }
 
@@ -363,10 +369,10 @@ function initNewsletter() {
 const GET_APP_SELECTORS = ['#hero-free-app-button', '#final-free-app-button'];
 
 function initGetAppUX() {
-  const heroBtn  = $('#hero-free-app-button');     // Hero CTA button
-  const finalBtn = $('#final-free-app-button');    // Final CTA button
-  const installPopupBtn = $('#install-btn');       // Install popup button
-  const headerAuthBtn = $('#auth-button');         // Header "Log In" button
+  const heroBtn  = $('#hero-free-app-button');     // Hero CTA button:contentReference[oaicite:3]{index=3}
+  const finalBtn = $('#final-free-app-button');    // Final CTA button:contentReference[oaicite:4]{index=4}
+  const installPopupBtn = $('#install-btn');       // Install popup button:contentReference[oaicite:5]{index=5}
+  const headerAuthBtn = $('#auth-button');         // Header "Log In" button:contentReference[oaicite:6]{index=6}
 
   // Save original content & links to restore later
   const originals = {
@@ -387,7 +393,7 @@ function initGetAppUX() {
       headerAuthBtn.href = '/registration.html';
     }
 
-    // Redirect hero & final CTAs to registration page
+    // Intercept hero & final CTAs to go to registration page
     [heroBtn, finalBtn].forEach(a => {
       if (!a) return;
       bindOnce(a, 'click', (e) => {
@@ -398,7 +404,7 @@ function initGetAppUX() {
       }, { capture: true });
     });
 
-    // Redirect install popup button to registration page
+    // Intercept install popup button to registration (install flow handled elsewhere)
     bindOnce(installPopupBtn, 'click', (e) => {
       if (!isAppInstalled()) {
         e.preventDefault();
