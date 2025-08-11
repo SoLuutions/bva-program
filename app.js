@@ -347,3 +347,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isAppInstalled()) {
+    // Change landing page buttons
+    const heroBtn = document.getElementById('hero-free-app-button');
+    const finalBtn = document.getElementById('final-free-app-button');
+
+    if (heroBtn) {
+      heroBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    }
+    if (finalBtn) {
+      finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    }
+
+    // Change install popup button
+    const installPopupBtn = document.getElementById('install-btn');
+    if (installPopupBtn) {
+      installPopupBtn.innerHTML = 'Register';
+    }
+  }
+});
