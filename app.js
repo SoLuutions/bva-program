@@ -367,3 +367,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+// --- Get App UX: label + routing --------------------------------------------
+(function initGetAppUX() {
+  // Make sure the helper exists
+  if (typeof isAppInstalled !== 'function') return;
+
+  const heroBtn  = document.getElementById('hero-free-app-button');   // index.html:contentReference[oaicite:3]{index=3}
+  const finalBtn = document.getElementById('final-free-app-button');  // index.html:contentReference[oaicite:4]{index=4}
+  const installPopupBtn = document.getElementById('install-btn');     // index.html:contentReference[oaicite:5]{index=5}
+
+  // Keep originals so we can restore on install
+  const original = {
+    hero:  heroBtn  ? heroBtn.innerHTML  : null,
+    final: finalBtn ? finalBtn.innerHTML : null,
+    install: installPopupBtn ? installPopupBtn.innerHTML : null
+  };
+
+  function applyNotInstalledState() {
+    if (heroBtn)  heroBtn.innerHTML  = '<i class="fas fa-user-plus"></i> Register';
+    if (finalBtn) finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    if (installPopupBtn) installPopupBtn.textContent = 'Register';
+
+    // Route both CTAs to registration until installed
+    [heroBtn, finalBtn].forEach(a => {
+      if (!a) return;
+      a.addEventListener('click', (e) => {
+        if (!isAppInstalled()) {
+          e.preventDefault();
+          window.location.href = '/registration.html';
+        }
+      }, { capture: true });
+    });
+
+    // If the popup button is clicked, also route to registration (instead of install)
+    if (installPopupBtn) {
+      installPopupBtn.addEventListener('click', (e) => {
+        if (!isAppInstalled()) {
+          e.preventDefault();
+          // Hide the popup if present
+          const installNotification = document.getElementById('install-notification');
+          if (installNotification) installNotification.classList.remove('show');
+          window.location.href = '/registration.html';
+        }
+      }, { capture: true });
+    }
+  }
+
+  function applyInstalledState() {
+    if (heroBtn && original.hero)   heroBtn.innerHTML = original.hero;
+    if (finalBtn && original.final) finalBtn.innerHTML = original.final;
+    if (installPopupBtn && original.install) installPopupBtn.innerHTML = original.install;
+  }
+
+  // Initial pass
+  if (!isAppInstalled()) applyNotInstalledState();
+
+  // If user installs while on the page, restore labels
+  window.addEventListener('appinstalled', () => {
+    // you already set localStorage in app.js on install:contentReference[oaicite:6]{index=6}
+    applyInstalledState();
+  });
+})();
