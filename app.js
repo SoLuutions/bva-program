@@ -1,4 +1,4 @@
-// app.js (refactored)
+// app.js (refactored, merged)
 // ------------------------------------------------------------
 // Utilities
 // ------------------------------------------------------------
@@ -57,7 +57,7 @@ function isAppInstalled() {
 }
 
 function showInstallNotification(force = false) {
-  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:2]{index=2}
+  const installNotification = $('#install-notification');
   if (!installNotification) return;
   if (isAppInstalled()) return;
 
@@ -74,8 +74,8 @@ function showInstallNotification(force = false) {
 }
 
 function initInstallPromptFlows() {
-  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:3]{index=3}
-  const installBtn = $('#install-btn');                   // index.html:contentReference[oaicite:4]{index=4}
+  const installNotification = $('#install-notification');
+  const installBtn = $('#install-btn');
   const laterBtn = $('#later-btn');
   const closeBtn = $('#close-install');
 
@@ -358,41 +358,47 @@ function initNewsletter() {
 }
 
 // ------------------------------------------------------------
-// Get App UX: label swap + routing to registration (NEW)
+// Get App UX: label swap + routing to registration (UPDATED)
 // ------------------------------------------------------------
-// Matches hero and final CTA in index.html:contentReference[oaicite:5]{index=5}
 const GET_APP_SELECTORS = ['#hero-free-app-button', '#final-free-app-button'];
 
 function initGetAppUX() {
-  const heroBtn  = $('#hero-free-app-button');
-  const finalBtn = $('#final-free-app-button');
-  const installPopupBtn = $('#install-btn'); // install banner primary button:contentReference[oaicite:6]{index=6}
+  const heroBtn  = $('#hero-free-app-button');     // Hero CTA button
+  const finalBtn = $('#final-free-app-button');    // Final CTA button
+  const installPopupBtn = $('#install-btn');       // Install popup button
+  const headerAuthBtn = $('#auth-button');         // Header "Log In" button
 
-  // Save originals so we can restore when app is installed
+  // Save original content & links to restore later
   const originals = {
     hero:  heroBtn  ? heroBtn.innerHTML  : null,
     final: finalBtn ? finalBtn.innerHTML : null,
-    install: installPopupBtn ? installPopupBtn.innerHTML : null
+    install: installPopupBtn ? installPopupBtn.innerHTML : null,
+    auth: headerAuthBtn ? headerAuthBtn.innerHTML : null,
+    authHref: headerAuthBtn ? headerAuthBtn.href : null
   };
 
   function applyNotInstalledState() {
+    // Change labels
     if (heroBtn)  heroBtn.innerHTML  = '<i class="fas fa-user-plus"></i> Register';
     if (finalBtn) finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
     if (installPopupBtn) installPopupBtn.textContent = 'Register';
+    if (headerAuthBtn) {
+      headerAuthBtn.innerHTML = 'Register';
+      headerAuthBtn.href = '/registration.html';
+    }
 
-    // Intercept clicks on hero/final to go to registration
-    GET_APP_SELECTORS.forEach(sel => {
-      $$(sel).forEach(a => {
-        bindOnce(a, 'click', (e) => {
-          if (!isAppInstalled()) {
-            e.preventDefault();
-            window.location.href = '/registration.html';
-          }
-        }, { capture: true });
-      });
+    // Redirect hero & final CTAs to registration page
+    [heroBtn, finalBtn].forEach(a => {
+      if (!a) return;
+      bindOnce(a, 'click', (e) => {
+        if (!isAppInstalled()) {
+          e.preventDefault();
+          window.location.href = '/registration.html';
+        }
+      }, { capture: true });
     });
 
-    // Intercept install popup button to registration (install flow handled elsewhere)
+    // Redirect install popup button to registration page
     bindOnce(installPopupBtn, 'click', (e) => {
       if (!isAppInstalled()) {
         e.preventDefault();
@@ -404,15 +410,22 @@ function initGetAppUX() {
   }
 
   function applyInstalledState() {
+    // Restore labels & links
     if (heroBtn && originals.hero)   heroBtn.innerHTML = originals.hero;
     if (finalBtn && originals.final) finalBtn.innerHTML = originals.final;
     if (installPopupBtn && originals.install) installPopupBtn.innerHTML = originals.install;
+    if (headerAuthBtn && originals.auth) {
+      headerAuthBtn.innerHTML = originals.auth;
+      headerAuthBtn.href = originals.authHref || 'https://command-results.passion.io/login';
+    }
   }
 
-  // Initial
-  if (!isAppInstalled()) applyNotInstalledState();
+  // Apply initial state
+  if (!isAppInstalled()) {
+    applyNotInstalledState();
+  }
 
-  // If user installs while on page, restore labels
+  // Restore state dynamically if PWA gets installed
   window.addEventListener('appinstalled', applyInstalledState);
 }
 
