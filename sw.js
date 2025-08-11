@@ -7,10 +7,16 @@ const urlsToCache = [
   '/styles.css',
   '/app.js',
   '/manifest.json',
+  // NEW: registration assets
+  '/registration.html',
+  '/registration.js',
+  '/registration_styles.css',
+  // icons
   '/icons/ios/180.png',
   '/icons/android/android-launchericon-192-192.png',
   '/icons/windows11/SplashScreen.scale-100.png'
 ];
+
 
 self.addEventListener('install', event => {
   event.waitUntil(
