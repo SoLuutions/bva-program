@@ -334,3 +334,16 @@ function routeGetAppLinks() {
 }
 
 document.addEventListener('DOMContentLoaded', routeGetAppLinks);
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isAppInstalled()) {
+    const heroBtn = document.getElementById('hero-free-app-button');
+    const finalBtn = document.getElementById('final-free-app-button');
+
+    if (heroBtn) {
+      heroBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    }
+    if (finalBtn) {
+      finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    }
+  }
+});
