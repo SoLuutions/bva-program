@@ -1,57 +1,81 @@
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('registrationForm');
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            const loader = document.getElementById('loader');
-            const appLink = document.getElementById('appLink');
 
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                // Reset errors
-                document.querySelectorAll('.error-message').forEach(el => {
-                    el.style.display = 'none';
-                });
-
-                // Get form values
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const company = document.getElementById('company').value.trim();
-                const phone = document.getElementById('phone').value.trim();
-
-                // Validate form
-                let isValid = true;
-
-                if (!name) {
-                    document.getElementById('name-error').style.display = 'block';
-                    isValid = false;
-                }
-
-                if (!email || !validateEmail(email)) {
-                    document.getElementById('email-error').style.display = 'block';
-                    isValid = false;
-                }
-
-                if (!isValid) return;
-
-                // Show loader
-                loader.style.display = 'block';
-
-                // In a real implementation, you would send this data to your backend
-                // Here we simulate API call with setTimeout
-                setTimeout(() => {
-                    // Hide form, show confirmation
-                    form.closest('.registration-card').style.display = 'none';
-                    confirmationMessage.style.display = 'block';
-
-                    // Redirect after 3 seconds
-                    setTimeout(() => {
-                        window.location.href = 'https://command-results.passion.io/app/products/285969';
-                    }, 3000);
-                }, 1500);
-            });
-
-            function validateEmail(email) {
-                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(String(email).toLowerCase());
-            }
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registrationForm');
+    const nameEl = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const companyEl = document.getElementById('company');
+    const phoneEl = document.getElementById('phone');
+  
+    const loader = document.getElementById('loader'); // e.g., a spinner
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    const card = document.querySelector('.registration-card'); // optional
+  
+    const submitBtn = form?.querySelector('[type="submit"]');
+  
+    function validateEmail(email) {
+      // simple email check
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+  
+    function setLoading(isLoading) {
+      if (submitBtn) submitBtn.disabled = isLoading;
+      if (loader) loader.style.display = isLoading ? 'block' : 'none';
+    }
+  
+    async function submitToApi(payload) {
+      const resp = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) {
+        const msg = data?.error || `Request failed (${resp.status})`;
+        throw new Error(msg);
+      }
+      return data;
+    }
+  
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const name = nameEl?.value.trim();
+      const email = emailEl?.value.trim();
+      const company = companyEl?.value.trim() || null;
+      const phone = phoneEl?.value.trim() || null;
+  
+      // front-end validation (still validate on server!)
+      if (!name) {
+        alert('Please enter your name.');
+        nameEl?.focus();
+        return;
+      }
+      if (!email || !validateEmail(email)) {
+        alert('Please enter a valid email.');
+        emailEl?.focus();
+        return;
+      }
+  
+      setLoading(true);
+  
+      try {
+        await submitToApi({ name, email, company, phone });
+  
+        // success UI
+        if (card) card.style.display = 'none';
+        if (confirmationMessage) confirmationMessage.style.display = 'block';
+  
+        // redirect after 3s (change if you like)
+        setTimeout(() => {
+          window.location.href = 'https://command-results.passion.io/app/products/285969';
+        }, 3000);
+      } catch (err) {
+        console.error(err);
+        alert(err.message || 'Sorry, something went wrong. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    });
+  });
+  
