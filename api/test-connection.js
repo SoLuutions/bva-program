@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     
     try {
         // Test: Get table info (GET request to verify connection)
-        const tableUrl = 'https://app.nocodb.com/api/v2/tables/mwkq2v9p5kju2py';
+        const tableUrl = 'https://app.nocodb.com/api/v2/tables/mwkq2v9p5kju2py?offset=0&limit=100&where=&viewId=vw3go5awrqlpeevz';
         console.log('🎯 Testing table URL:', tableUrl);
         
         const resp = await fetch(tableUrl, {
