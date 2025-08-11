@@ -1,130 +1,194 @@
-// app.js
-// FAQ toggle functionality
-document.querySelectorAll('.faq-question').forEach(question => {
-  question.addEventListener('click', () => {
-    const faqItem = question.parentElement;
-    faqItem.classList.toggle('active');
-  });
-});
+// app.js (refactored)
+// ------------------------------------------------------------
+// Utilities
+// ------------------------------------------------------------
+const $  = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
+function bindOnce(el, type, handler, options) {
+  if (!el) return;
+  const key = `__bound_${type}`;
+  if (el[key]) return;
+  el.addEventListener(type, handler, options);
+  el[key] = true;
+}
+
+// ------------------------------------------------------------
+// FAQ toggle functionality
+// ------------------------------------------------------------
+function initFaqToggles() {
+  $$('.faq-question').forEach(question => {
+    bindOnce(question, 'click', () => {
+      const faqItem = question.parentElement;
+      faqItem.classList.toggle('active');
+    });
+  });
+}
+
+// ------------------------------------------------------------
 // Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      const headerHeight = document.querySelector('header').offsetHeight;
+// ------------------------------------------------------------
+function initSmoothScroll() {
+  $$('a[href^="#"]').forEach(anchor => {
+    bindOnce(anchor, 'click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.offsetHeight : 0;
       window.scrollTo({
         top: target.offsetTop - headerHeight - 20,
         behavior: 'smooth'
       });
-    }
+    });
   });
-});
+}
 
+// ------------------------------------------------------------
 // Install Notification Logic
+// ------------------------------------------------------------
 let deferredPrompt;
-const installNotification = document.getElementById('install-notification');
-const installBtn = document.getElementById('install-btn');
-const laterBtn = document.getElementById('later-btn');
-const closeBtn = document.getElementById('close-install');
 
-// Check if app is installed
+/** Detect if PWA is installed (retained) */
 function isAppInstalled() {
   return window.matchMedia('(display-mode: standalone)').matches ||
     navigator.standalone ||
     document.referrer.includes('android-app://');
 }
 
-// Show install notification
 function showInstallNotification(force = false) {
+  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:2]{index=2}
+  if (!installNotification) return;
   if (isAppInstalled()) return;
-  
+
   const dismissedTime = localStorage.getItem('pwa-install-dismissed');
   const now = Date.now();
-  
-  if (!force && dismissedTime && (now - parseInt(dismissedTime) < 1800000)) {
+  // 30 minutes cool-down
+  if (!force && dismissedTime && (now - parseInt(dismissedTime, 10) < 1800000)) {
     return;
   }
-  
+
   installNotification.classList.add('show');
+  // Auto hide after 30s
   setTimeout(() => installNotification.classList.remove('show'), 30000);
 }
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  setTimeout(showInstallNotification, 30000);
-});
+function initInstallPromptFlows() {
+  const installNotification = $('#install-notification'); // index.html:contentReference[oaicite:3]{index=3}
+  const installBtn = $('#install-btn');                   // index.html:contentReference[oaicite:4]{index=4}
+  const laterBtn = $('#later-btn');
+  const closeBtn = $('#close-install');
 
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    if (!deferredPrompt && !isAppInstalled()) showInstallNotification(true);
-  }, 5000);
-});
+  // Show prompt later when browser fires it
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Nudge user after 30s if not installed yet
+    setTimeout(showInstallNotification, 30000);
+  });
 
-installBtn.addEventListener('click', async () => {
-  // If not installed, send them to registration first
-  if (!isAppInstalled()) {
-    installNotification.classList.remove('show');
-    window.location.href = '/registration.html';
-    return;
-  }
+  // Nudge on load if there's no deferred prompt
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (!deferredPrompt && !isAppInstalled()) showInstallNotification(true);
+    }, 5000);
+  });
 
-  // If installed, preserve normal behavior or no-op
-  if (deferredPrompt) {
-    try {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      installNotification.classList.remove('show');
-      if (outcome === 'accepted') {
-        localStorage.setItem('pwa-install-accepted', Date.now().toString());
-      }
-    } catch {
-      installNotification.classList.remove('show');
+  // Primary action: if not installed, route to registration; if installed, fall back to default flow
+  bindOnce(installBtn, 'click', async (e) => {
+    if (!isAppInstalled()) {
+      e.preventDefault();
+      if (installNotification) installNotification.classList.remove('show');
+      window.location.href = '/registration.html';
+      return;
     }
-  } else {
+
+    // If already installed or allowed to install, keep original behavior
+    if (deferredPrompt) {
+      try {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (installNotification) installNotification.classList.remove('show');
+        if (outcome === 'accepted') {
+          localStorage.setItem('pwa-install-accepted', Date.now().toString());
+        }
+      } catch {
+        if (installNotification) installNotification.classList.remove('show');
+      }
+    } else {
+      if (installNotification) installNotification.classList.remove('show');
+    }
+  });
+
+  bindOnce(laterBtn, 'click', () => {
+    if (!installNotification) return;
     installNotification.classList.remove('show');
+    localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+    setTimeout(() => {
+      localStorage.removeItem('pwa-install-dismissed');
+      if (!isAppInstalled()) showInstallNotification(true);
+    }, 1800000); // 30 minutes
+  });
+
+  bindOnce(closeBtn, 'click', () => {
+    if (!installNotification) return;
+    installNotification.classList.remove('show');
+    localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+  });
+
+  // Persist installed state
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwa-installed', 'true');
+  });
+}
+
+// ------------------------------------------------------------
+// NEW: Update notification system (retained)
+// ------------------------------------------------------------
+function showUpdateNotification() {
+  let updateNotify = $('#update-notification');
+  if (!updateNotify) {
+    updateNotify = document.createElement('div');
+    updateNotify.id = 'update-notification';
+    updateNotify.innerHTML = `
+      <div class="update-content">
+        <p>New version available!</p>
+        <button id="refresh-btn">Update Now</button>
+      </div>
+    `;
+    document.body.appendChild(updateNotify);
   }
-});
 
+  const refreshBtn = $('#refresh-btn', updateNotify);
+  bindOnce(refreshBtn, 'click', () => {
+    if (navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage('skipWaiting');
+    }
+  });
+}
 
-laterBtn.addEventListener('click', () => {
-  installNotification.classList.remove('show');
-  localStorage.setItem('pwa-install-dismissed', Date.now().toString());
-  setTimeout(() => {
-    localStorage.removeItem('pwa-install-dismissed');
-    if (!isAppInstalled()) showInstallNotification(true);
-  }, 1800000);
-});
+// ------------------------------------------------------------
+// Service Worker Registration with update handling (retained)
+// ------------------------------------------------------------
+function initServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
 
-closeBtn.addEventListener('click', () => {
-  installNotification.classList.remove('show');
-  localStorage.setItem('pwa-install-dismissed', Date.now().toString());
-});
-
-window.addEventListener('appinstalled', () => {
-  localStorage.setItem('pwa-installed', 'true');
-});
-
-
-// Service Worker Registration with update handling
-if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       // Cache-busting query parameter
-      const timestamp = new Date().getTime();
+      const timestamp = Date.now();
       const registration = await navigator.serviceWorker.register(
-        `/sw.js?version=${timestamp}`, 
+        `/sw.js?version=${timestamp}`,
         { scope: '/' }
       );
-      
+
       // Check for updates every 4 hours
       setInterval(() => registration.update(), 4 * 60 * 60 * 1000);
-      
+
       // Listen for updates
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
+        if (!newWorker) return;
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed') {
             showUpdateNotification();
@@ -135,19 +199,19 @@ if ('serviceWorker' in navigator) {
       console.error('ServiceWorker registration failed:', error);
     }
   });
-}
 
-// Force refresh when new SW takes control
-if ('serviceWorker' in navigator) {
+  // Force refresh when new SW takes control
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload();
   });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+// ------------------------------------------------------------
+// Pricing Module (retained)
+// ------------------------------------------------------------
+function initPricingModule() {
   console.log('Command Results Pricing Module loaded');
 
-  // Updated pricing data with new links
   const pricingData = {
     online: {
       bvaApp: {
@@ -173,17 +237,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  // Toggle functionality for Online Training
-  const onlineToggle = document.getElementById('online-toggle');
-  const monthlyLabelOnline = document.getElementById('monthly-label-online');
-  const annualLabelOnline = document.getElementById('annual-label-online');
-  const onlineDiscount = document.getElementById('online-discount');
-  const bvaAppPrice = document.getElementById('bva-app-price');
-  const bvaWorkbooksPrice = document.getElementById('bva-workbooks-price');
-  const bvaAppTerms = document.getElementById('bva-app-terms');
-  const bvaWorkbooksTerms = document.getElementById('bva-workbooks-terms');
-  const bvaAppButton = document.getElementById('bva-app-enroll-button');
-  const bvaWorkbooksButton = document.getElementById('bva-workbooks-enroll-button');
+  // Toggle elements
+  const onlineToggle = $('#online-toggle');
+  const monthlyLabelOnline = $('#monthly-label-online');
+  const annualLabelOnline = $('#annual-label-online');
+  const onlineDiscount = $('#online-discount');
+  const bvaAppPrice = $('#bva-app-price');
+  const bvaWorkbooksPrice = $('#bva-workbooks-price');
+  const bvaAppTerms = $('#bva-app-terms');
+  const bvaWorkbooksTerms = $('#bva-workbooks-terms');
+  const bvaAppButton = $('#bva-app-enroll-button');
+  const bvaWorkbooksButton = $('#bva-workbooks-enroll-button');
+
+  if (!onlineToggle || !monthlyLabelOnline || !annualLabelOnline) return;
 
   let onlineIsAnnual = false;
 
@@ -192,176 +258,118 @@ document.addEventListener('DOMContentLoaded', function () {
     const bvaWorkbooksPlan = onlineIsAnnual ? 'annual' : 'monthly';
 
     if (onlineIsAnnual) {
-      bvaAppPrice.textContent = `$${pricingData.online.bvaApp.annual.price} one-time payment`;
-      bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.annual.price} one-time payment`;
+      if (bvaAppPrice) bvaAppPrice.textContent = `$${pricingData.online.bvaApp.annual.price} one-time payment`;
+      if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.annual.price} one-time payment`;
 
-      // Update terms with consistent bullet style
-      bvaAppTerms.innerHTML = `
-        <ul>
-          <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
-          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-          <li>Cancel any time in the first 30 days</li>
-        </ul>
-      `;
+      if (bvaAppTerms) {
+        bvaAppTerms.innerHTML = `
+          <ul>
+            <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+            <li>Cancel any time in the first 30 days</li>
+          </ul>
+        `;
+      }
 
-      bvaWorkbooksTerms.innerHTML = `
-        <ul>
-          <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
-          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-          <li>Cancel any time in the first 30 days</li>
-        </ul>
-      `;
+      if (bvaWorkbooksTerms) {
+        bvaWorkbooksTerms.innerHTML = `
+          <ul>
+            <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+            <li>Cancel any time in the first 30 days</li>
+          </ul>
+        `;
+      }
     } else {
-      bvaAppPrice.textContent = `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
-      bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month for 12 months`;
+      if (bvaAppPrice) bvaAppPrice.textContent = `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
+      if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month for 12 months`;
 
-      // Update terms with consistent bullet style
-      bvaAppTerms.innerHTML = `
-        <ul>
-          <li>Billed monthly for 12 months</li>
-          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-          <li>Cancel any time in the first 30 days</li>
-        </ul>
-      `;
+      if (bvaAppTerms) {
+        bvaAppTerms.innerHTML = `
+          <ul>
+            <li>Billed monthly for 12 months</li>
+            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+            <li>Cancel any time in the first 30 days</li>
+          </ul>
+        `;
+      }
 
-      bvaWorkbooksTerms.innerHTML = `
-        <ul>
-          <li>Billed monthly for 12 months</li>
-          <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-          <li>Cancel any time in the first 30 days</li>
-        </ul>
-      `;
+      if (bvaWorkbooksTerms) {
+        bvaWorkbooksTerms.innerHTML = `
+          <ul>
+            <li>Billed monthly for 12 months</li>
+            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+            <li>Cancel any time in the first 30 days</li>
+          </ul>
+        `;
+      }
     }
 
-    bvaAppButton.href = pricingData.online.bvaApp[bvaAppPlan].link;
-    bvaWorkbooksButton.href = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
+    if (bvaAppButton) bvaAppButton.href = pricingData.online.bvaApp[bvaAppPlan].link;
+    if (bvaWorkbooksButton) bvaWorkbooksButton.href = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
 
     if (onlineIsAnnual) {
-      onlineDiscount.style.display = 'inline';
+      if (onlineDiscount) onlineDiscount.style.display = 'inline';
       monthlyLabelOnline.classList.remove('active');
       annualLabelOnline.classList.add('active');
       onlineToggle.classList.add('annual');
     } else {
-      onlineDiscount.style.display = 'none';
+      if (onlineDiscount) onlineDiscount.style.display = 'none';
       monthlyLabelOnline.classList.add('active');
       annualLabelOnline.classList.remove('active');
       onlineToggle.classList.remove('annual');
     }
   }
 
-  onlineToggle.addEventListener('click', function () {
+  bindOnce(onlineToggle, 'click', () => {
     onlineIsAnnual = !onlineIsAnnual;
     updateOnlinePricing();
   });
 
-  // Initialize pricing displays
-  updateOnlinePricing();
-
-  // Add toggle functionality to labels for better UX
-  monthlyLabelOnline.addEventListener('click', function () {
+  bindOnce(monthlyLabelOnline, 'click', () => {
     if (onlineIsAnnual) {
       onlineIsAnnual = false;
       updateOnlinePricing();
     }
   });
 
-  annualLabelOnline.addEventListener('click', function () {
+  bindOnce(annualLabelOnline, 'click', () => {
     if (!onlineIsAnnual) {
       onlineIsAnnual = true;
       updateOnlinePricing();
     }
   });
-});
 
-// Newsletter form submission
-document.addEventListener('DOMContentLoaded', function() {
-  const newsletterForm = document.getElementById('newsletterForm');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert("Thank you for subscribing!");
-      newsletterForm.reset();
-    });
-  }
-});
-function routeGetAppLinks() {
-  if (isAppInstalled()) return;
+  updateOnlinePricing();
+}
 
-  // Candidate selectors for "Get App" actions (expand if needed)
-  const candidates = [
-    '#hero-free-app-button',        // "Get Started Free" in hero:contentReference[oaicite:2]{index=2}
-    '#final-free-app-button',       // "Get Started Free" in final CTA:contentReference[oaicite:3]{index=3}
-    'a.btn',                        // buttons styled as .btn
-    'a.cr-button'                   // pricing buttons
-  ];
+// ------------------------------------------------------------
+// Newsletter form submission (retained)
+// ------------------------------------------------------------
+function initNewsletter() {
+  const newsletterForm = $('#newsletterForm');
+  if (!newsletterForm) return;
 
-  const textIsGetApp = (t) => /get\s*(app|started)/i.test(t);
-
-  const handled = new Set();
-
-  candidates.forEach(sel => {
-    document.querySelectorAll(sel).forEach(a => {
-      if (handled.has(a)) return;
-      const text = (a.textContent || '').trim();
-      if (!textIsGetApp(text)) return;
-
-      a.addEventListener('click', (e) => {
-        if (!isAppInstalled()) {
-          e.preventDefault();
-          window.location.href = '/registration.html';
-        }
-      }, { capture: true });
-
-      handled.add(a);
-    });
+  bindOnce(newsletterForm, 'submit', (e) => {
+    e.preventDefault();
+    alert("Thank you for subscribing!");
+    newsletterForm.reset();
   });
 }
 
-document.addEventListener('DOMContentLoaded', routeGetAppLinks);
-document.addEventListener('DOMContentLoaded', () => {
-  if (!isAppInstalled()) {
-    const heroBtn = document.getElementById('hero-free-app-button');
-    const finalBtn = document.getElementById('final-free-app-button');
+// ------------------------------------------------------------
+// Get App UX: label swap + routing to registration (NEW)
+// ------------------------------------------------------------
+// Matches hero and final CTA in index.html:contentReference[oaicite:5]{index=5}
+const GET_APP_SELECTORS = ['#hero-free-app-button', '#final-free-app-button'];
 
-    if (heroBtn) {
-      heroBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
-    }
-    if (finalBtn) {
-      finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
-    }
-  }
-});
-document.addEventListener('DOMContentLoaded', () => {
-  if (!isAppInstalled()) {
-    // Change landing page buttons
-    const heroBtn = document.getElementById('hero-free-app-button');
-    const finalBtn = document.getElementById('final-free-app-button');
+function initGetAppUX() {
+  const heroBtn  = $('#hero-free-app-button');
+  const finalBtn = $('#final-free-app-button');
+  const installPopupBtn = $('#install-btn'); // install banner primary button:contentReference[oaicite:6]{index=6}
 
-    if (heroBtn) {
-      heroBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
-    }
-    if (finalBtn) {
-      finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
-    }
-
-    // Change install popup button
-    const installPopupBtn = document.getElementById('install-btn');
-    if (installPopupBtn) {
-      installPopupBtn.innerHTML = 'Register';
-    }
-  }
-});
-// --- Get App UX: label + routing --------------------------------------------
-(function initGetAppUX() {
-  // Make sure the helper exists
-  if (typeof isAppInstalled !== 'function') return;
-
-  const heroBtn  = document.getElementById('hero-free-app-button');   // index.html:contentReference[oaicite:3]{index=3}
-  const finalBtn = document.getElementById('final-free-app-button');  // index.html:contentReference[oaicite:4]{index=4}
-  const installPopupBtn = document.getElementById('install-btn');     // index.html:contentReference[oaicite:5]{index=5}
-
-  // Keep originals so we can restore on install
-  const original = {
+  // Save originals so we can restore when app is installed
+  const originals = {
     hero:  heroBtn  ? heroBtn.innerHTML  : null,
     final: finalBtn ? finalBtn.innerHTML : null,
     install: installPopupBtn ? installPopupBtn.innerHTML : null
@@ -372,43 +380,51 @@ document.addEventListener('DOMContentLoaded', () => {
     if (finalBtn) finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
     if (installPopupBtn) installPopupBtn.textContent = 'Register';
 
-    // Route both CTAs to registration until installed
-    [heroBtn, finalBtn].forEach(a => {
-      if (!a) return;
-      a.addEventListener('click', (e) => {
-        if (!isAppInstalled()) {
-          e.preventDefault();
-          window.location.href = '/registration.html';
-        }
-      }, { capture: true });
+    // Intercept clicks on hero/final to go to registration
+    GET_APP_SELECTORS.forEach(sel => {
+      $$(sel).forEach(a => {
+        bindOnce(a, 'click', (e) => {
+          if (!isAppInstalled()) {
+            e.preventDefault();
+            window.location.href = '/registration.html';
+          }
+        }, { capture: true });
+      });
     });
 
-    // If the popup button is clicked, also route to registration (instead of install)
-    if (installPopupBtn) {
-      installPopupBtn.addEventListener('click', (e) => {
-        if (!isAppInstalled()) {
-          e.preventDefault();
-          // Hide the popup if present
-          const installNotification = document.getElementById('install-notification');
-          if (installNotification) installNotification.classList.remove('show');
-          window.location.href = '/registration.html';
-        }
-      }, { capture: true });
-    }
+    // Intercept install popup button to registration (install flow handled elsewhere)
+    bindOnce(installPopupBtn, 'click', (e) => {
+      if (!isAppInstalled()) {
+        e.preventDefault();
+        const notif = $('#install-notification');
+        if (notif) notif.classList.remove('show');
+        window.location.href = '/registration.html';
+      }
+    }, { capture: true });
   }
 
   function applyInstalledState() {
-    if (heroBtn && original.hero)   heroBtn.innerHTML = original.hero;
-    if (finalBtn && original.final) finalBtn.innerHTML = original.final;
-    if (installPopupBtn && original.install) installPopupBtn.innerHTML = original.install;
+    if (heroBtn && originals.hero)   heroBtn.innerHTML = originals.hero;
+    if (finalBtn && originals.final) finalBtn.innerHTML = originals.final;
+    if (installPopupBtn && originals.install) installPopupBtn.innerHTML = originals.install;
   }
 
-  // Initial pass
+  // Initial
   if (!isAppInstalled()) applyNotInstalledState();
 
-  // If user installs while on the page, restore labels
-  window.addEventListener('appinstalled', () => {
-    // you already set localStorage in app.js on install:contentReference[oaicite:6]{index=6}
-    applyInstalledState();
-  });
-})();
+  // If user installs while on page, restore labels
+  window.addEventListener('appinstalled', applyInstalledState);
+}
+
+// ------------------------------------------------------------
+// Boot
+// ------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  initFaqToggles();
+  initSmoothScroll();
+  initInstallPromptFlows();
+  initServiceWorker();
+  initPricingModule();
+  initNewsletter();
+  initGetAppUX();
+});
