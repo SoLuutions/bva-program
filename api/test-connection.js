@@ -1,4 +1,3 @@
-// api/test-connection.js
 export default async function handler(req, res) {
     console.log('🧪 Testing NocoDB connection');
     
@@ -12,9 +11,7 @@ export default async function handler(req, res) {
             env: Object.keys(process.env).filter(key => key.includes('NOCODB'))
         });
     }
-    
     try {
-        // Test: Get records (this is what actually works based on your curl)
         const tableUrl = 'https://app.nocodb.com/api/v2/tables/mwkq2v9p5kju2py/records?offset=0&limit=1&viewId=vw3go5awrqlpeevz';
         console.log('🎯 Testing table URL:', tableUrl);
         

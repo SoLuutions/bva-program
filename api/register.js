@@ -1,16 +1,13 @@
-// api/register.js
 export default async function handler(req, res) {
     console.log('🚀 API handler called');
     console.log('📋 Request method:', req.method);
     console.log('📋 Request headers:', req.headers);
     console.log('📋 Request body:', req.body);
     
-    // Add CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
-    // Handle preflight OPTIONS request
     if (req.method === 'OPTIONS') {
         console.log('✅ Handling OPTIONS preflight request');
         return res.status(200).end();
@@ -29,7 +26,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Name and email are required.' });
     }
 
-    // Check if environment variable exists
     const token = process.env.NOCODB_API_TOKEN;
     console.log('🔑 API Token exists:', !!token);
     console.log('🔑 API Token length:', token ? token.length : 0);
