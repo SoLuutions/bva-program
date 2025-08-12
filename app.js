@@ -233,11 +233,11 @@ function initPricingModule() {
       bvaWorkbooks: {
         monthly: {
           price: 47,
-          link: "https://command-results.passion.io/checkout/99a47923-3170-4657-8fcf-0fdfad3d9393"
+          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598"
         },
         annual: {
           price: 497,
-          link: "https://command-results.passion.io/checkout/769da188-59a6-47ee-ac6d-7c98a3732c7d"
+          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401600"
         }
       }
     }
@@ -338,9 +338,11 @@ function initPricingModule() {
     if (bvaAppButton) bvaAppButton.href = pricingData.online.bvaApp[bvaAppPlan].link;
     if (bvaWorkbooksButton) bvaWorkbooksButton.href = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
 
-    // Protect pricing CTA destinations based on install state
+        if (bvaAppButton) bvaAppButton.dataset.installedHref = pricingData.online.bvaApp[bvaAppPlan].link;
+    if (bvaWorkbooksButton) bvaWorkbooksButton.dataset.installedHref = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
+// Protect pricing CTA destinations based on install state
     wireProtectedLink(bvaAppButton, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: true });
-    wireProtectedLink(bvaWorkbooksButton, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: true });
+    wireProtectedLink(bvaWorkbooksButton, { whenNotInstalled: '/registration.html', changeLabel: true, respectCurrentHref: true });
 
 
     if (onlineIsAnnual) {
@@ -399,10 +401,14 @@ function initNewsletter() {
 // ------------------------------------------------------------
 const PASSION_APP_URL = 'https://command-results.passion.io';
 
-function wireProtectedLink(el, { whenInstalled = PASSION_APP_URL, whenNotInstalled = '/registration.html', changeLabel = true } = {}) {
+function wireProtectedLink(el, { whenInstalled = PASSION_APP_URL, whenNotInstalled = '/registration.html', changeLabel = true, respectCurrentHref = false } = {}) {
   if (!el) return;
   // Update href immediately for hover/long-press previews
-  el.href = isAppInstalled() ? whenInstalled : whenNotInstalled;
+  if (isAppInstalled()) {
+    if (!respectCurrentHref) el.href = whenInstalled;
+  } else {
+    el.href = whenNotInstalled;
+  }
 
   if (changeLabel) {
     if (isAppInstalled()) {
@@ -419,12 +425,13 @@ function wireProtectedLink(el, { whenInstalled = PASSION_APP_URL, whenNotInstall
   bindOnce(el, 'click', (e) => {
     // Always hard-route based on current install state
     e.preventDefault();
-    window.location.href = isAppInstalled() ? whenInstalled : whenNotInstalled;
+    const installedTarget = respectCurrentHref ? (el.dataset.installedHref || el.href) : whenInstalled;
+    window.location.href = isAppInstalled() ? installedTarget : whenNotInstalled;
   }, { capture: true });
 
   // Re-wire after appinstallation event
   window.addEventListener('appinstalled', () => {
-    el.href = whenInstalled;
+    el.href = respectCurrentHref ? (el.dataset.installedHref || el.href) : whenInstalled;
     if (changeLabel) el.innerHTML = el.innerHTML.replace(/Register|Get App|Get Program|Get Started Free/i, 'Open App');
   });
 }
