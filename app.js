@@ -233,11 +233,11 @@ function initPricingModule() {
       bvaWorkbooks: {
         monthly: {
           price: 47,
-          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598"
+          link: "https://command-results.passion.io/checkout/99a47923-3170-4657-8fcf-0fdfad3d9393"
         },
         annual: {
           price: 497,
-          link: "https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401600"
+          link: "https://command-results.passion.io/checkout/769da188-59a6-47ee-ac6d-7c98a3732c7d"
         }
       }
     }
