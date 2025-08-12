@@ -284,7 +284,6 @@ function initPricingModule() {
     bvaAppTerms.innerHTML = `
       <ul>
         <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
-        <li>Continued access after the first year requires an 18% annual maintenance fee</li>
         <li>Cancel any time in the first 30 days</li>
       </ul>
     `;
@@ -295,7 +294,6 @@ function initPricingModule() {
         bvaWorkbooksTerms.innerHTML = `
           <ul>
             <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
-            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
             <li>Cancel any time in the first 30 days</li>
           </ul>
         `;
