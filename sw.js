@@ -1,6 +1,6 @@
 // sw.js — stable, no forced skipWaiting to avoid refresh loops
 
-const CACHE_VERSION = 'v1.7.1';
+const CACHE_VERSION = 'v1.7.2';
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
