@@ -222,11 +222,11 @@ function initPricingModule() {
     online: {
       bvaApp: {
         monthly: {
-          price: 47,
+          price: 0,
           link: "https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583"
         },
         annual: {
-          price: 497,
+          price: 0,
           link: "https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401587"
         }
       },
@@ -260,22 +260,36 @@ function initPricingModule() {
   let onlineIsAnnual = false;
 
   function updateOnlinePricing() {
+    // If Lean-Agile Foundations (bvaApp) is free, reflect that explicitly
+    const isBvaAppFreeMonthly = pricingData.online.bvaApp.monthly.price === 0;
+    const isBvaAppFreeAnnual  = pricingData.online.bvaApp.annual.price === 0;
+    
     const bvaAppPlan = onlineIsAnnual ? 'annual' : 'monthly';
     const bvaWorkbooksPlan = onlineIsAnnual ? 'annual' : 'monthly';
 
     if (onlineIsAnnual) {
-      if (bvaAppPrice) bvaAppPrice.textContent = `$${pricingData.online.bvaApp.annual.price} one-time payment`;
+      if (bvaAppPrice) bvaAppPrice.textContent = isBvaAppFreeAnnual ? 'Free' : `$${pricingData.online.bvaApp.annual.price} one-time payment`;
       if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.annual.price} one-time payment`;
 
       if (bvaAppTerms) {
-        bvaAppTerms.innerHTML = `
-          <ul>
-            <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
-            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-            <li>Cancel any time in the first 30 days</li>
-          </ul>
-        `;
-      }
+  if ((onlineIsAnnual && isBvaAppFreeAnnual) || (!onlineIsAnnual && isBvaAppFreeMonthly)) {
+    bvaAppTerms.innerHTML = `
+      <ul>
+        <li>Certificate of Completion included</li>
+        <li>No credit card required</li>
+        <li>Cancel any time</li>
+      </ul>
+    `;
+  } else {
+    bvaAppTerms.innerHTML = `
+      <ul>
+        <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+        <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+        <li>Cancel any time in the first 30 days</li>
+      </ul>
+    `;
+  }
+}
 
       if (bvaWorkbooksTerms) {
         bvaWorkbooksTerms.innerHTML = `
@@ -287,18 +301,28 @@ function initPricingModule() {
         `;
       }
     } else {
-      if (bvaAppPrice) bvaAppPrice.textContent = `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
+      if (bvaAppPrice) bvaAppPrice.textContent = isBvaAppFreeMonthly ? 'Free' : `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
       if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month for 12 months`;
 
       if (bvaAppTerms) {
-        bvaAppTerms.innerHTML = `
-          <ul>
-            <li>Billed monthly for 12 months</li>
-            <li>Continued access after the first year requires an 18% annual maintenance fee</li>
-            <li>Cancel any time in the first 30 days</li>
-          </ul>
-        `;
-      }
+  if ((onlineIsAnnual && isBvaAppFreeAnnual) || (!onlineIsAnnual && isBvaAppFreeMonthly)) {
+    bvaAppTerms.innerHTML = `
+      <ul>
+        <li>Certificate of Completion included</li>
+        <li>No credit card required</li>
+        <li>Cancel any time</li>
+      </ul>
+    `;
+  } else {
+    bvaAppTerms.innerHTML = `
+      <ul>
+        <li>Pay one-time fee and save nearly $70 compared to monthly billing</li>
+        <li>Continued access after the first year requires an 18% annual maintenance fee</li>
+        <li>Cancel any time in the first 30 days</li>
+      </ul>
+    `;
+  }
+}
 
       if (bvaWorkbooksTerms) {
         bvaWorkbooksTerms.innerHTML = `
@@ -313,6 +337,11 @@ function initPricingModule() {
 
     if (bvaAppButton) bvaAppButton.href = pricingData.online.bvaApp[bvaAppPlan].link;
     if (bvaWorkbooksButton) bvaWorkbooksButton.href = pricingData.online.bvaWorkbooks[bvaWorkbooksPlan].link;
+
+    // Protect pricing CTA destinations based on install state
+    wireProtectedLink(bvaAppButton, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: true });
+    wireProtectedLink(bvaWorkbooksButton, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: true });
+
 
     if (onlineIsAnnual) {
       if (onlineDiscount) onlineDiscount.style.display = 'inline';
@@ -364,6 +393,42 @@ function initNewsletter() {
 }
 
 // ------------------------------------------------------------
+
+// ------------------------------------------------------------
+// Routing helper: registration vs Passion.io
+// ------------------------------------------------------------
+const PASSION_APP_URL = 'https://command-results.passion.io';
+
+function wireProtectedLink(el, { whenInstalled = PASSION_APP_URL, whenNotInstalled = '/registration.html', changeLabel = true } = {}) {
+  if (!el) return;
+  // Update href immediately for hover/long-press previews
+  el.href = isAppInstalled() ? whenInstalled : whenNotInstalled;
+
+  if (changeLabel) {
+    if (isAppInstalled()) {
+      // Prefer an "Open App" affordance when installed
+      el.innerHTML = el.innerHTML.replace(/Register|Get App|Get Program|Get Started Free/i, 'Open App');
+    } else {
+      // Show registration intent
+      if (!/Register/i.test(el.innerText)) {
+        el.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+      }
+    }
+  }
+
+  bindOnce(el, 'click', (e) => {
+    // Always hard-route based on current install state
+    e.preventDefault();
+    window.location.href = isAppInstalled() ? whenInstalled : whenNotInstalled;
+  }, { capture: true });
+
+  // Re-wire after appinstallation event
+  window.addEventListener('appinstalled', () => {
+    el.href = whenInstalled;
+    if (changeLabel) el.innerHTML = el.innerHTML.replace(/Register|Get App|Get Program|Get Started Free/i, 'Open App');
+  });
+}
+
 // Get App UX: label swap + routing to registration (UPDATED)
 // ------------------------------------------------------------
 const GET_APP_SELECTORS = ['#hero-free-app-button', '#final-free-app-button'];
@@ -382,6 +447,11 @@ function initGetAppUX() {
     auth: headerAuthBtn ? headerAuthBtn.innerHTML : null,
     authHref: headerAuthBtn ? headerAuthBtn.href : null
   };
+  // Route primary CTAs depending on install state
+  wireProtectedLink(heroBtn,  { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html' });
+  wireProtectedLink(finalBtn, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html' });
+  wireProtectedLink(installPopupBtn, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: false });
+
 
   function applyNotInstalledState() {
     // Change labels

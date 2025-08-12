@@ -54,7 +54,7 @@ header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;p
 
 /* Hero image with fade */
 .hero-image-wrap{position:relative;width:100%;overflow:hidden;margin-top:-50px}
-.hero-image-wrap img{display:block;width:100%;height:280px;object-fit:cover;
+.hero-image-wrap img{display:block;width:100%;height:100%;object-fit:cover;
   -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 60%,rgba(0,0,0,0) 100%);
           mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 60%,rgba(0,0,0,0) 100%)}
 
@@ -102,7 +102,9 @@ header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;p
 /* --- Stats --- */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:1200px;margin:0 auto}
 .stat-card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);text-align:center;border-radius:14px;padding:28px 22px;box-shadow:var(--shadow)}
+.stat-card p {color:var(--light);font-size:1.05rem;margin-bottom:12px;line-height:1.5}
 .stat-value{font-size:2.6rem;font-weight:800;margin-bottom:10px;color:var(--support)}
+
 
 /* --- FAQ --- */
 .faq{background:#fff}
@@ -270,7 +272,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   #command-results-pricing .cr-pricing-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 }
 @media (max-width:640px){.hero-image-wrap img{height:360px}}
-@media (min-width:1024px){.hero-image-wrap img{height:480px}}
+@media (min-width:1024px){.hero-image-wrap img{height:100%}}
 @media (max-width:480px){
   .tagline{font-size:.95rem}
   .problem-card,.solution-card,.offering-item,.stat-card{padding:20px}
@@ -288,4 +290,19 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .privacy-note{flex-direction:column;align-items:flex-start;font-size:.85rem}
   .newsletter-benefits{border-top:1px solid #eee;border-left:none;padding-left:0;padding-top:18px;gap:14px;width:100%}
   .benefit{font-size:.95rem}
+}
+
+
+/* Asterisk note under pricing grid */
+#command-results-pricing .cr-asterisk-note{
+  max-width: 980px;
+  margin: 0 auto;
+  margin-top: -12px;
+  color: var(--cr-secondary);
+  font-size: .92rem;
+  line-height: 1.55;
+  background: #fffef6;
+  border-left: 4px solid var(--support);
+  padding: .8rem 1rem;
+  border-radius: 6px;
 }
