@@ -148,30 +148,6 @@ function initInstallPromptFlows() {
   });
 }
 
-// ------------------------------------------------------------
-// NEW: Update notification system (retained)
-// ------------------------------------------------------------
-function showUpdateNotification() {
-  let updateNotify = $('#update-notification');
-  if (!updateNotify) {
-    updateNotify = document.createElement('div');
-    updateNotify.id = 'update-notification';
-    updateNotify.innerHTML = `
-      <div class="update-content">
-        <p>New version available!</p>
-        <button id="refresh-btn">Update Now</button>
-      </div>
-    `;
-    document.body.appendChild(updateNotify);
-  }
-
-  const refreshBtn = $('#refresh-btn', updateNotify);
-  bindOnce(refreshBtn, 'click', () => {
-    if (navigator.serviceWorker?.controller) {
-      navigator.serviceWorker.controller.postMessage('skipWaiting');
-    }
-  });
-}
 
 // ------------------------------------------------------------
 // Service Worker Registration with update handling (retained)
