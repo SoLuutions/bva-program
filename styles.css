@@ -306,3 +306,127 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   padding: .8rem 1rem;
   border-radius: 6px;
 }
+
+
+/* === Lean-Agile Checklist CTA === */
+.checklist-cta{
+  background: linear-gradient(to right, var(--primary), #38b2ac);
+  color:#fff;
+  padding:60px 0;
+}
+.checklist-wrap{
+  display:grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap:28px;
+  align-items:center;
+}
+.checklist-copy h2{
+  font-size:clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem);
+  margin-bottom:10px;
+  color:#fff;
+}
+.checklist-copy p{
+  color:rgba(255,255,255,.95);
+  margin:10px 0;
+  font-size:1.05rem;
+}
+.checklist-btn{
+  margin-top:14px;
+}
+.checklist-visual{
+  margin:0;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  background:#fff;
+}
+.checklist-visual img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* === Referrals / Reviews === */
+.referrals{
+  background:#fff;
+  padding:60px 0;
+}
+.referrals-group-title{
+  font-size:1.2rem;
+  color:var(--muted);
+  margin:10px 0 12px;
+  font-weight:800;
+}
+.referrals-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(280px,1fr));
+  gap:18px;
+  margin-bottom:28px;
+}
+.ref-card{
+  background:#fff;
+  border-left:5px solid var(--support);
+  border-radius:12px;
+  padding:22px;
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+.ref-card p{ margin:0 0 10px; line-height:1.55; }
+.ref-card footer{ color: var(--light); font-weight:700; }
+
+.referrals-more{
+  text-align:center;
+  margin-top:8px;
+}
+
+/* Responsive */
+@media (max-width: 992px){
+  .checklist-wrap{
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px){
+  .referrals-grid{
+    grid-template-columns: 1fr;
+  }
+}
+/* === Newsletter tweaks: hide header, add badge, fix overflow === */
+.newsletter-cta .section-header{ display:none; }
+
+/* Small badge to convey it's the newsletter section */
+.nl-badge{
+  display:inline-block;
+  background: linear-gradient(45deg, var(--support), #e6914a);
+  color:#fff;
+  font-weight:800;
+  font-size:.75rem;
+  padding:6px 10px;
+  border-radius:999px;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+/* Make inputs/buttons never overflow their container */
+.newsletter-form .form-group{ align-items:stretch; }
+.newsletter-form input[type="email"],
+.newsletter-form .btn{
+  max-width:100%;
+}
+.newsletter-form input[type="email"]{
+  min-width:0;            /* allow flex child to shrink */
+  width:100%;             /* fill width on wrap */
+  box-sizing:border-box;  /* include padding in width */
+}
+
+/* Stack input+button earlier for small screens */
+@media (max-width: 768px){
+  .newsletter-form .form-group{
+    flex-direction:column;
+  }
+  .newsletter-form input[type="email"],
+  .newsletter-form .btn{
+    width:100%;
+  }
+}
