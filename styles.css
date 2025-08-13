@@ -24,7 +24,7 @@ header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;p
 .logo i{margin-right:10px;color:var(--support)}
 .nav-buttons-container{display:flex;justify-content:center;gap:12px;width:100%}
 .btn{display:inline-block;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:700;
-  font-size:1rem;text-align:center;transition:.25s;border:none;cursor:pointer;min-width:200px}
+  font-size:clamp(1rem,0.95rem + .4vw,1.15rem);text-align:center;transition:.25s;border:none;cursor:pointer;min-width:200px;min-height:44px}
 .btn-primary{background:var(--support);color:#fff;box-shadow:0 4px 15px rgba(244,162,97,.4)}
 .btn-secondary{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.3)}
 .btn:hover{transform:translateY(-2px)}
@@ -392,7 +392,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   }
 }
 /* === Newsletter tweaks: hide header, add badge, fix overflow === */
-.newsletter-cta .section-header{ display:none; }
+/* Removed hiding; show section header */
 
 /* Small badge to convey it's the newsletter section */
 .nl-badge{
@@ -428,5 +428,82 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .newsletter-form input[type="email"],
   .newsletter-form .btn{
     width:100%;
+  }
+}
+/* Make Solution section title larger for readability */
+.solution .section-header h2{font-size:clamp(2rem,2.2vw,2.6rem);}
+
+/* Enforce 2x2 layout for Solution cards */
+@media (min-width: 769px){.solution-grid{grid-template-columns:repeat(2,minmax(260px,1fr))}}
+@media (max-width: 768px){.solution-grid{grid-template-columns:1fr}}
+
+/* Ensure Referrals title uses normal section title size */
+.referrals .section-header h2{font-size:clamp(1.9rem,3vw,2.4rem)}
+
+/* Newsletter title styling */
+.newsletter-title{font-size:clamp(1.9rem,3vw,2.4rem);color:var(--dark)}
+
+/* Make checklist CTA button text slightly larger */
+.checklist-btn{font-size:clamp(1rem,1rem + .3vw,1.15rem)}
+
+/* Android/iOS friendly input sizing to prevent zoom */
+.newsletter-form input[type="email"]{font-size:16px}
+
+
+/* Fix newsletter input/button overflow on small screens */
+@media (max-width: 480px) {
+  .newsletter-form input[type="email"],
+  .newsletter-form button {
+    width: 100% !important;
+    box-sizing: border-box;
+    display: block;
+    font-size: 16px; /* Prevent zoom on mobile */
+    margin-bottom: 0.5rem;
+  }
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* Fix newsletter input/button overflow on very small screens (<=400px) */
+@media (max-width: 400px) {
+  .newsletter-form input[type="email"],
+  .newsletter-form button {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    display: block;
+    font-size: 16px; /* Prevent zoom on mobile */
+    margin-bottom: 0.5rem;
+  }
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* HARD FIX for overflow at <=400px: let the button/input shrink and fill container */
+@media (max-width: 400px){
+  .newsletter-form .btn{
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+  .newsletter-form input[type="email"]{
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .newsletter-card{
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }
