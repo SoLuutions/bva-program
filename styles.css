@@ -27,7 +27,7 @@ header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;p
   font-size:clamp(1rem,0.95rem + .4vw,1.15rem);text-align:center;transition:.25s;border:none;cursor:pointer;min-width:200px;min-height:44px}
 .btn-primary{background:var(--support);color:#fff;box-shadow:0 4px 15px rgba(244,162,97,.4)}
 .btn-secondary{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.3)}
-.btn:hover{transform:translateY(-2px)}
+.btn:hover{transform:translateY(-2px);color:var(--light)}
 .btn-primary:hover{background:#e6914a}
 .btn-secondary:hover{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5)}
 .cta-buttons{display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap}
