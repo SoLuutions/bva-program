@@ -507,3 +507,148 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
     padding-right: 14px;
   }
 }
+
+
+/* === Instructor Intro Section === */
+.instructor{
+  background:#fff;
+  color:var(--ink);
+  padding:60px 0;
+}
+.instructor-grid{
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:32px;
+  align-items:center;
+}
+.instructor-title{
+  font-size:clamp(1.8rem,1.2rem + 1.6vw,2.2rem);
+  color:var(--dark);
+  margin-bottom:10px;
+}
+.instructor-bio{
+  color:var(--muted);
+  font-size:1.05rem;
+  margin-bottom:18px;
+  max-width:720px;
+}
+.instructor-credentials{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin:16px 0 8px;
+  padding:0;
+}
+.instructor-credentials li{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  background:#fff;
+  border-left:5px solid var(--accent);
+  border-radius:12px;
+  padding:12px 14px;
+  box-shadow: var(--shadow);
+}
+.cred-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(42,157,143,.1);
+  color:var(--primary);
+  flex-shrink:0;
+}
+.cred-text small{
+  display:block;
+  color:var(--muted);
+}
+.instructor-stats{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap:14px;
+  margin:18px 0 6px;
+}
+.instructor-stats .stat{
+  background:rgba(56,178,172,.06);
+  border:1px solid rgba(56,178,172,.2);
+  border-radius:12px;
+  padding:16px;
+  text-align:center;
+}
+.instructor-stats .stat-num{
+  font-weight:800;
+  font-size:1.6rem;
+  color:var(--support);
+}
+.instructor-stats .stat-label{
+  font-size:.95rem;
+  color:var(--muted);
+}
+.instructor-ctas{ margin-top:14px; }
+
+.instructor-right{
+  position:relative;
+  margin:0;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+  background:linear-gradient(180deg,#f7f9fc,#eef3f9);
+}
+.instructor-right img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+.rating-badge{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  background:#111827;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:.95rem;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+.rating-badge .rating-dot{
+  width:10px;height:10px;border-radius:50%;
+  display:inline-block;background:#7C3AED;box-shadow: 14px 0 0 #10B981, 28px 0 0 #60A5FA;
+}
+.rating-badge .rating-sub{ opacity:.85; font-weight:600; }
+
+/* Responsive */
+@media (max-width: 992px){
+  .instructor-grid{ grid-template-columns: 1fr; }
+  .instructor-right{ order:-1; }
+}
+
+
+/* === About / Profile / Partners / Team === */
+.about{background:#f8fafc;color:var(--ink);padding:60px 0}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.about-card{background:#fff;border-left:5px solid var(--support);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.about-card h3{color:var(--dark);margin-bottom:8px}
+
+.profile{background:#fff;color:var(--ink);padding:60px 0}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:18px}
+.profile-card{background:#fff;border:1px solid #eef;border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.profile-card h3{color:var(--dark);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.books{margin-top:8px}
+.books-title{font-size:1.2rem;color:var(--muted);margin:8px 0 10px;font-weight:800}
+.books-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.books-list li{background:#fff;border-left:4px solid var(--accent);padding:12px;border-radius:8px;box-shadow:var(--shadow)}
+
+.partners{background:linear-gradient(to bottom,#f8f9fa,#eef2f7);padding:60px 0}
+.partners-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.partner-card{display:flex;gap:14px;background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow);align-items:center}
+.partner-logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(42,157,143,.1);color:var(--primary);font-weight:800;font-size:1.2rem;flex-shrink:0}
+.partner-meta h3{margin-bottom:6px;color:var(--dark)}
+.partner-meta p{margin:2px 0;color:var(--muted)}
+
+.team{background:#fff;padding:60px 0}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.team-card{background:#fff;border-left:5px solid var(--accent);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.team-card h3{margin-bottom:6px;color:var(--dark)}
