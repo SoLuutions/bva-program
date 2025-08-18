@@ -914,3 +914,20 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 @media (min-width: 901px){
   .hero-panels{grid-template-columns: 1fr !important;}
 }
+
+
+/* Apps title below hero image */
+.apps-title{
+  text-align:center;
+  font-size: clamp(1.5rem, 2vw, 2.3rem);
+  margin: 1.2rem auto;
+  color: #0b3558;
+  font-weight: 800;
+}
+/* CTA under each panel */
+.panel-cta{
+  margin-top: 1rem;
+  display:flex;
+  justify-content:center;
+}
+.panel-cta .btn{ min-width: 200px; }
