@@ -909,3 +909,8 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   color: var(--primary);
   border: 1px solid color-mix(in oklab, var(--primary, #4f46e5) 40%, white);
 }
+
+/* FORCE vertical stack on desktop for hero panels */
+@media (min-width: 901px){
+  .hero-panels{grid-template-columns: 1fr !important;}
+}
