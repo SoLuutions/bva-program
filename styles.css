@@ -425,37 +425,3 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .newsletter-form .form-group{flex-direction:column}
   .newsletter-form input[type=email],.newsletter-form .btn{width:100%!important}
 }
-
-/* Keep original refactored CSS content here */
-/* === Hotfixes — 2025-08-19 (per feedback) =============================== */
-@media (max-width:768px){
-  /* Test Your Maturity: ensure image sits UNDER the button on mobile */
-  .checklist-wrap{display:flex;flex-direction:column}
-  .checklist-copy{order:1}
-  .checklist-visual{order:2}
-}
-
-@media (max-width:768px){
-  /* Referrals: prevent horizontal overflow on small screens */
-  .referrals-grid{grid-template-columns:1fr}
-  .ref-card{max-width:100%;overflow:hidden}
-  .ref-card p,.ref-card footer{word-break:break-word;overflow-wrap:anywhere}
-  .referrals img{max-width:100%;height:auto}
-}
-
-@media (max-width:600px){
-  /* Sticky menu: keep buttons on ONE line (horizontal scroll if needed) */
-  .nav-buttons-container{flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto;gap:8px}
-  .nav-buttons{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-  .nav-buttons::-webkit-scrollbar{display:none}
-  .nav-buttons .btn{flex:0 0 auto;min-width:140px}
-}
-
-@media (max-width:480px){
-  /* Newsletter: stop content overflow in very small widths */
-  .newsletter-card{overflow:hidden}
-  .newsletter-content,.newsletter-benefits{min-width:0}
-  .newsletter-content h3,.newsletter-content p{overflow-wrap:anywhere}
-  .newsletter-form input[type=email]{min-width:0}
-}
-
