@@ -997,61 +997,180 @@ header.scrolled .nav-dropdown-toggle { color: #1b2939; border-color: rgba(0,0,0,
   }
 }
 
-
-/* Sticky nav dropdown: compact popover */
-.nav-buttons-container { display: flex; gap: .5rem; align-items: center; }
-.nav-dropdown { position: relative; display: inline-block; }
-.nav-dropdown-toggle {
-  background: transparent; border: 1px solid rgba(255,255,255,.4);
-  color: #fff; border-radius: .5rem; padding: .45rem .6rem; cursor: pointer; line-height: 1;
-}
-header.scrolled .nav-dropdown-toggle { color: #1b2939; border-color: rgba(0,0,0,.2); }
-.nav-dropdown-menu {
-  position: absolute; right: 0; top: calc(100% + .25rem);
-  min-width: 11rem; max-width: 14rem;
-  background: #fff; border: 1px solid rgba(0,0,0,.1);
-  border-radius: .5rem; box-shadow: 0 8px 24px rgba(0,0,0,.18);
-  padding: .3rem; display: none; z-index: 2000;
-}
-.nav-dropdown-menu.show { display: block; }
-.nav-dropdown-menu .dropdown-item {
-  display: block; padding: .7rem .9rem; border-radius: .4rem;
-  color: #122; text-decoration: none; font-size: .98rem;
-}
-.nav-dropdown-menu .dropdown-item:hover { background: rgba(0,0,0,.05); }
-@media (max-width: 480px){
-  .nav-buttons-container { gap: .4rem; }
-  .nav-dropdown-toggle { padding: .45rem .55rem; }
-  .nav-dropdown-menu { min-width: 11rem; max-width: 78vw; }
-}
-
-
-/* === Register button + dropdown alignment === */
-.cta-with-dropdown {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-  flex-wrap: nowrap;
-}
-
-.cta-with-dropdown .btn {
-  flex: 1;
-}
-
-.cta-with-dropdown .nav-dropdown-toggle {
-  min-width: 44px;
-  height: 44px;
-  font-size: 1.2rem;
-  line-height: 1;
-  padding: 0 .6rem;
-}
-
-@media (max-width: 600px) {
-  .cta-with-dropdown {
-    flex-direction: row;
+  /* Fix for the sticky nav dropdown responsiveness */
+  .nav-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: auto;
   }
-  .cta-with-dropdown .btn {
-    flex-grow: 1;
+
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Keep the dropdown toggle aligned with buttons on mobile */
+  @media (max-width: 768px) {
+    .nav-buttons-container {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+    
+    .nav-buttons {
+      flex-shrink: 0;
+    }
+  
+    /* Ensure the dropdown stays on the same line */
+    .nav-buttons:last-child {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  
+    /* Adjust button sizes for mobile if needed */
+    .nav-buttons .btn {
+      padding: 10px 16px;
+      min-width: auto;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* For very small screens, we might need to adjust further */
+  @media (max-width: 480px) {
+    .nav-buttons-container {
+      gap: 4px;
+    }
+  
+    .nav-buttons .btn {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+  
+    .nav-dropdown-toggle {
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+  }
+/* Fix sticky nav buttons on mobile */
+@media (max-width: 768px) {
+  .nav-buttons-container {
+    justify-content: center !important;  /* center items */
+    flex-wrap: wrap;                     /* allow wrapping if needed */
+    width: 100%;
+    gap: 10px;
+  }
+
+  .nav-buttons .btn {
+    min-width: 140px;   /* keep touch-friendly size */
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-buttons-container {
+    flex-direction: wrap; /* stack vertically if too tight */
+    gap: 12px;
+  }
+
+  .nav-buttons .btn {
+    width: 100%; /* full width buttons for small screens */
+    max-width: 280px;
+  }
+}
+
+/* === Sticky nav dropdown: keep it separate from the sticky bar on small screens === */
+@media (max-width: 600px) {
+  header { overflow: visible; } /* allow the menu to float outside */
+
+  .nav-buttons-container { justify-content: center; } /* keep buttons centered */
+
+  /* Keep the dropdown anchored to its button, not the header flow */
+  .nav-dropdown { position: relative !important; }
+
+  .nav-dropdown-menu {
+    position: absolute !important;
+    right: 0;
+    top: calc(100% + 10px);          /* gap below the sticky bar */
+    width: min(92vw, 360px);
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.18);  /* clear visual separation */
+    padding: .5rem;
+    z-index: 2000;                   /* above the header */
+  }
+
+  /* Larger, tap-friendly target */
+  .nav-dropdown-menu .dropdown-item {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    font-size: 1.05rem;
+  }
+  .nav-dropdown-menu .dropdown-item:last-child { border-bottom: 0; }
+
+  /* Optional caret */
+  .nav-dropdown-menu::before {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: -8px;
+    width: 12px; height: 12px;
+    transform: rotate(45deg);
+    background: #fff;
+    border-left: 1px solid rgba(0,0,0,.12);
+    border-top: 1px solid rgba(0,0,0,.12);
+  }
+}
+
+/* Keep mobile buttons usable + centered */
+@media (max-width: 768px) {
+  .nav-buttons-container {
+    justify-content: center !important;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .nav-buttons .btn {
+    min-width: 140px;
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .nav-buttons-container { flex-direction: column; gap: 12px; }
+  .nav-buttons .btn { width: 100%; max-width: 280px; }
+}
+/* === Prevent dropdown overflow on extra-small screens === */
+@media (max-width: 420px) {
+  /* Let it float outside the sticky bar */
+  header { overflow: visible; }
+
+  /* Keep the trigger in normal flow */
+  .nav-dropdown { position: relative !important; }
+
+  /* Center the menu to the viewport so it can't clip left/right */
+  .nav-dropdown-menu {
+    position: fixed !important;                /* anchor to viewport */
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    top: calc(56px + 10px);                    /* ~header height + gap */
+    width: min(96vw, 360px);                   /* responsive width */
+    max-height: 70vh;                          /* just in case */
+    overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.18);
+    z-index: 2000;
+  }
+
+  /* Center the little caret as well */
+  .nav-dropdown-menu::before {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
   }
 }
