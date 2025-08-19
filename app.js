@@ -497,3 +497,132 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletter();
   initGetAppUX();
 });
+
+
+/* ==============================
+   Analytics: GA4 + LinkedIn tracking
+   ============================== */
+(function() {
+  function onReady(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn); }}
+
+  // Helper: GA4
+  function trackGA(eventName, params){
+    try {
+      if (window.gtag) { window.gtag('event', eventName, params || {}); }
+    } catch(e){ /* no-op */ }
+  }
+
+  // Helper: LinkedIn (requires configured conversion_id in Campaign Manager)
+  const LI_CONVERSIONS = {
+    app_click: null,            // e.g., "1234567"
+    trial_click: null,          // e.g., "2345678"
+    purchase_click: null,       // e.g., "3456789"
+    outbound_click: null,       // optional
+    registration_submit: null,  // optional
+    registration_complete: null // optional
+  };
+  function trackLI(key){
+    try {
+      if (window.lintrk && LI_CONVERSIONS[key]) {
+        window.lintrk('track', { conversion_id: LI_CONVERSIONS[key] });
+      }
+    } catch(e){ /* no-op */ }
+  }
+
+  // Attach handlers
+  onReady(function(){
+    // CTA buttons
+    var appBtn = document.getElementById('app-btn');
+    var trialBtn = document.getElementById('trial-btn');
+    var purchaseBtn = document.getElementById('purchase-btn');
+
+    function attachClick(el, id, label){
+      if(!el) return;
+      el.addEventListener('click', function(e){
+        var href = el.getAttribute('href') || '';
+        trackGA('cta_click', {
+          cta_id: id,
+          cta_label: label,
+          destination_url: href,
+          event_category: 'engagement',
+          event_label: label
+        });
+        // LinkedIn (if conversion IDs are configured)
+        if (id === 'app_btn') trackLI('app_click');
+        if (id === 'trial_btn') trackLI('trial_click');
+        if (id === 'purchase_btn') trackLI('purchase_click');
+      }, { passive: true });
+    }
+
+    attachClick(appBtn, 'app_btn', 'App');
+    attachClick(trialBtn, 'trial_btn', 'Free Trial');
+    attachClick(purchaseBtn, 'purchase_btn', 'Purchase');
+
+    // Sitewide outbound link tracking
+    document.addEventListener('click', function(ev){
+      var a = ev.target.closest && ev.target.closest('a[href]');
+      if(!a) return;
+      var url;
+      try { url = new URL(a.href, window.location.href); } catch(e){ return; }
+      if (url.host && url.host !== window.location.host) {
+        trackGA('outbound_click', {
+          link_url: url.href,
+          link_text: (a.textContent || '').trim().slice(0,120),
+          link_host: url.host
+        });
+        trackLI('outbound_click');
+      }
+    }, { capture: true, passive: true });
+
+    // Registration page hooks (if present in this build)
+    // Fire on submit and on success redirect (?registered=1)
+    var regForm = document.querySelector('form#registration-form, form[data-analytics="registration"]');
+    if (regForm) {
+      regForm.addEventListener('submit', function(){
+        trackGA('registration_submit', { form_id: regForm.id || 'registration-form' });
+        trackLI('registration_submit');
+      }, { passive: true });
+    }
+    var usp = new URLSearchParams(window.location.search);
+    if (usp.get('registered') === '1' || document.body.getAttribute('data-registered') === 'true') {
+      trackGA('registration_complete', {});
+      trackLI('registration_complete');
+    }
+  });
+})();
+
+
+// Sticky nav dropdown toggle + analytics
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    var toggle = document.getElementById('nav-dropdown-toggle');
+    var menu   = document.getElementById('nav-dropdown-menu');
+    if (!toggle || !menu) return;
+
+    function closeMenu(){ menu.classList.remove('show'); toggle.setAttribute('aria-expanded','false'); menu.setAttribute('aria-hidden','true'); }
+    function openMenu(){  menu.classList.add('show');    toggle.setAttribute('aria-expanded','true');  menu.setAttribute('aria-hidden','false'); }
+
+    toggle.addEventListener('click', function(e){
+      e.preventDefault();
+      if (menu.classList.contains('show')) closeMenu(); else openMenu();
+    }, { passive: false });
+
+    document.addEventListener('click', function(e){
+      if (!menu.contains(e.target) && e.target !== toggle) closeMenu();
+    }, { capture: true });
+
+    // Analytics for nav dropdown links
+    function trackNav(id, label, href){
+      try { if (window.gtag) gtag('event','nav_dropdown_click',{cta_id:id, cta_label:label, destination_url:href}); } catch(e){}
+      try { if (window.lintrk && window.LI_CONVERSIONS && window.LI_CONVERSIONS[id]) lintrk('track', {conversion_id: window.LI_CONVERSIONS[id]}); } catch(e){}
+    }
+    [['nav-app-link','App'],['nav-trial-link','Free Trial'],['nav-purchase-link','Purchase']].forEach(function(pair){
+      var el = document.getElementById(pair[0]);
+      if (!el) return;
+      el.addEventListener('click', function(){
+        trackNav(pair[0], pair[1], el.href);
+      }, { passive: true });
+    });
+  });
+})();
