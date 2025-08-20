@@ -83,8 +83,8 @@
         </div>
 
         <div class="confirmation-message" id="confirmationMessage" style="display:none;">
-            <h2>✅ Registration Successful!</h2>
-            <p>Your next step: <strong>Install the BVA App</strong> for quick access on your device.</p>
+            <h2>Registration Successful!</h2>
+            <p>Great! Next step: install the app on your device for fast access.</p>
 
             <div id="installPanel" style="margin-top:1rem; display:none;">
                 <button id="installAppBtn" class="btn btn-primary">
@@ -122,7 +122,7 @@
 
             <div class="redirect-notice" style="margin-top:1rem;">
                 <i class="fas fa-info-circle"></i>
-                Already installed? <a href="https://command-results.passion.io/app/products" id="appLink">Open
+                Already installed? <a href="https://command-results.passion.io/app/products/285969" id="appLink">Open
                     the app</a>
             </div>
         </div>
@@ -139,18 +139,21 @@
                 <p class="copyright">&copy; 2025 Command Results. All rights reserved.</p>
             </div>
         </footer>
-        
+        <div id="install-notification" style="display:none">
+            <div class="install-header">
+                <div class="install-title">
+                    <i class="fas fa-download"></i>
+                    <span>Install BVA App</span>
+                </div>
                 <button class="close-install" id="close-install">&times;</button>
             </div>
-            <p>Install BVA for quick access. You can add it to your home screen for offline use.</p>
+            <p>Add BVA to your home screen for quick access.</p>
             <div class="install-buttons">
                 <button class="install-btn" id="install-btn">Install Now</button>
                 <button class="later-btn" id="later-btn">Later</button>
             </div>
         </div>
-
-        <script src="app.js"></script>
-        <script src="registration.js"></script>
+<script src="registration.js"></script>
         <!-- Stable SW registration (no timestamp param; prevents refresh loops) -->
         <script>
             (function () {
