@@ -275,8 +275,8 @@ function initPricingModule() {
         `;
       }
     } else {
-      if (bvaAppPrice) bvaAppPrice.textContent = isBvaAppFreeMonthly ? 'Free' : `$${pricingData.online.bvaApp.monthly.price}/month for 12 months`;
-      if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month for 12 months`;
+      if (bvaAppPrice) bvaAppPrice.textContent = isBvaAppFreeMonthly ? 'Free' : `$${pricingData.online.bvaApp.monthly.price}/month`;
+      if (bvaWorkbooksPrice) bvaWorkbooksPrice.textContent = `$${pricingData.online.bvaWorkbooks.monthly.price}/month`;
 
       if (bvaAppTerms) {
   if ((onlineIsAnnual && isBvaAppFreeAnnual) || (!onlineIsAnnual && isBvaAppFreeMonthly)) {

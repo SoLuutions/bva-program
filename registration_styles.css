@@ -551,3 +551,9 @@ footer {
         width: 100%;
     }
 }
+
+/* Compact install guidance in confirmation area */
+.confirmation-message .already-installed{margin-top:.25rem}
+.confirmation-message details.install-help{margin-top:.5rem;font-size:.95rem;color:var(--text-muted, #4A4E69)}
+.confirmation-message details.install-help summary{cursor:pointer;color:#2A9D8F;font-weight:700;list-style:none}
+.confirmation-message details.install-help summary::-webkit-details-marker{display:none}
