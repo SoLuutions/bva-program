@@ -72,20 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function submitToApi(payload) {
+  async async function submitToApi(payload) {
     // Replace with your actual endpoint
-    const apiUrl = (window.REG_API_URL || '/api/register');
-    let resp;
-    try {
-      resp = await fetch(apiUrl, {
+    const apiUrl = '/api/register';
+    const resp = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload),
     });
-    } catch (e) {
-      // If endpoint isn't configured, proceed optimistically
-      return { ok: true, offline: true };
-    }
 
     if (!resp.ok) {
       let msg = 'Registration failed. Please try again.';
@@ -144,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch {
           // If prompt fails, fall back to showing instructions
-          showPlatformInstructions();
+          // showPlatformInstructions(); // disabled: use compact confirmation only
         } finally {
           // one-time prompt
           deferredPrompt = null;
@@ -152,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         // No native prompt available: show instructions for the current platform
-        showPlatformInstructions();
+        // showPlatformInstructions(); // disabled: use compact confirmation only
       }
     });
   }
@@ -190,19 +184,27 @@ document.addEventListener('DOMContentLoaded', () => {
           try { confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
         }
 
-        // After successful registration, nudge install:
-        // 1) Show inline install panel
-        // 2) Also show platform instructions as a fallback
-        showPlatformInstructions();
+        // After successful registration: switch to confirmation screen
+        // Hide the form immediately
+        try {
+          if (form) form.style.display = 'none';
+          // Hide a parent card/section if present
+          const formCard = form?.closest('.card, .registration-card, .registration-section');
+          if (formCard) formCard.style.display = 'none';
+        } catch {}
 
-        // 3) If your site has a global install banner (managed by app.js),
-        //    try to open it by toggling its class (non-fatal if not present)
-        const globalBanner = document.getElementById('install-notification');
-        if (globalBanner && !globalBanner.classList.contains('show')) {
-          globalBanner.classList.add('show');
-          // Auto-hide after 30s like app.js does (defensive)
-          setTimeout(() => globalBanner.classList.remove('show'), 30000);
+        // Show confirmation panel
+        if (confirmationMessage) {
+          confirmationMessage.style.display = 'block';
+          try { confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
         }
+
+        // Make sure no legacy install panel shows up
+        try {
+          const legacyPanel = document.getElementById('installPanel');
+          if (legacyPanel) legacyPanel.style.display = 'none';
+        } catch {}
+
       } catch (err) {
         alert(err?.message || 'Sorry, something went wrong. Please try again.');
       } finally {
@@ -210,8 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-  // --- (Optional) Ensure a SW is registered so this page is PWA-eligible
+// --- (Optional) Ensure a SW is registered so this page is PWA-eligible
   // If registration.html did not register yet, do it here.
   if ('serviceWorker' in navigator) {
     // Only register if no controller yet; harmless if already controlled
