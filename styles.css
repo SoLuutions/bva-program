@@ -425,3 +425,11 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .newsletter-form .form-group{flex-direction:column}
   .newsletter-form input[type=email],.newsletter-form .btn{width:100%!important}
 }
+/* === Fix: Force 2x2 layout for Solution blocks === */
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
