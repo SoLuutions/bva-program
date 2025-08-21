@@ -170,7 +170,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .newsletter-benefits{flex:1.3;display:flex;flex-direction:column;gap:16px;min-width:280px;border-left:1px solid #eee;padding-left:34px}
 .benefit{display:flex;align-items:center;gap:12px;font-size:1rem}
 .benefit span{font-size:1.4rem;color:var(--primary);flex-shrink:0}
-.nl-badge{display:inline-block;background:linear-gradient(45deg,var(--support),#e6914a);color:#fff;font-weight:800;font-size:.75rem;padding:6px 10px;border-radius:999px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+.nl-badge{display:inline-block;background:linear-gradient(45deg,var(--primary),#2A9D8F);color:#fff;font-weight:800;font-size:.95rem;padding:9px 12px;border-radius:999px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
 .newsletter-title{font-size:clamp(1.9rem,3vw,2.4rem);color:var(--dark)}
 
 /* === Workshops / Video Intro ============================================ */
@@ -452,4 +452,114 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 @media (max-width:480px){
   .btn{ font-size:.95rem !important; padding:10px 16px !important; }
   .apps-title{ font-size:1.3rem !important; }
+}
+
+
+
+/* Newsletter optional fields styling (match email input) */
+.newsletter-form .optional-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.newsletter-form .optional-fields input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+}
+
+/* Improve checkbox/consent alignment and tap targets */
+.privacy-note label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.4;
+}
+.privacy-note input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+/* Two-column layout for optional fields on wider screens */
+@media (min-width: 680px) {
+  .newsletter-form .optional-fields {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .newsletter-form .optional-fields input#newsletterPhone {
+    grid-column: 1 / -1; /* phone spans full width */
+  }
+}
+
+/* Ensure equal look for all text inputs in newsletter form */
+.newsletter-form input[type="text"],
+.newsletter-form input[type="tel"] {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+}
+
+
+
+/* === Newsletter Desktop Layout Improvements (2025-08-21) ================ */
+/* Make fields align nicely and center benefits vertically with larger icons/text */
+@media (min-width: 900px){
+  /* Optional fields: two columns with good min widths */
+  .newsletter-form .optional-fields{
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  /* Email + Subscribe on one row, equal height */
+  .newsletter-form .form-group{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .newsletter-form input[type="email"]{
+    height: 44px;
+  }
+  .newsletter-form .btn{
+    height: 44px;
+    padding: 0 24px;
+    align-self: stretch;
+  }
+
+  /* Benefits column: center vertically and scale up */
+  .newsletter-benefits{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical centering */
+    align-items: flex-start;
+    gap: 18px;
+    border-left: 1px solid #eee;
+    padding-left: 34px;
+  }
+  .benefit{
+    font-size: 1.15rem;
+  }
+  .benefit span{
+    font-size: 2rem;
+  }
+  .benefit p{
+    font-size: 1.05rem;
+    margin: 0;
+  }
+}
+
+
+
+/* === Pricing: force 3-up layout for Facilitated Workshops on desktop ===== */
+@media (min-width: 1024px){
+  #command-results-pricing .cr-pricing-grid.three-column{
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
