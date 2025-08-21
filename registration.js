@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const installHint = document.getElementById('installHint');
 
   const iosInstructions = document.getElementById('iosInstructions');
-  // Optional blocks you might add to registration.html:
   const androidInstructions = document.getElementById('androidInstructions');
   const desktopInstructions = document.getElementById('desktopInstructions');
 
@@ -29,17 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const isDesktopChromeOrEdge = /Chrome|Edg\//.test(ua) && !/Mobile/.test(ua);
 
   // --- Install prompt handling (works alongside app.js if present)
-  // Use a shared global if app.js also listens for beforeinstallprompt
   let deferredPrompt = window.deferredPrompt || null;
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Stop the browser's mini-infobar
     e.preventDefault();
     deferredPrompt = e;
-    window.deferredPrompt = e; // make available to app.js too
-
-    // If we’re currently on the registration page and user just finished,
-    // we'll show the inline install panel; the banner (if any) is handled by app.js.
+    window.deferredPrompt = e;
     if (installPanel) installPanel.style.display = 'block';
     if (installHint) installHint.textContent = 'Tap Install App to add it to your home screen.';
   });
@@ -50,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (installHint) installHint.textContent = '';
   });
 
-  // --- Helper functions
+  // --- Helpers
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
   }
@@ -64,15 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = isLoading;
       submitBtn.ariaBusy = isLoading ? 'true' : 'false';
     }
-    // Disable all inputs while loading
+
     Array.from(form.elements || []).forEach((el) => {
-      if (el.tagName === 'INPUT' || el.tagName === 'BUTTON' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') {
-        el.disabled = isLoading ? true : el.disabled && el.dataset.keepDisabled === 'true';
+      const keepDisabled = el.dataset && el.dataset.keepDisabled === 'true';
+      if (isLoading) {
+        el.disabled = true;
+      } else if (!keepDisabled) {
+        el.disabled = false;
       }
     });
   }
 
-  async async function submitToApi(payload) {
+  async function submitToApi(payload) {
     // Replace with your actual endpoint
     const apiUrl = '/api/register';
     const resp = await fetch(apiUrl, {
@@ -97,27 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showPlatformInstructions() {
-    // Always show the inline panel when we’re guiding installation
     if (installPanel) installPanel.style.display = 'block';
 
-    // iOS (no native prompt): show iOS steps
     if (isIOS && isSafari) {
       if (iosInstructions) iosInstructions.style.display = 'block';
       if (installHint) installHint.textContent = 'Follow the steps below to add it to your home screen.';
       return;
     }
 
-    // Android: show Android steps if available (even if prompt exists — helpful if dismissed)
     if (isAndroid && androidInstructions) {
       androidInstructions.style.display = 'block';
     }
 
-    // Desktop Chrome/Edge
     if (isDesktopChromeOrEdge && desktopInstructions) {
       desktopInstructions.style.display = 'block';
     }
 
-    // Generic hint
     if (installHint && (!isIOS || !isSafari)) {
       installHint.textContent = deferredPrompt
         ? 'Tap Install App to add it to your device.'
@@ -128,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Install button (inline panel)
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
-      // If we have a captured prompt, use it
       if (deferredPrompt) {
         try {
           deferredPrompt.prompt();
@@ -138,15 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch {
           // If prompt fails, fall back to showing instructions
-          // showPlatformInstructions(); // disabled: use compact confirmation only
+          showPlatformInstructions();
         } finally {
-          // one-time prompt
           deferredPrompt = null;
           window.deferredPrompt = null;
         }
       } else {
         // No native prompt available: show instructions for the current platform
-        // showPlatformInstructions(); // disabled: use compact confirmation only
+        showPlatformInstructions();
       }
     });
   }
@@ -156,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Basic validation (HTML required handles most)
       const name = (nameEl?.value || '').trim();
       const email = (emailEl?.value || '').trim();
       const company = (companyEl?.value || '').trim();
@@ -172,38 +161,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Submit
       setLoading(true);
       try {
         await submitToApi({ name, email, company, phone });
 
-        // Show confirmation block
-        if (confirmationMessage) {
-          confirmationMessage.style.display = 'block';
-          // Make sure users see it
-          try { confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
-        }
-
-        // After successful registration: switch to confirmation screen
-        // Hide the form immediately
+        // Hide the form & container card if present
         try {
-          if (form) form.style.display = 'none';
-          // Hide a parent card/section if present
-          const formCard = form?.closest('.card, .registration-card, .registration-section');
+          form.style.display = 'none';
+          const formCard = form.closest('.card, .registration-card, .registration-section');
           if (formCard) formCard.style.display = 'none';
         } catch {}
 
-        // Show confirmation panel
+        // Show confirmation & relevant install guidance
         if (confirmationMessage) {
           confirmationMessage.style.display = 'block';
+          showPlatformInstructions();
           try { confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
         }
-
-        // Make sure no legacy install panel shows up
-        try {
-          const legacyPanel = document.getElementById('installPanel');
-          if (legacyPanel) legacyPanel.style.display = 'none';
-        } catch {}
 
       } catch (err) {
         alert(err?.message || 'Sorry, something went wrong. Please try again.');
@@ -212,13 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-// --- (Optional) Ensure a SW is registered so this page is PWA-eligible
-  // If registration.html did not register yet, do it here.
-  if ('serviceWorker' in navigator) {
-    // Only register if no controller yet; harmless if already controlled
-    if (!navigator.serviceWorker.controller) {
-      const ts = Date.now();
-      navigator.serviceWorker.register(`/sw.js?scope=/&v=${ts}`, { scope: '/' }).catch(() => {});
-    }
-  }
-});  
+
+  // NOTE: Service Worker registration happens in registration.html (stable).
+});
