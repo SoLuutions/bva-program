@@ -379,9 +379,9 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .referrals .section-header h2{font-size:clamp(1.9rem,3vw,2.4rem)}
 .referrals-group-title{font-size:1.2rem;color:var(--muted);margin:10px 0 12px;font-weight:800}
 .referrals-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:18px;margin-bottom:28px}
-.ref-card{background:#fff;border-left:5px solid var(--support);border-radius:12px;padding:22px;box-shadow:var(--shadow);color:var(--ink)}
-.ref-card p{margin:0 0 10px;line-height:1.55}
-.ref-card footer{color:var(--light);font-weight:700}
+.ref-card{background:#fff;border-left:5px solid var(--support);border-radius:12px;padding:10px;box-shadow:var(--shadow);color:var(--ink)}
+.ref-card p{margin:0 0 10px;line-height:1.25}
+.ref-card footer{color:var(--light);font-weight:900}
 .referrals-more{text-align:center;margin-top:8px}
 
 /* === Video Intros (concise) ============================================= */
@@ -562,4 +562,10 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   #command-results-pricing .cr-pricing-grid.three-column{
     grid-template-columns: repeat(3, 1fr) !important;
   }
+}
+/* Reduce reviewer footer box */
+.ref-card footer {
+  padding: 0.25rem 0.5rem;  /* tighter box spacing */
+  font-size: 1.2rem;       /* smaller text */
+  line-height: 1.5;         /* reduces height further */
 }
