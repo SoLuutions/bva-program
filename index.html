@@ -56,6 +56,16 @@
             }
         }
     </style>
+
+<!-- Wistia embed scripts -->
+<script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+
+
+<!-- Wistia embed scripts (once) -->
+<script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+
 </head>
 
 <body>
@@ -94,7 +104,8 @@
         <div class="container">
             <!-- keep the picture at the top -->
             <figure class="hero-image-wrap">
-                <img alt="Leaders collaborating on mobile-first Lean-Agile apps" src="banner.jpg" />
+                <a href="https://www.commandresults.com/bvap-video/" aria-label="Play the introduction video"><a href="#" id="playHeroVideo" aria-label="Play the introduction video"><img alt="Leaders collaborating on mobile-first Lean-Agile apps" src="banner.jpg" />    <span class="play-indicator" aria-hidden="true"></span></a>
+    <span class="play-indicator" aria-hidden="true"></span></a>
             </figure>
             <h2 class="apps-title">Business Value Accelerator Program</h2>
             <!-- Short, high‑impact panels -->
@@ -631,6 +642,7 @@
                 </div>
                 <br />
                 <div class="newsletter-benefits">
+                    <br>
                     <div class="benefit">
                         <span>⚡</span>
                         <p>Exclusive productivity tips</p>
@@ -683,6 +695,66 @@
                 .catch((err) => console.error("Service worker registration failed:", err));
         }
     </script>
+
+<!-- Video Modal -->
+<div id="videoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Intro Video">
+  <div class="cr-modal__backdrop" data-close-modal></div>
+  <div class="cr-modal__dialog" role="document" aria-modal="true">
+    <button class="cr-modal__close" type="button" aria-label="Close video" data-close-modal>&times;</button>
+    <div class="cr-modal__content">
+      <!-- 16:9 container -->
+      <div class="cr-video-16x9">
+        <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple modal controller
+  (function(){
+    const modal = document.getElementById('videoModal');
+    const openBtn = document.getElementById('playHeroVideo');
+    let player = null;
+
+    // Wistia onReady
+    window._wq = window._wq || [];
+    _wq.push({ id: 'd6rdjc4nbs', onReady: function(video){
+      player = video;
+    }});
+
+    function openModal(e){
+      if (e) e.preventDefault();
+      if (!modal) return;
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.classList.add('cr-modal-open');
+      // autoplay when ready
+      try { if (player) player.play(); } catch(e){}
+    }
+
+    function closeModal(){
+      if (!modal) return;
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('cr-modal-open');
+      try { if (player) player.pause(); } catch(e){}
+    }
+
+    if (openBtn){
+      openBtn.addEventListener('click', openModal, { capture: true });
+    }
+    // close on backdrop / close button / Esc
+    modal?.addEventListener('click', function(ev){
+      if (ev.target && ev.target.hasAttribute('data-close-modal')) closeModal();
+    });
+    document.addEventListener('keydown', function(ev){
+      if (ev.key === 'Escape') closeModal();
+    });
+    // expose for other buttons if needed
+    window.CR_openIntroVideo = openModal;
+    window.CR_closeIntroVideo = closeModal;
+  })();
+</script>
+
 </body>
 
 </html>
