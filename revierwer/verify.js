@@ -1,7 +1,3 @@
-// Vercel Serverless Function: Validate reviewer token and return hidden pricing URL
-// Env vars required:
-//  - REVIEWER_TOKENS        e.g. "RVW-ALPHA123,RVW-BETA456,RVW-GAMMA789"
-//  - REVIEWER_PRICING_URL   e.g. "https://command-results.passion.io/pricing?reviewer=1"
 
 module.exports = async (req, res) => {
     res.setHeader('Cache-Control', 'no-store, max-age=0');
