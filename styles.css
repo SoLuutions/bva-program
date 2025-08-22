@@ -817,3 +817,31 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
+/* Keep Reviewer card below the two main cards on all screens */
+#command-results-pricing .cr-pricing-grid #reviewerCard{
+  grid-column: 1 / -1; /* span the full row, so it wraps under the first row */
+}
+/* Keep Reviewer card on its own row (always below the first two) */
+#command-results-pricing .cr-pricing-grid #reviewerCard{
+  grid-column: 1 / -1; /* full row span keeps it under the first row on all widths */
+}
+
+/* Make the Reviewer CTA button match .cr-button style */
+#command-results-pricing #reviewerContinueBtn.btn{
+  display: block;
+  width: 100%;
+  padding: 1rem;               /* matches .cr-button */
+  background: var(--cr-accent);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: .2s;
+}
+#command-results-pricing .reviewer-card:hover #reviewerContinueBtn.btn,
+#command-results-pricing #reviewerContinueBtn.btn:hover{
+  background: var(--support);  /* same hover as .cr-button */
+}
