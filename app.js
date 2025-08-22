@@ -626,4 +626,127 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 })();
+// ---------------- Reviewer Card + Install Gate (Vercel Option 2) ----------------
+
+// Reveal card only in preview (approval flow) until you remove the hidden attribute
+(function revealReviewerCardForPreview(){
+  const card = document.getElementById('reviewerCard');
+  if (!card) return;
+  const qp = new URLSearchParams(location.search);
+  if (qp.get('reviewerPreview') === '1') {
+    card.hidden = false;
+    try { localStorage.setItem('cr.reviewerPreview', '1'); } catch(e){}
+  } else if (localStorage.getItem('cr.reviewerPreview') === '1') {
+    card.hidden = false;
+  }
+})();
+
+function isPWAInstalled(){
+  try {
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true; // iOS Safari
+    if (document.referrer && document.referrer.startsWith('android-app://')) return true;
+    if (localStorage.getItem('pwa-installed') === '1' || localStorage.getItem('cr.pwaInstalled') === '1') return true;
+  } catch(e){}
+  return false;
+}
+
+(function wireReviewerForm(){
+  const form = document.getElementById('reviewerForm');
+  const tokenInput = document.getElementById('reviewerTokenInput');
+  const btn = document.getElementById('reviewerContinueBtn');
+  const msg = document.getElementById('reviewerMsg');
+  if (!form || !tokenInput || !btn) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = tokenInput.value.trim();
+    if (!token) {
+      msg.textContent = 'Please enter your reviewer token.';
+      tokenInput.focus();
+      return;
+    }
+    // Not installed? Show install gate first
+    if (!isPWAInstalled()) {
+      openInstallGate(async () => {
+        // On continue after install
+        await verifyAndRedirect(token, msg, btn);
+      });
+      return;
+    }
+    await verifyAndRedirect(token, msg, btn);
+  });
+})();
+
+async function verifyAndRedirect(token, msgEl, btnEl){
+  try {
+    btnEl.disabled = true;
+    msgEl.textContent = 'Validating token…';
+  } catch(e){}
+
+  let resp;
+  try {
+    resp = await fetch('/api/reviewer/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+  } catch(err) {
+    msgEl.textContent = 'Network error. Please try again.';
+    btnEl.disabled = false;
+    return;
+  }
+
+  if (!resp.ok) {
+    const data = await resp.json().catch(()=> ({}));
+    msgEl.textContent = data?.error || 'Invalid or expired token.';
+    btnEl.disabled = false;
+    return;
+  }
+
+  const data = await resp.json().catch(()=> ({}));
+  if (data?.ok && data?.url) {
+    msgEl.textContent = 'Token accepted. Redirecting…';
+    window.location.href = data.url;
+    return;
+  }
+  msgEl.textContent = 'Unexpected response. Please try again.';
+  btnEl.disabled = false;
+}
+
+// ----- Install Gate Modal -----
+function openInstallGate(onContinue){
+  const modal = document.getElementById('installGate');
+  const continueBtn = document.getElementById('installContinueBtn');
+  const closeBtn = document.getElementById('installCloseBtn');
+  const hint = document.getElementById('installHint');
+  if (!modal || !continueBtn) return;
+
+  function close(){
+    modal.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('cr-modal-open');
+    modal.removeEventListener('click', backdropHandler);
+    continueBtn.removeEventListener('click', handleContinue);
+    closeBtn?.removeEventListener('click', handleCloseBtn);
+  }
+  function backdropHandler(ev){
+    if (ev.target && ev.target.hasAttribute('data-close-modal')) close();
+  }
+  function handleCloseBtn(){ close(); }
+  function handleContinue(){
+    if (isPWAInstalled()) {
+      close();
+      onContinue && onContinue();
+    } else {
+      if (hint) hint.textContent = 'Still not installed. Install the app, then tap “I’ve installed — continue”.';
+    }
+  }
+
+  modal.setAttribute('aria-hidden', 'false');
+  document.documentElement.classList.add('cr-modal-open');
+  hint && (hint.textContent = '');
+  modal.addEventListener('click', backdropHandler);
+  continueBtn.addEventListener('click', handleContinue);
+  closeBtn?.addEventListener('click', handleCloseBtn);
+}
 

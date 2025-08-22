@@ -57,14 +57,14 @@
         }
     </style>
 
-<!-- Wistia embed scripts -->
-<script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
-<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+    <!-- Wistia embed scripts -->
+    <script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
+    <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
 
 
-<!-- Wistia embed scripts (once) -->
-<script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
-<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+    <!-- Wistia embed scripts (once) -->
+    <script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
+    <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
 
 </head>
 
@@ -104,8 +104,11 @@
         <div class="container">
             <!-- keep the picture at the top -->
             <figure class="hero-image-wrap">
-                <a href="https://www.commandresults.com/bvap-video/" aria-label="Play the introduction video"><a href="#" id="playHeroVideo" aria-label="Play the introduction video"><img alt="Leaders collaborating on mobile-first Lean-Agile apps" src="banner.jpg" />    <span class="play-indicator" aria-hidden="true"></span></a>
-    <span class="play-indicator" aria-hidden="true"></span></a>
+                <a href="https://www.commandresults.com/bvap-video/" aria-label="Play the introduction video"><a
+                        href="#" id="playHeroVideo" aria-label="Play the introduction video"><img
+                            alt="Leaders collaborating on mobile-first Lean-Agile apps" src="banner.jpg" /> <span
+                            class="play-indicator" aria-hidden="true"></span></a>
+                    <span class="play-indicator" aria-hidden="true"></span></a>
             </figure>
             <h2 class="apps-title">Business Value Accelerator Program</h2>
             <!-- Short, high‑impact panels -->
@@ -117,7 +120,8 @@
                         The Business Value Accelerator Apps help executives, program, project, and product leaders turn
                         strategy into measurable wins — using the teams, time, and budget they already have.
                     </p>
-                    <div class="panel-cta"><a class="btn btn-primary" href="https://command-results.passion.io">Free App</a></div>
+                    <div class="panel-cta"><a class="btn btn-primary" href="https://command-results.passion.io">Free
+                            App</a></div>
                 </article>
                 <!-- Panel 2 – Proof of Potential -->
                 <article class="panel-card">
@@ -129,7 +133,9 @@
                     </ul>
                     <p class="panel-footnote">Across industries, the right Lean‑Agile practices consistently outperform
                         the status quo.</p>
-                    <div class="panel-cta"><a class="btn btn-primary" href="https://drive.google.com/file/d/11OhadY9isSlmp1lq_zGL-YP84LC8Mc8Z/view?usp=sharing">Executive Brief</a></div>
+                    <div class="panel-cta"><a class="btn btn-primary"
+                            href="https://drive.google.com/file/d/11OhadY9isSlmp1lq_zGL-YP84LC8Mc8Z/view?usp=sharing">Executive
+                            Brief</a></div>
                 </article>
                 <!-- Panel 3 – Reality Check -->
                 <article class="panel-card panel-warning">
@@ -186,12 +192,10 @@
                     measurable wins.
                 </p>
                 <div class="video-actions">
-                    <a class="btn btn-primary" 
-                    href="https://www.commandresults.com/bvap-video/" 
-                    target="_blank">
-                    Watch Intro Video
-                 </a>
-                
+                    <a class="btn btn-primary" href="https://www.commandresults.com/bvap-video/" target="_blank">
+                        Watch Intro Video
+                    </a>
+
                     <nav class="video-nav">
                         <a href="#problem">Why Teams Struggle</a>
                         <a href="#command-results-pricing">Plans &amp; Pricing</a>
@@ -365,7 +369,26 @@
                             href="https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598"
                             id="bva-workbooks-enroll-button">Get Program</a>
                     </div>
+                    <!-- Reviewer Access Card (hidden until approved/preview) -->
+                    <div class="pricing-card reviewer-card" id="reviewerCard" hidden>
+                        <div class="reviewer-badge">Reviewer Only</div>
+                        <h3>Reviewer Access</h3>
+                        <p class="reviewer-desc">Have a reviewer token? Enter it to unlock free access.</p>
+
+                        <form id="reviewerForm" novalidate>
+                            <label for="reviewerTokenInput" class="sr-only">Reviewer Token</label>
+                            <input type="text" id="reviewerTokenInput" name="token" inputmode="latin"
+                                autocomplete="one-time-code" placeholder="Enter token (e.g., RVW-ABC123)" required />
+                            <button type="submit" id="reviewerContinueBtn" class="btn">Continue</button>
+                            <div id="reviewerMsg" class="reviewer-msg" role="alert" aria-live="polite"></div>
+                        </form>
+
+                        <!-- Small hint shown if app not installed -->
+                        <div class="reviewer-hint">You may be asked to install the app first.</div>
+                    </div>
+
                 </div>
+
                 <p class="cr-asterisk-note">*20+ hrs app-based training
                     with 60+ hrs online Lean, Agile &amp; VSM for continued mastery.</p>
             </section>
@@ -685,7 +708,8 @@
             </div>
             <p class="copyright">© 2025 Command Results. All rights reserved.</p>
         </div>
-    </footer><script src="app.js"></script>
+    </footer>
+    <script src="app.js"></script>
     <script>
         // Service worker registration
         if ("serviceWorker" in navigator) {
@@ -696,65 +720,107 @@
         }
     </script>
 
-<!-- Video Modal -->
-<div id="videoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Intro Video">
-  <div class="cr-modal__backdrop" data-close-modal></div>
-  <div class="cr-modal__dialog" role="document" aria-modal="true">
-    <button class="cr-modal__close" type="button" aria-label="Close video" data-close-modal>&times;</button>
-    <div class="cr-modal__content">
-      <!-- 16:9 container -->
-      <div class="cr-video-16x9">
-        <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div>
+    <!-- Video Modal -->
+    <div id="videoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Intro Video">
+        <div class="cr-modal__backdrop" data-close-modal></div>
+        <div class="cr-modal__dialog" role="document" aria-modal="true">
+            <button class="cr-modal__close" type="button" aria-label="Close video" data-close-modal>&times;</button>
+            <div class="cr-modal__content">
+                <!-- 16:9 container -->
+                <div class="cr-video-16x9">
+                    <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true"
+                        style="height:100%;width:100%">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple modal controller
+        (function () {
+            const modal = document.getElementById('videoModal');
+            const openBtn = document.getElementById('playHeroVideo');
+            let player = null;
+
+            // Wistia onReady
+            window._wq = window._wq || [];
+            _wq.push({
+                id: 'd6rdjc4nbs', onReady: function (video) {
+                    player = video;
+                }
+            });
+
+            function openModal(e) {
+                if (e) e.preventDefault();
+                if (!modal) return;
+                modal.setAttribute('aria-hidden', 'false');
+                document.documentElement.classList.add('cr-modal-open');
+                // autoplay when ready
+                try { if (player) player.play(); } catch (e) { }
+            }
+
+            function closeModal() {
+                if (!modal) return;
+                modal.setAttribute('aria-hidden', 'true');
+                document.documentElement.classList.remove('cr-modal-open');
+                try { if (player) player.pause(); } catch (e) { }
+            }
+
+            if (openBtn) {
+                openBtn.addEventListener('click', openModal, { capture: true });
+            }
+            // close on backdrop / close button / Esc
+            modal?.addEventListener('click', function (ev) {
+                if (ev.target && ev.target.hasAttribute('data-close-modal')) closeModal();
+            });
+            document.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Escape') closeModal();
+            });
+            // expose for other buttons if needed
+            window.CR_openIntroVideo = openModal;
+            window.CR_closeIntroVideo = closeModal;
+        })();
+    </script>
+<!-- Install Gate Modal -->
+<div id="installGate" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Install the app to continue">
+    <div class="cr-modal__backdrop" data-close-modal></div>
+    <div class="cr-modal__dialog" role="document" aria-modal="true">
+      <button class="cr-modal__close" id="installCloseBtn" type="button" aria-label="Close" data-close-modal>&times;</button>
+      <div class="cr-modal__content">
+        <h3 class="cr-modal__title">Install the App to Continue</h3>
+        <div class="install-steps">
+          <div>
+            <h4>iOS (Safari)</h4>
+            <ol>
+              <li>Tap <strong>Share</strong> in Safari.</li>
+              <li>Choose <strong>Add to Home Screen</strong>.</li>
+              <li>Open the app from your Home Screen.</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Android (Chrome)</h4>
+            <ol>
+              <li>Tap <strong>⋮</strong> (Menu) in Chrome.</li>
+              <li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+              <li>Open the app from your Home Screen.</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Desktop</h4>
+            <ol>
+              <li>Click the <strong>Install</strong> icon in the address bar.</li>
+              <li>Launch the installed app.</li>
+            </ol>
+          </div>
+        </div>
+        <p id="installHint" class="install-hint"></p>
+        <div class="install-actions">
+          <button type="button" id="installContinueBtn" class="btn">I’ve installed — continue</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<script>
-  // Simple modal controller
-  (function(){
-    const modal = document.getElementById('videoModal');
-    const openBtn = document.getElementById('playHeroVideo');
-    let player = null;
-
-    // Wistia onReady
-    window._wq = window._wq || [];
-    _wq.push({ id: 'd6rdjc4nbs', onReady: function(video){
-      player = video;
-    }});
-
-    function openModal(e){
-      if (e) e.preventDefault();
-      if (!modal) return;
-      modal.setAttribute('aria-hidden', 'false');
-      document.documentElement.classList.add('cr-modal-open');
-      // autoplay when ready
-      try { if (player) player.play(); } catch(e){}
-    }
-
-    function closeModal(){
-      if (!modal) return;
-      modal.setAttribute('aria-hidden', 'true');
-      document.documentElement.classList.remove('cr-modal-open');
-      try { if (player) player.pause(); } catch(e){}
-    }
-
-    if (openBtn){
-      openBtn.addEventListener('click', openModal, { capture: true });
-    }
-    // close on backdrop / close button / Esc
-    modal?.addEventListener('click', function(ev){
-      if (ev.target && ev.target.hasAttribute('data-close-modal')) closeModal();
-    });
-    document.addEventListener('keydown', function(ev){
-      if (ev.key === 'Escape') closeModal();
-    });
-    // expose for other buttons if needed
-    window.CR_openIntroVideo = openModal;
-    window.CR_closeIntroVideo = closeModal;
-  })();
-</script>
-
+  
 </body>
 
 </html>
