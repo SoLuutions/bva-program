@@ -370,22 +370,28 @@
                             id="bva-workbooks-enroll-button">Get Program</a>
                     </div>
                     <!-- Reviewer Access Card (hidden until approved/preview) -->
-                    <div class="cr-pricing-card reviewer-card" id="reviewerCard">
+                    <div class="cr-pricing-card reviewer-card" id="reviewerCard" hidden>
                         <div class="reviewer-badge">Reviewer Only</div>
                         <h3>Reviewer Access</h3>
-                        <p class="reviewer-desc">Have a reviewer token? Enter it to unlock free access.</p>
+                        <p class="reviewer-desc">
+                            Have a review token? Unlock complimentary access to preview the BVA apps and courses.
+                        </p>
 
                         <form id="reviewerForm" novalidate>
                             <label for="reviewerTokenInput" class="sr-only">Reviewer Token</label>
                             <input type="text" id="reviewerTokenInput" name="token" inputmode="latin"
-                                autocomplete="one-time-code" placeholder="Enter token (e.g., RVW-ABC123)" required />
-                            <button type="submit" id="reviewerContinueBtn" class="btn">Continue</button>
+                                autocomplete="one-time-code" placeholder="Enter token (e.g., RVW-2025-001)" required />
+                            <button type="submit" id="reviewerContinueBtn" class="btn">Enter Token</button>
                             <div id="reviewerMsg" class="reviewer-msg" role="alert" aria-live="polite"></div>
                         </form>
 
-                        <!-- Small hint shown if app not installed -->
-                        <div class="reviewer-hint">You may be asked to install the app first.</div>
+                        <div class="reviewer-hint">
+                            For invited reviewers only. Need help? <a href="https://www.commandresults.com/contact-us/"
+                                target="_blank" rel="noopener">Contact Us</a>
+                        </div>
                     </div>
+
+
 
                 </div>
 
@@ -781,46 +787,47 @@
             window.CR_closeIntroVideo = closeModal;
         })();
     </script>
-<!-- Install Gate Modal -->
-<div id="installGate" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Install the app to continue">
-    <div class="cr-modal__backdrop" data-close-modal></div>
-    <div class="cr-modal__dialog" role="document" aria-modal="true">
-      <button class="cr-modal__close" id="installCloseBtn" type="button" aria-label="Close" data-close-modal>&times;</button>
-      <div class="cr-modal__content">
-        <h3 class="cr-modal__title">Install the App to Continue</h3>
-        <div class="install-steps">
-          <div>
-            <h4>iOS (Safari)</h4>
-            <ol>
-              <li>Tap <strong>Share</strong> in Safari.</li>
-              <li>Choose <strong>Add to Home Screen</strong>.</li>
-              <li>Open the app from your Home Screen.</li>
-            </ol>
-          </div>
-          <div>
-            <h4>Android (Chrome)</h4>
-            <ol>
-              <li>Tap <strong>⋮</strong> (Menu) in Chrome.</li>
-              <li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
-              <li>Open the app from your Home Screen.</li>
-            </ol>
-          </div>
-          <div>
-            <h4>Desktop</h4>
-            <ol>
-              <li>Click the <strong>Install</strong> icon in the address bar.</li>
-              <li>Launch the installed app.</li>
-            </ol>
-          </div>
+    <!-- Install Gate Modal -->
+    <div id="installGate" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Install the app to continue">
+        <div class="cr-modal__backdrop" data-close-modal></div>
+        <div class="cr-modal__dialog" role="document" aria-modal="true">
+            <button class="cr-modal__close" id="installCloseBtn" type="button" aria-label="Close"
+                data-close-modal>&times;</button>
+            <div class="cr-modal__content">
+                <h3 class="cr-modal__title">Install the App to Continue</h3>
+                <div class="install-steps">
+                    <div>
+                        <h4>iOS (Safari)</h4>
+                        <ol>
+                            <li>Tap <strong>Share</strong> in Safari.</li>
+                            <li>Choose <strong>Add to Home Screen</strong>.</li>
+                            <li>Open the app from your Home Screen.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4>Android (Chrome)</h4>
+                        <ol>
+                            <li>Tap <strong>⋮</strong> (Menu) in Chrome.</li>
+                            <li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                            <li>Open the app from your Home Screen.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4>Desktop</h4>
+                        <ol>
+                            <li>Click the <strong>Install</strong> icon in the address bar.</li>
+                            <li>Launch the installed app.</li>
+                        </ol>
+                    </div>
+                </div>
+                <p id="installHint" class="install-hint"></p>
+                <div class="install-actions">
+                    <button type="button" id="installContinueBtn" class="btn">I’ve installed — continue</button>
+                </div>
+            </div>
         </div>
-        <p id="installHint" class="install-hint"></p>
-        <div class="install-actions">
-          <button type="button" id="installContinueBtn" class="btn">I’ve installed — continue</button>
-        </div>
-      </div>
     </div>
-  </div>
-  
+
 </body>
 
 </html>
