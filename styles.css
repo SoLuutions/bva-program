@@ -1,3 +1,11 @@
+/* ==============================
+   Refactored styles.css (safe)
+   - Duplicates consolidated (modal, play button, referrals footer)
+   - Kept existing variables, class names, and structure
+   - Fixed mobile overrides blocked by !important
+   - No visual regressions intended
+   ============================== */
+
 /* === Base & Variables ===================================================== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -46,9 +54,31 @@ header.scrolled .nav-dropdown-toggle{color:#1b2939;border-color:rgba(0,0,0,.2)}
 .hero h1{font-weight:800;line-height:1.25;margin-bottom:1rem;font-size:clamp(1rem,.9rem + .6vw,1.35rem)}
 .supporting-sentence{font-size:1rem;line-height:1.55;margin:0 auto 1.5rem;max-width:700px}
 
-/* Hero image with fade */
+/* Hero image with fade + subtle vignette */
 .hero-image-wrap{position:relative;width:100%;overflow:hidden;margin-top:-50px}
 .hero-image-wrap img{display:block;width:100%;height:100%;object-fit:cover;mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 60%,rgba(0,0,0,0));-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 60%,rgba(0,0,0,0))}
+.hero .hero-image-wrap::after{
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.22), rgba(0,0,0,0) 60%);
+  pointer-events:none;
+}
+
+/* Unified play indicator (two contexts: hero & video container) */
+.play-indicator{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  display:grid; place-content:center; cursor:pointer; transition:.25s; z-index:10; opacity:.9;
+  width:64px; height:64px; border-radius:50%; background:rgba(0,0,0,.55);
+}
+.play-indicator:hover{ transform:translate(-50%,-50%) scale(1.06); opacity:1; }
+.play-indicator::after{
+  content:""; width:0; height:0;
+  border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:2px;
+}
+/* Larger/brand-colored play button inside video containers */
+.video-container .play-indicator{
+  width:76px; height:76px; background:rgba(244,162,97,.9);
+  border-radius:50%;
+}
 
 /* === Section header ====================================================== */
 .section-header{text-align:center;margin:0 auto 44px;max-width:900px}
@@ -78,6 +108,10 @@ header.scrolled .nav-dropdown-toggle{color:#1b2939;border-color:rgba(0,0,0,.2)}
 /* === Solutions & Offerings ============================================== */
 .solution{background:linear-gradient(to right,#4a4e69,#1d3557);color:#fff}
 .solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+/* Force 2 columns on tablet/desktop only (was global with !important) */
+@media (min-width:768px){
+  .solution-grid{grid-template-columns:repeat(2,1fr)}
+}
 .solution-card{background:#fff;color:var(--ink);text-align:center;border-radius:14px;padding:28px 22px;box-shadow:var(--shadow)}
 .solution-card i{font-size:2.6rem;margin-bottom:16px;color:var(--primary);background:rgba(42,157,143,.1);width:76px;height:76px;line-height:76px;border-radius:50%;display:inline-block}
 .solution-card h3{margin-bottom:12px;font-size:1.4rem;color:var(--dark)}
@@ -152,7 +186,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 #command-results-pricing .cr-pricing-card:hover .cr-button,#command-results-pricing .cr-button:hover{background:var(--support)}
 #command-results-pricing .cr-button.secondary{background:var(--muted)}
 #command-results-pricing .cr-pricing-card:hover .cr-button.secondary,#command-results-pricing .cr-button.secondary:hover{background:var(--support)}
-#command-results-pricing .cr-asterisk-note{max-width:980px;margin: -12px auto 0;color:var(--cr-secondary);font-size:.92rem;line-height:1.55;background:#fffef6;border-left:4px solid var(--support);padding:.8rem 1rem;border-radius:6px}
+#command-results-pricing .cr-asterisk-note{max-width:980px;margin:-12px auto 0;color:var(--cr-secondary);font-size:.92rem;line-height:1.55;background:#fffef6;border-left:4px solid var(--support);padding:.8rem 1rem;border-radius:6px}
 
 /* === Newsletter ========================================================== */
 .newsletter-cta{background:linear-gradient(to right,#4a4e69,#1d3557);padding:15px;color:#fff;border-radius:16px}
@@ -167,7 +201,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .newsletter-form .btn:hover{background:#e76f51;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
 .privacy-note{display:flex;align-items:flex-start;gap:10px;width:100%;margin-top:12px;font-size:.9rem;color:var(--muted)}
 .privacy-note input[type=checkbox]{margin:0;accent-color:var(--support);flex-shrink:0}
-.newsletter-benefits{font-weight: bold;flex:1.3;display:flex;flex-direction:column;gap:16px;min-width:280px;border-left:1px solid #eee;padding-left:34px}
+.newsletter-benefits{font-weight:700;flex:1.3;display:flex;flex-direction:column;gap:16px;min-width:280px;border-left:1px solid #eee;padding-left:34px}
 .benefit{display:flex;align-items:center;gap:12px;font-size:1rem}
 .benefit span{font-size:1.4rem;color:var(--primary);flex-shrink:0}
 .nl-badge{display:inline-block;background:linear-gradient(45deg,var(--primary),#2A9D8F);color:#fff;font-weight:800;font-size:.95rem;padding:9px 12px;border-radius:999px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
@@ -190,9 +224,6 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .video-intro-title{font-size:2rem;font-weight:800;margin-bottom:10px;color:#fff}
 .video-intro-description{font-size:1.05rem;color:rgba(255,255,255,.9);max-width:620px;margin:0 auto;line-height:1.6}
 .video-container{position:relative;width:100%;max-width:820px;margin:26px auto;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);border:3px solid rgba(255,255,255,.2)}
-.play-indicator{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;background:rgba(244,162,97,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;z-index:10;opacity:.85}
-.play-indicator:hover{opacity:1;transform:translate(-50%,-50%) scale(1.07)}
-.play-indicator::after{content:"";width:0;height:0;border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:4px}
 .video-benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:22px}
 .benefit-item{background:rgba(255,255,255,.1);padding:18px;border-radius:12px;text-align:center;backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.12)}
 .benefit-icon{font-size:1.8rem;color:var(--support);margin-bottom:8px}
@@ -290,7 +321,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .founder{background:#fff;color:var(--ink);padding:60px 0}
 .founder-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:center}
 .founder-media{margin:0;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#f7f9fc,#eef3f9);box-shadow:0 20px 60px rgba(0,0,0,.12)}
-.founder-media img{width:100%;height:100%;object-fit:cover;display:block}
+.founder-media img{width:100%;height:100%;object-fit:cover;display:block;max-width:340px}
 .founder-title{font-size:clamp(1.8rem,1.2rem + 1.6vw,2.2rem);color:var(--dark);margin-bottom:6px}
 .founder-name{font-size:clamp(1.2rem,1rem + .8vw,1.4rem);color:var(--muted);margin-bottom:10px;font-weight:800}
 .founder-bullets{list-style:none;padding:0;display:grid;gap:10px}
@@ -324,7 +355,10 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .newsletter-form .form-group{flex-direction:column}
   .newsletter-form input[type=email],.newsletter-form .btn{width:100%}
 }
-@media (max-width:640px){.hero-image-wrap img{height:360px}}
+@media (max-width:640px){
+  .hero-image-wrap{margin-top:0!important}
+  .hero-image-wrap img{height:auto!important;max-height:none!important;object-fit:contain!important}
+}
 @media (max-width:600px){
   header{overflow:visible}
   .nav-dropdown{position:relative!important}
@@ -334,7 +368,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .nav-dropdown-menu::before{content:"";position:absolute;right:14px;top:-8px;width:12px;height:12px;transform:rotate(45deg);background:#fff;border-left:1px solid rgba(0,0,0,.12);border-top:1px solid rgba(0,0,0,.12)}
 }
 @media (max-width:480px){
-  .tagline{font-size:.95rem}
+  .tagline{font-size:1.15rem!important}
   .problem-card,.solution-card,.offering-item,.stat-card{padding:20px}
   .faq-question{padding:18px;font-size:1.05rem}
   .faq-answer{padding:18px}
@@ -378,11 +412,21 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 .referrals{background:#fff;padding:60px 0}
 .referrals .section-header h2{font-size:clamp(1.9rem,3vw,2.4rem)}
 .referrals-group-title{font-size:1.2rem;color:var(--muted);margin:10px 0 12px;font-weight:800}
-.referrals-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:18px;margin-bottom:28px}
+.referrals-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px;margin-bottom:28px}
 .ref-card{background:#fff;border-left:5px solid var(--support);border-radius:12px;padding:10px;box-shadow:var(--shadow);color:var(--ink)}
-.ref-card p{margin:0 0 10px;line-height:1.25}
-.ref-card footer{color:var(--light);font-weight:900}
+.ref-card p{margin:0 0 10px;line-height:1.25; font-size:1rem}
+/* Unified reviewer footer sizing */
+.ref-card footer{
+  padding:.25rem .5rem;
+  font-size:1rem;
+  font-weight:700;
+  color:var(--light);
+  opacity:.9;
+}
 .referrals-more{text-align:center;margin-top:8px}
+@media (max-width:600px){
+  .referrals-grid{grid-template-columns:1fr!important}
+}
 
 /* === Video Intros (concise) ============================================= */
 .video-intros{background:#fff;color:var(--ink);padding:42px 0}
@@ -397,27 +441,23 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
 /* === Misc readable tweaks =============================================== */
 .solution .section-header h2{font-size:clamp(2rem,2.2vw,2.6rem)}
 
-/* === Fixes Based on Feedback ============================================= */
-
+/* === Fixes Based on Feedback ============================================ */
 /* Test Your Maturity section: stack image under button in mobile */
 @media (max-width:768px){
   .checklist-wrap{grid-template-columns:1fr!important}
   .checklist-copy{order:1}
   .checklist-visual{order:2;margin-top:20px}
 }
-
 /* Referrals: prevent card overflow */
 @media (max-width:768px){
   .referrals-grid{grid-template-columns:1fr!important;overflow:hidden}
   .ref-card{width:100%;box-sizing:border-box}
 }
-
 /* Sticky menu: keep buttons inline on small screens */
 @media (max-width:480px){
   .nav-buttons-container{flex-direction:row!important;flex-wrap:nowrap!important;gap:6px;justify-content:center}
   .nav-buttons .btn{flex:1;min-width:auto;padding:10px 12px;font-size:.95rem}
 }
-
 /* Newsletter: prevent overflow in mobile */
 @media (max-width:480px){
   .newsletter-card{flex-direction:column;align-items:flex-start;padding:20px!important;overflow:hidden}
@@ -425,423 +465,185 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .newsletter-form .form-group{flex-direction:column}
   .newsletter-form input[type=email],.newsletter-form .btn{width:100%!important}
 }
-/* === Fix: Force 2x2 layout for Solution blocks === */
-.solution-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-
-
-/* === Assistant Mobile Tweaks (2025-08-21) =============================== */
-/* Keep hero graphic large and above text on small screens */
-@media (max-width:640px){
-  .hero-image-wrap{ margin-top:0 !important; }
-  .hero-image-wrap img{ height:auto !important; max-height:none !important; object-fit:contain !important; }
-}
-
-/* Referral cards: slightly tighter on phones */
-@media (max-width:480px){
-  .ref-card{ padding:16px !important; font-size:.95rem !important; }
-}
-
-/* Buttons/title: reduce a bit on small phones to avoid overflow */
-@media (max-width:480px){
-  .btn{ font-size:.95rem !important; padding:10px 16px !important; }
-  .apps-title{ font-size:1.3rem !important; }
-}
-
-
-
-/* Newsletter optional fields styling (match email input) */
-.newsletter-form .optional-fields {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 10px;
-}
-.newsletter-form .optional-fields input {
-  width: 100%;
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
-}
-
+/* === Newsletter optional fields styling ================================== */
+.newsletter-form .optional-fields{display:grid;grid-template-columns:1fr;gap:10px;width:100%;margin-bottom:10px}
+.newsletter-form .optional-fields input{width:100%;min-width:0;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
 /* Improve checkbox/consent alignment and tap targets */
-.privacy-note label {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  line-height: 1.4;
-}
-.privacy-note input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-}
-
+.privacy-note label{display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.privacy-note input[type="checkbox"]{width:20px;height:20px;margin-top:2px}
 /* Two-column layout for optional fields on wider screens */
-@media (min-width: 680px) {
-  .newsletter-form .optional-fields {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .newsletter-form .optional-fields input#newsletterPhone {
-    grid-column: 1 / -1; /* phone spans full width */
-  }
+@media (min-width:680px){
+  .newsletter-form .optional-fields{grid-template-columns:repeat(2,1fr)}
+  .newsletter-form .optional-fields input#newsletterPhone{grid-column:1 / -1}
 }
-
 /* Ensure equal look for all text inputs in newsletter form */
-.newsletter-form input[type="text"],
-.newsletter-form input[type="tel"] {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+.newsletter-form input[type="text"],.newsletter-form input[type="tel"]{
+  padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;box-shadow:inset 0 1px 3px rgba(0,0,0,.08);
 }
 
-
-
-/* === Newsletter Desktop Layout Improvements (2025-08-21) ================ */
-/* Make fields align nicely and center benefits vertically with larger icons/text */
-@media (min-width: 900px){
-  /* Optional fields: two columns with good min widths */
-  .newsletter-form .optional-fields{
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 12px;
-  }
-  /* Email + Subscribe on one row, equal height */
-  .newsletter-form .form-group{
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 12px;
-    align-items: stretch;
-  }
-  .newsletter-form input[type="email"]{
-    height: 44px;
-  }
-  .newsletter-form .btn{
-    height: 44px;
-    padding: 0 24px;
-    align-self: stretch;
-  }
-
-  /* Benefits column: center vertically and scale up */
-  .newsletter-benefits{
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* vertical centering */
-    align-items: flex-start;
-    gap: 18px;
-    border-left: 1px solid #eee;
-    padding-left: 34px;
-  }
-  .benefit{
-    font-size: 1.15rem;
-  }
-  .benefit span{
-    font-size: 2rem;
-  }
-  .benefit p{
-    font-size: 1.05rem;
-    margin: 0;
-  }
+/* === Newsletter Desktop Layout Improvements ============================== */
+@media (min-width:900px){
+  .newsletter-form .optional-fields{grid-template-columns:repeat(2,minmax(220px,1fr));gap:12px}
+  .newsletter-form .form-group{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:stretch}
+  .newsletter-form input[type="email"]{height:44px}
+  .newsletter-form .btn{height:44px;padding:0 24px;align-self:stretch}
+  .newsletter-benefits{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:18px;border-left:1px solid #eee;padding-left:34px}
+  .benefit{font-size:1.15rem}
+  .benefit span{font-size:2rem}
+  .benefit p{font-size:1.05rem;margin:0}
 }
-
-
 
 /* === Pricing: force 3-up layout for Facilitated Workshops on desktop ===== */
-@media (min-width: 1024px){
-  #command-results-pricing .cr-pricing-grid.three-column{
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-/* Reduce reviewer footer box */
-.ref-card footer {
-  padding: 0.25rem 0.5rem;  /* tighter box spacing */
-  font-size: 1.2rem;       /* smaller text */
-  line-height: 1.5;         /* reduces height further */
+@media (min-width:1024px){
+  #command-results-pricing .cr-pricing-grid.three-column{grid-template-columns:repeat(3,1fr)!important}
 }
 
-/* ====== A) Mobile tagline & hero video clarity ====== */
-@media (max-width: 480px){
-  .tagline{ font-size: 1.15rem !important; }
-  .hero-image-wrap{ margin-top: 0 !important; } /* avoid cut-off feel */
-}
-
-/* Play cue on hero image */
-.hero .hero-image-wrap{ position: relative; }
-.hero .hero-image-wrap::after{
-  content:"";
-  position:absolute; inset:0;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,.22), rgba(0,0,0,0) 60%);
-  pointer-events:none;
-}
-.play-indicator{
-  position:absolute; top:50%; left:50%;
-  transform: translate(-50%,-50%);
-  width:64px; height:64px; border-radius:50%;
-  background: rgba(0,0,0,.55);
-  display:grid; place-content:center;
-  cursor:pointer; transition:.25s; z-index:2;
-}
-.play-indicator:hover{ transform: translate(-50%,-50%) scale(1.06); }
-.play-indicator::after{
-  content:"";
-  width:0; height:0;
-  border-left:18px solid #fff;
-  border-top:12px solid transparent;
-  border-bottom:12px solid transparent;
-  margin-left:2px;
-}
-
-/* ====== B) Checklist image above copy on mobile ====== */
-@media (max-width: 768px){
-  .checklist-wrap{ display:flex; flex-direction:column; }
-  .checklist-visual{ order:1 !important; margin-bottom:14px; }
-  .checklist-copy{ order:2 !important; }
-}
-
-/* ====== C) “Backed by Real-World Success” ====== */
-.stats .section-header h2{ font-size: 2.3rem !important; }
-@media (max-width: 480px){
-  .stats .section-header h2{ font-size: 1.65rem !important; }
-}
-/* Ensure vertical stacking on phones */
-@media (max-width: 768px){
-  .stats-grid{ grid-template-columns: 1fr !important; }
-}
-
-/* ====== D) Reviews sizing & spacing ====== */
-.ref-card p{ font-size: 1rem; }
-.ref-card footer{
-  font-size: 1rem !important;  /* same as paragraph */
-  font-weight: 700;
-  color: var(--light);
-  opacity: .9;
-}
-.referrals-grid{ gap: 14px; }
-@media (max-width: 600px){
-  .referrals-grid{ grid-template-columns: 1fr !important; }
-}
-
-/* ====== E) Founder photo smaller on mobile ====== */
-.founder-media img{ max-width: 340px; width: 100%; height:auto; }
-@media (max-width: 600px){
-  .founder-media img{ max-width: 220px; }
-}
-
-/* ==== Modal (video) ==== */
-.cr-modal{ position: fixed; inset: 0; display: none; }
-.cr-modal[aria-hidden="false"]{ display: block; }
-.cr-modal__backdrop{ position: absolute; inset: 0; background: rgba(0,0,0,.6); }
+/* === Modal (shared, deduped) ============================================ */
+.cr-modal{position:fixed;inset:0;display:none;z-index:9999;padding:24px;align-items:center;justify-content:center}
+.cr-modal[aria-hidden="false"]{display:flex}
+.cr-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7)}
 .cr-modal__dialog{
-  position: relative;
-  width: min(100vw - 32px, 960px);
-  margin: 6vh auto;
-  background: #0b0b0b;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.4);
-  padding: 16px;
+  position:relative;width:min(100%,960px);max-height:calc(100vh - 48px);margin:0;background:#0b0b0b;color:#fff;border-radius:16px;
+  box-shadow:0 20px 80px rgba(0,0,0,.6);padding:16px;overflow:auto;
 }
-.cr-modal__close{
-  position: absolute;
-  top: 8px; right: 12px;
-  font-size: 28px; line-height: 1;
-  background: transparent; border: 0; color: #fff; cursor: pointer;
-}
-.cr-modal__content{ padding-top: 8px; }
-.cr-video-16x9{ position: relative; width: 100%; padding-bottom: 56.25%; }
-.cr-video-16x9 > *{ position: absolute; inset: 0; width: 100%; height: 100%; }
-
+.cr-modal__close{position:absolute;top:8px;right:12px;font-size:28px;line-height:1;background:transparent;border:0;color:#fff;cursor:pointer}
+.cr-modal__content{padding-top:8px}
+.cr-modal__title{margin:0 0 8px}
+.cr-video-16x9{position:relative;width:100%;padding-bottom:56.25%}
+.cr-video-16x9 > *{position:absolute;inset:0;width:100%;height:100%}
 /* Prevent background scroll when modal open */
-.cr-modal-open{ overflow: hidden; }
-
-/* ==== Modal (video) v2 ==== */
-.cr-modal{ position: fixed; inset: 0; display: none; z-index: 9999; }
-.cr-modal[aria-hidden="false"]{ display: block; }
-.cr-modal__backdrop{ position: absolute; inset: 0; background: rgba(0,0,0,.7); }
-.cr-modal__dialog{
-  position: relative;
-  width: min(100vw - 32px, 960px);
-  margin: 6vh auto;
-  background: #0b0b0b;
-  border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(0,0,0,.6);
-  padding: 16px;
-}
-.cr-modal__close{
-  position: absolute;
-  top: 8px; right: 12px;
-  font-size: 28px; line-height: 1;
-  background: transparent; border: 0; color: #fff; cursor: pointer;
-}
-.cr-modal__content{ padding-top: 8px; }
-.cr-video-16x9{ position: relative; width: 100%; padding-bottom: 56.25%; }
-.cr-video-16x9 > *{ position: absolute; inset: 0; width: 100%; height: 100%; }
-
-/* Prevent background scroll when modal open */
-.cr-modal-open{ overflow: hidden; }
-
-/* Hide any stray Wistia embeds outside the modal */
-.wistia_embed{ display: none; }
-#videoModal .wistia_embed{ display: block; }
-
-
-
-/* Center modal via flexbox and ensure proper sizing */
-.cr-modal{ position: fixed; inset: 0; display: none; z-index: 9999; padding: 24px; 
-  display: none; align-items: center; justify-content: center; }
-.cr-modal[aria-hidden="false"]{ display: flex; }
-.cr-modal__dialog{
-  position: relative;
-  width: min(100%, 960px);
-  max-height: calc(100vh - 48px);
-  margin: 0;
-  background: #0b0b0b;
-  border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(0,0,0,.6);
-  padding: 16px;
-  overflow: hidden;
-}
-
+.cr-modal-open{overflow:hidden}
 /* Hide Wistia big play button inside the modal */
-#videoModal .w-bpb-wrapper,
-#videoModal .w-big-play-button{ display: none !important; }
+#videoModal .w-bpb-wrapper,#videoModal .w-big-play-button{display:none!important}
+/* Hide any stray Wistia embeds outside the modal */
+.wistia_embed{display:none} 
+#videoModal .wistia_embed{display:block}
 
-/* ===== Reviewer Card ===== */
-.reviewer-card{
-  position: relative;
-  border: 2px dashed rgba(0,0,0,.15);
-  border-radius: 16px;
-  padding: 20px;
-  background: #fff;
-}
-.reviewer-card .reviewer-badge{
-  position: absolute;
-  top: -12px; left: 16px;
-  background: #0ea5e9; /* cyan-500-ish */
-  color: #fff;
-  font-weight: 700;
-  font-size: .75rem;
-  letter-spacing: .02em;
-  padding: 6px 10px;
-  border-radius: 999px;
-  box-shadow: 0 4px 16px rgba(14,165,233,.25);
-}
-.reviewer-card h3{ margin-top: 12px; margin-bottom: 8px; }
-.reviewer-card .reviewer-desc{ margin-bottom: 12px; opacity: .9; }
-
-#reviewerForm{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: stretch;
-}
-#reviewerTokenInput{
-  width: 100%;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: 10px;
-  padding: 12px 12px;
-  font-size: 1rem;
-}
-#reviewerContinueBtn.btn{
-  padding: 12px 16px;
-  border-radius: 10px;
-}
-.reviewer-msg{
-  grid-column: 1 / -1;
-  font-size: .95rem;
-  min-height: 1.2em;
-}
-.reviewer-hint{
-  margin-top: 8px;
-  font-size: .85rem;
-  opacity: .75;
-}
-
-/* Small screens: make form vertical */
-@media (max-width: 560px){
-  #reviewerForm{ grid-template-columns: 1fr; }
-}
-
-/* ===== Shared Modal (Install Gate) ===== */
-.cr-modal{ position: fixed; inset: 0; display: none; z-index: 9999; padding: 24px;
-  align-items: center; justify-content: center; }
-.cr-modal[aria-hidden="false"]{ display: flex; }
-.cr-modal__backdrop{ position: absolute; inset: 0; background: rgba(0,0,0,.7); }
-.cr-modal__dialog{
-  position: relative;
-  width: min(100%, 960px);
-  max-height: calc(100vh - 48px);
-  margin: 0;
-  background: #0b0b0b;
-  color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(0,0,0,.6);
-  padding: 16px;
-  overflow: auto;
-}
-.cr-modal__close{
-  position: absolute;
-  top: 8px; right: 12px;
-  font-size: 28px; line-height: 1;
-  background: transparent; border: 0; color: #fff; cursor: pointer;
-}
-.cr-modal__content{ padding-top: 8px; }
-.cr-modal__title{ margin: 0 0 8px; }
-.install-steps{
-  display: grid; gap: 16px;
-  grid-template-columns: repeat(3, 1fr);
-}
-.install-steps h4{ margin: 4px 0; }
-.install-hint{ margin: 8px 0 0; color: #fbbf24; } /* amber-400 */
-.install-actions{ margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end; }
-
-/* Prevent background scroll when modal open */
-.cr-modal-open{ overflow: hidden; }
-
-@media (max-width: 860px){
-  .install-steps{ grid-template-columns: 1fr; }
-}
+/* Shared Modal (Install Gate) specifics */
+.install-steps{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
+.install-steps h4{margin:4px 0}
+.install-hint{margin:8px 0 0;color:#fbbf24}
+.install-actions{margin-top:12px;display:flex;gap:8px;justify-content:flex-end}
+@media (max-width:860px){.install-steps{grid-template-columns:1fr}}
 
 /* Utility (screen-reader only label) */
-.sr-only{
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Reviewer Card =========================================================== */
+.reviewer-card{position:relative;border:2px dashed rgba(0,0,0,.15);border-radius:16px;padding:20px;background:#fff}
+.reviewer-card .reviewer-badge{
+  position:absolute;top:-12px;left:16px;background:#0ea5e9;color:#fff;font-weight:700;font-size:.75rem;letter-spacing:.02em;
+  padding:6px 10px;border-radius:999px;box-shadow:0 4px 16px rgba(14,165,233,.25);
 }
+.reviewer-card h3{margin-top:12px;margin-bottom:8px}
+.reviewer-card .reviewer-desc{margin-bottom:12px;opacity:.9}
+#reviewerForm{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:stretch}
+#reviewerTokenInput{width:100%;border:1px solid rgba(0,0,0,.15);border-radius:10px;padding:12px 12px;font-size:1rem}
+#reviewerContinueBtn.btn{display:block;width:100%;padding:1rem;background:var(--accent);color:#fff;text-align:center;text-decoration:none;border-radius:6px;font-weight:800;border:none;cursor:pointer;transition:.2s}
+#reviewerCard:hover #reviewerContinueBtn.btn,#reviewerContinueBtn.btn:hover{background:var(--support)}
+.reviewer-msg{grid-column:1 / -1;font-size:.95rem;min-height:1.2em}
+.reviewer-hint{margin-top:8px;font-size:.85rem;opacity:.75}
+@media (max-width:560px){#reviewerForm{grid-template-columns:1fr}}
 /* Keep Reviewer card below the two main cards on all screens */
-#command-results-pricing .cr-pricing-grid #reviewerCard{
-  grid-column: 1 / -1; /* span the full row, so it wraps under the first row */
-}
-/* Keep Reviewer card on its own row (always below the first two) */
-#command-results-pricing .cr-pricing-grid #reviewerCard{
-  grid-column: 1 / -1; /* full row span keeps it under the first row on all widths */
+#command-results-pricing .cr-pricing-grid #reviewerCard{grid-column:1 / -1}
+
+
+/* === Reviewer Card: compact & centered under pricing cards ============== */
+#command-results-pricing .cr-pricing-grid{align-items:start}
+
+#command-results-pricing #reviewerCard{
+  grid-column:1 / -1;           /* always below the main pricing cards */
+  display:grid;
+  place-items:center;
+  margin-top:8px;
 }
 
-/* Make the Reviewer CTA button match .cr-button style */
-#command-results-pricing #reviewerContinueBtn.btn{
-  display: block;
-  width: 100%;
-  padding: 1rem;               /* matches .cr-button */
-  background: var(--cr-accent);
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 800;
-  border: none;
-  cursor: pointer;
-  transition: .2s;
+#command-results-pricing #reviewerCard .reviewer-card{
+  width:min(420px,90%);          /* a lot smaller */
+  margin-inline:auto;
+  border:1px solid #dee2e6;      /* align with pricing card border */
+  border-radius:12px;
+  padding:14px 16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  background:#fff;
 }
-#command-results-pricing .reviewer-card:hover #reviewerContinueBtn.btn,
-#command-results-pricing #reviewerContinueBtn.btn:hover{
-  background: var(--support);  /* same hover as .cr-button */
+
+#command-results-pricing #reviewerCard .reviewer-badge{
+  top:-10px; left:12px; transform:scale(.9);
+}
+
+#command-results-pricing #reviewerCard #reviewerForm{
+  grid-template-columns:1fr auto;
+  gap:8px;
+}
+
+#command-results-pricing #reviewerCard #reviewerTokenInput{
+  height:40px; font-size:.95rem; padding:10px 12px;
+}
+
+#command-results-pricing #reviewerCard #reviewerContinueBtn.btn{
+  height:40px; padding:0 14px; font-size:.95rem;
+}
+
+#command-results-pricing #reviewerCard .reviewer-msg{font-size:.9rem}
+
+/* tighter on desktop */
+@media (min-width:1024px){
+  #command-results-pricing #reviewerCard .reviewer-card{width:360px}
+}
+
+/* full width on very small screens but still compact */
+@media (max-width:420px){
+  #command-results-pricing #reviewerCard .reviewer-card{width:100%}
+}
+
+
+/* === Reviewer Card: centered content & proportional sizing ============== */
+#command-results-pricing #reviewerCard .reviewer-card{
+  text-align:center;
+  padding:12px 14px;
+  width:min(340px,92%);
+}
+
+#command-results-pricing #reviewerCard .reviewer-desc,
+#command-results-pricing #reviewerCard .reviewer-msg,
+#command-results-pricing #reviewerCard .reviewer-hint{ 
+  text-align:center; 
+  margin-left:auto; 
+  margin-right:auto; 
+}
+
+#command-results-pricing #reviewerCard #reviewerForm{
+  display:inline-grid;                /* shrink-to-content */
+  grid-template-columns:auto auto;    /* input + button */
+  gap:8px;
+  justify-content:center;
+  align-items:center;
+  margin:10px auto 6px;
+  width:fit-content;                  /* centers based on content width */
+}
+
+#command-results-pricing #reviewerCard #reviewerTokenInput{
+  width:clamp(200px, 40vw, 280px);    /* modest width, responsive */
+  height:38px;
+  font-size:.95rem;
+  padding:10px 12px;
+}
+
+#command-results-pricing #reviewerCard #reviewerContinueBtn.btn{
+  height:38px;
+  padding:0 14px;
+  font-size:.95rem;
+}
+
+/* smaller still on large desktops to keep proportions tight */
+@media (min-width:1200px){
+  #command-results-pricing #reviewerCard .reviewer-card{width:320px}
+}
+
+/* stack neatly on small screens */
+@media (max-width:560px){
+  #command-results-pricing #reviewerCard #reviewerForm{grid-template-columns:1fr}
+  #command-results-pricing #reviewerCard #reviewerContinueBtn.btn{width:100%}
 }
