@@ -60,3 +60,59 @@ module.exports = async (req, res) => {
     const SECRET = env('REVIEWER_TOKEN_SECRET', '');
 
     // Basic validations
+    if (!norm) {
+      log('fail', { reason: 'missing_token', ua, ip });
+      return json(res, 400, { error: 'Please enter your reviewer token.' });
+    }
+    if (!list.length) {
+      log('error', { reason: 'empty_allowlist' });
+      return json(res, 500, { error: 'Token service not configured.' });
+    }
+    // expiry (inclusive)
+    const exp = new Date(`${EXPIRY}T23:59:59Z`);
+    if (Number.isNaN(exp.getTime()) || Date.now() > +exp) {
+      log('fail', { reason: 'expired', ua, ip, token: norm, expiry: EXPIRY });
+      return json(res, 400, { error: 'Invalid or expired token.' });
+    }
+    // allowlist check
+    if (!list.includes(norm)) {
+      log('fail', { reason: 'not_in_allowlist', ua, ip, token: norm });
+      return json(res, 400, { error: 'Invalid or expired token.' });
+    }
+
+    // Per-device reuse guard (optional)
+    const cookieHeader = req.headers['cookie'] || '';
+    const cookies = Object.fromEntries(cookieHeader.split(';').map(s => s.trim().split('=').map(decodeURIComponent)).filter(kv => kv.length===2));
+    const existing = SECRET ? cookies[COOKIE_NAME] : null;
+    if (SECRET && verifyReceipt(norm, existing, SECRET)) {
+      log('fail', { reason: 'already_activated_on_device', ua, ip, token: norm });
+      return json(res, 400, { error: 'This token has already been used on this device.' });
+    }
+
+    // Success path — set receipt cookie (httpOnly) if SECRET provided
+    const payload = { token: norm, at: new Date().toISOString(), ua };
+    const headers = {};
+    if (SECRET) {
+      const signed = signReceipt(payload, SECRET);
+      const cookie = `${COOKIE_NAME}=${encodeURIComponent(signed)}; HttpOnly; Path=/; Max-Age=${60*60*24*365}; SameSite=Lax`;
+      headers['Set-Cookie'] = cookie;
+    }
+
+    log('success', { ua, ip, token: norm, duration_ms: Date.now() - start });
+    return json(res, 200, { ok: true, url: SUCCESS_URL }, headers);
+  } catch (err) {
+    log('error', { reason: 'exception', message: err && err.message, stack: err && err.stack });
+    return json(res, 500, { error: 'Something went wrong. Please try again.' });
+  }
+
+  function json(res, code, obj, extraHeaders={}){
+    res.status(code);
+    for (const [k,v] of Object.entries(extraHeaders)) res.setHeader(k, v);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.end(JSON.stringify(obj));
+  }
+
+  function log(status, extra) {
+    try { console.log(JSON.stringify({ ts: new Date().toISOString(), status, ...extra })); } catch {}
+  }
+};
