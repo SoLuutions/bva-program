@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const confirmationMessage = document.getElementById('confirmationMessage');
 
-  // Inline install panel & instructions (these are in registration.html)
+  // Inline install panel (success block)
   const installPanel = document.getElementById('installPanel');
   const installBtn = document.getElementById('installAppBtn');
   const installHint = document.getElementById('installHint');
@@ -16,6 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const iosInstructions = document.getElementById('iosInstructions');
   const androidInstructions = document.getElementById('androidInstructions');
   const desktopInstructions = document.getElementById('desktopInstructions');
+
+  // NEW: Dedicated Install Help Modal
+  const helpOpenBtn = document.getElementById('openInstallHelpModal');
+  const helpModal = document.getElementById('installHelpModal');
+  const helpCloseBtn = document.getElementById('installHelpClose');
+  const helpInstallBtn = document.getElementById('helpInstallBtn');
+  const helpHowBtn = document.getElementById('helpHowBtn');
+  const helpHint = document.getElementById('helpHint');
+  const helpIos = document.getElementById('helpIos');
+  const helpAndroid = document.getElementById('helpAndroid');
+  const helpDesktop = document.getElementById('helpDesktop');
+  const helpBrowserNote = document.getElementById('helpBrowserNote');
 
   // Optional: a loader element (not required). If you add one, use id="loader"
   const loader = document.getElementById('loader');
@@ -26,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
   const isAndroid = /android/i.test(ua);
   const isDesktopChromeOrEdge = /Chrome|Edg\//.test(ua) && !/Mobile/.test(ua);
+  const isDuckDuckGo = /DuckDuckGo/i.test(ua);
+  const isFirefox = /Firefox\//i.test(ua);
 
   // --- Install prompt handling (works alongside app.js if present)
   let deferredPrompt = window.deferredPrompt || null;
@@ -34,14 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     deferredPrompt = e;
     window.deferredPrompt = e;
+    // Show inline panel if we're on the success screen
     if (installPanel) installPanel.style.display = 'block';
-    if (installHint) installHint.textContent = 'Tap Install App to add it to your home screen.';
+    if (installHint) installHint.textContent = 'Tap Install App to add it to your device.';
   });
 
   window.addEventListener('appinstalled', () => {
     try { localStorage.setItem('pwa-installed', 'true'); } catch {}
     if (installPanel) installPanel.style.display = 'none';
     if (installHint) installHint.textContent = '';
+    if (helpModal) closeHelpModal();
   });
 
   // --- Helpers
@@ -93,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function showPlatformInstructions() {
+  function showPlatformInstructionsInline() {
     if (installPanel) installPanel.style.display = 'block';
 
     if (isIOS && isSafari) {
@@ -117,7 +133,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Install button (inline panel)
+  function resetHelpSteps() {
+    if (helpIos) helpIos.style.display = 'none';
+    if (helpAndroid) helpAndroid.style.display = 'none';
+    if (helpDesktop) helpDesktop.style.display = 'none';
+  }
+
+  function openHelpModal() {
+    if (!helpModal) return;
+    // Hint for all platforms
+    if (helpHint) {
+      helpHint.textContent = isIOS && isSafari
+        ? 'Use Share → Add to Home Screen'
+        : isAndroid
+        ? 'Use ⋮ → Install app (or Add to Home screen)'
+        : isDesktopChromeOrEdge
+        ? 'Use the address-bar Install icon or Menu → Install app'
+        : 'If your browser supports installation, use its menu to Install/Add to Home screen.';
+    }
+    // Unsupported browser note
+    if (helpBrowserNote) {
+      helpBrowserNote.textContent = (isDuckDuckGo || isFirefox)
+        ? 'Note: Some browsers (DuckDuckGo, Firefox) may not show an Install option. Use Chrome/Edge on desktop, Chrome on Android, or Safari on iOS.'
+        : '';
+    }
+    resetHelpSteps();
+    helpModal.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('cr-modal-open');
+  }
+
+  function closeHelpModal() {
+    if (!helpModal) return;
+    helpModal.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('cr-modal-open');
+    resetHelpSteps();
+  }
+
+  function showPlatformInstructionsInModal() {
+    resetHelpSteps();
+    if (isIOS && isSafari && helpIos) { helpIos.style.display = 'block'; return; }
+    if (isAndroid && helpAndroid) { helpAndroid.style.display = 'block'; }
+    if (isDesktopChromeOrEdge && helpDesktop) { helpDesktop.style.display = 'block'; }
+  }
+
+  // --- Install button (inline panel, after success)
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
       if (deferredPrompt) {
@@ -128,18 +187,57 @@ document.addEventListener('DOMContentLoaded', () => {
             try { localStorage.setItem('pwa-install-accepted', Date.now().toString()); } catch {}
           }
         } catch {
-          // If prompt fails, fall back to showing instructions
-          showPlatformInstructions();
+          showPlatformInstructionsInline();
         } finally {
           deferredPrompt = null;
           window.deferredPrompt = null;
         }
       } else {
-        // No native prompt available: show instructions for the current platform
-        showPlatformInstructions();
+        showPlatformInstructionsInline();
       }
     });
   }
+
+  // --- Dedicated Install Help Modal wiring
+  if (helpOpenBtn) {
+    helpOpenBtn.addEventListener('click', openHelpModal);
+  }
+  helpCloseBtn?.addEventListener('click', closeHelpModal);
+  helpModal?.addEventListener('click', (ev) => {
+    if (ev.target && ev.target.hasAttribute('data-close-modal')) closeHelpModal();
+  });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape') closeHelpModal();
+  });
+
+  // Install now from modal
+  if (helpInstallBtn) {
+    helpInstallBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        try {
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          if (choice && choice.outcome === 'accepted') {
+            try { localStorage.setItem('pwa-install-accepted', Date.now().toString()); } catch {}
+            closeHelpModal();
+          } else {
+            showPlatformInstructionsInModal();
+          }
+        } catch {
+          showPlatformInstructionsInModal();
+        } finally {
+          deferredPrompt = null;
+          window.deferredPrompt = null;
+        }
+      } else {
+        // No native prompt available: show device-specific steps
+        showPlatformInstructionsInModal();
+      }
+    });
+  }
+
+  // Show steps for my device (modal)
+  helpHowBtn?.addEventListener('click', showPlatformInstructionsInModal);
 
   // --- Form submit
   if (form) {
@@ -172,10 +270,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (formCard) formCard.style.display = 'none';
         } catch {}
 
-        // Show confirmation & relevant install guidance
+        // Show confirmation & relevant install guidance (still supported after success)
         if (confirmationMessage) {
           confirmationMessage.style.display = 'block';
-          showPlatformInstructions();
+          showPlatformInstructionsInline();
           try { confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
         }
 

@@ -8,6 +8,25 @@
   <link rel="stylesheet" href="registration_styles.css"/>
   <link rel="manifest" href="/manifest.json"/>
   <meta name="theme-color" content="#667eea"/>
+  <style>
+    /* Minimal modal styles (kept here to avoid dependency) */
+    .cr-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:9999;}
+    .cr-modal[aria-hidden="false"]{display:flex;}
+    .cr-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.45);}
+    .cr-modal__dialog{position:relative;background:#fff;border-radius:16px;max-width:720px;width:92%;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.25);}
+    .cr-modal__title{margin-top:0;margin-bottom:8px;font-size:1.4rem}
+    .cr-modal__close{position:absolute;top:8px;right:12px;font-size:28px;background:transparent;border:0;cursor:pointer;line-height:1}
+    .install-steps{display:grid;grid-template-columns:1fr;gap:12px}
+    .install-steps h4{margin:.25rem 0}
+    .install-hint{margin-top:.5rem;color:#555}
+    .install-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:10px;border:0;padding:.6rem 1rem;background:#667eea;color:#fff;cursor:pointer}
+    .btn.btn-secondary{background:#475569}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    @media (min-width: 720px){
+      .install-steps{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -29,6 +48,13 @@
       <div class="registration-header">
         <h1>Register for Free Access</h1>
         <p>Get instant access to all our apps</p>
+        <!-- Install help trigger (always visible, not tied to success) -->
+        <p style="margin:.5rem 0 1rem">
+          Having trouble installing?
+          <button type="button" id="openInstallHelpModal" class="btn btn-secondary">
+            <i class="fas fa-question-circle"></i> How to install
+          </button>
+        </p>
       </div>
 
       <form id="registrationForm" class="registration-form" novalidate>
@@ -73,7 +99,7 @@
       </div>
     </div>
 
-    <!-- Confirmation -->
+    <!-- Confirmation (unchanged; still used post-registration) -->
     <div class="confirmation-message" id="confirmationMessage" aria-live="polite" style="display:none;">
       <h2>Registration Successful!</h2>
       <p>Great! Next step: install the app on your device for fast access.</p>
@@ -131,19 +157,47 @@
     </div>
   </footer>
 
-  <!-- Install notification shell (optional; you can wire it later) -->
-  <div id="install-notification" style="display:none">
-    <div class="install-header">
-      <div class="install-title">
-        <i class="fas fa-download"></i>
-        <span>Install BVA App</span>
+  <!-- Dedicated Install Help Modal (separate from success) -->
+  <div id="installHelpModal" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Install Help">
+    <div class="cr-modal__backdrop" data-close-modal></div>
+    <div class="cr-modal__dialog" role="document" aria-modal="true">
+      <button class="cr-modal__close" id="installHelpClose" type="button" aria-label="Close">&times;</button>
+      <h3 class="cr-modal__title"><i class="fas fa-download"></i> Install the App</h3>
+      <p class="install-hint" id="helpHint"></p>
+      <div class="install-actions">
+        <button type="button" id="helpInstallBtn" class="btn">
+          <i class="fas fa-download"></i> Install now
+        </button>
+        <button type="button" id="helpHowBtn" class="btn btn-secondary">
+          <i class="fas fa-list"></i> Show steps for my device
+        </button>
       </div>
-      <button class="close-install" id="close-install" type="button" aria-label="Close">&times;</button>
-    </div>
-    <p>Add BVA to your home screen for quick access.</p>
-    <div class="install-buttons">
-      <button class="install-btn" id="install-btn" type="button">Install Now</button>
-      <button class="later-btn" id="later-btn" type="button">Later</button>
+      <div class="install-steps" style="margin-top:10px">
+        <div id="helpIos" style="display:none">
+          <h4>iOS (Safari)</h4>
+          <ol>
+            <li>Tap <strong>Share</strong>.</li>
+            <li>Select <strong>Add to Home Screen</strong>.</li>
+            <li>Tap <strong>Add</strong>, then open from your Home Screen.</li>
+          </ol>
+        </div>
+        <div id="helpAndroid" style="display:none">
+          <h4>Android (Chrome)</h4>
+          <ol>
+            <li>Tap <strong>⋮</strong> (Menu) in Chrome.</li>
+            <li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+            <li>Confirm, then launch from your home screen.</li>
+          </ol>
+        </div>
+        <div id="helpDesktop" style="display:none">
+          <h4>Desktop (Chrome/Edge)</h4>
+          <ol>
+            <li>Click the <strong>Install</strong> icon in the address bar, or use <strong>⋮ → Install app</strong>.</li>
+            <li>Accept prompts (pin, auto-start if desired).</li>
+          </ol>
+        </div>
+      </div>
+      <p id="helpBrowserNote" style="margin-top:8px;color:#9b1c1c;font-weight:600;"></p>
     </div>
   </div>
 
