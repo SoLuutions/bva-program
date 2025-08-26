@@ -688,6 +688,161 @@
             </div>
         </div>
     </section>
+    <!-- ===============================
+     BVA 2-Minute Assessment
+     =============================== -->
+    <section id="bva-assessment" class="bva2-wrapper" aria-labelledby="bva2-title">
+        <div class="container">
+            <div class="bva2-card" role="region">
+                <div class="bva2-section"><!-- width hook for filled desktop -->
+
+                    <!-- Intro -->
+                    <div class="bva2-screen" data-screen="intro" aria-live="polite">
+                        <div class="section-header">
+                            <h2 id="bva2-title">Business Agility Scorecard</h2>
+                            <p class="bva2-sub">Measure what matters — in just 2 minutes.</p>
+                        </div>
+                        <p class="bva2-intro">
+                            <strong>How Lean-Agile is your team — really?</strong><br />
+                            Is your team truly Lean-Agile, or just going through the motions? Take this quick scan to
+                            find out.
+                        </p>
+                        <button class="btn btn-primary bva2-start">Start the 2-minute scan</button>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="bva2-progress" aria-hidden="true">
+                        <div class="bva2-progress-bar"><span class="bva2-progress-fill" style="width:0%"></span></div>
+                        <div class="bva2-progress-label"><span class="bva2-step">0</span>/5</div>
+                    </div>
+
+                    <!-- Qs -->
+                    <form class="bva2-form" novalidate>
+                        <div class="bva2-screen" data-screen="q1" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Lean-Agile Foundations</h3>
+                            <p class="bva2-qcopy">“We apply and integrate Lean and Agile principles to streamline work
+                                and drive innovation.”</p>
+                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q1">
+                                <button type="button" data-val="1">1</button><button type="button"
+                                    data-val="2">2</button>
+                                <button type="button" data-val="3">3</button><button type="button"
+                                    data-val="4">4</button>
+                                <button type="button" data-val="5">5</button>
+                            </div>
+                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                        </div>
+
+                        <div class="bva2-screen" data-screen="q2" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Value Stream Alignment</h3>
+                            <p class="bva2-qcopy">“Our product, program, and project delivery efforts are mapped to
+                                customer journeys and business outcomes.”</p>
+                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q2">
+                                <button type="button" data-val="1">1</button><button type="button"
+                                    data-val="2">2</button>
+                                <button type="button" data-val="3">3</button><button type="button"
+                                    data-val="4">4</button>
+                                <button type="button" data-val="5">5</button>
+                            </div>
+                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                        </div>
+
+                        <div class="bva2-screen" data-screen="q3" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Team Collaboration</h3>
+                            <p class="bva2-qcopy">“We use team-of-teams frameworks to align cross-functional efforts
+                                across operational, support, and development teams.”</p>
+                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q3">
+                                <button type="button" data-val="1">1</button><button type="button"
+                                    data-val="2">2</button>
+                                <button type="button" data-val="3">3</button><button type="button"
+                                    data-val="4">4</button>
+                                <button type="button" data-val="5">5</button>
+                            </div>
+                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                        </div>
+
+                        <div class="bva2-screen" data-screen="q4" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Decision Intelligence</h3>
+                            <p class="bva2-qcopy">“We use data-driven insights with verified metrics to guide product,
+                                program, and project decisions.”</p>
+                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q4">
+                                <button type="button" data-val="1">1</button><button type="button"
+                                    data-val="2">2</button>
+                                <button type="button" data-val="3">3</button><button type="button"
+                                    data-val="4">4</button>
+                                <button type="button" data-val="5">5</button>
+                            </div>
+                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                        </div>
+
+                        <div class="bva2-screen" data-screen="q5" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Value Stream Flow Focus</h3>
+                            <p class="bva2-qcopy">“We take a holistic, cross-functional view of our value streams to
+                                improve flow efficiency and throughput across the organization.”</p>
+                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q5">
+                                <button type="button" data-val="1">1</button><button type="button"
+                                    data-val="2">2</button>
+                                <button type="button" data-val="3">3</button><button type="button"
+                                    data-val="4">4</button>
+                                <button type="button" data-val="5">5</button>
+                            </div>
+                            <button type="button" class="btn btn-primary bva2-next">Continue</button>
+                        </div>
+
+                        <!-- Lead capture (filled layout) -->
+                        <div class="bva2-screen" data-screen="lead" aria-live="polite" hidden>
+                            <h3 class="bva2-qtitle">Where should we send your tailored plan?</h3>
+                            <div class="bva2-lead">
+                                <label>Full Name <input type="text" id="bva2Name" required></label>
+                                <label>Email <input type="email" id="bva2Email" required></label>
+                                <label>Company (optional) <input type="text" id="bva2Company"></label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">See my results</button>
+                            <p class="bva2-privacy">By continuing, you agree to our terms and privacy policy.</p>
+                        </div>
+                    </form>
+
+                    <!-- Results -->
+                    <div class="bva2-screen" data-screen="results" aria-live="polite" hidden>
+                        <div class="bva2-results-head">
+                            <div class="bva2-score">Your Score: <span id="bva2Score">0</span>/25</div>
+                            <div class="bva2-status" id="bva2Status">—</div>
+                        </div>
+                        <p class="bva2-message" id="bva2Message">Calculating…</p>
+
+                        <div class="bva2-actions">
+                            <a class="btn btn-primary" id="bva2PrimaryCta" href="#" rel="noopener">Open
+                                recommendation</a>
+                            <a class="btn btn-secondary" id="bva2AltCta" href="https://calendly.com/cgrupp55/20min"
+                                target="_blank" rel="noopener">
+                                Book a free strategy call
+                            </a>
+                        </div>
+
+                        <div class="bva2-assets">
+                            <a class="bva2-asset" href="https://www.commandresults.com/lean-agile-maturity-checklist/"
+                                target="_blank" rel="noopener">📄 Download full checklist</a>
+                            <a class="bva2-asset" href="#command-results-pricing">🚀 See BVA Program plans</a>
+                            <button class="bva2-asset" type="button" id="bva2Share">🔗 Share with a colleague</button>
+                        </div>
+
+                        <div class="bva2-testimonials" aria-label="What leaders say">
+                            <figure class="bva2-quote active">“By applying the BVA methodology, we avoided a 3–4 month
+                                delay and saved $1.4M.” — <figcaption>Mohamad Annan</figcaption>
+                            </figure>
+                            <figure class="bva2-quote">“Transforms learning into action. Energizes teams to deliver
+                                results.” — <figcaption>Thales Faggiano</figcaption>
+                            </figure>
+                            <figure class="bva2-quote">“Dynamite. Practical and fills the gap between theory and
+                                application.” — <figcaption>Jorge Valdés Garciatorres</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                </div><!-- /.bva2-section -->
+            </div>
+        </div>
+    </section>
+
     <!-- Final CTA -->
     <section class="final-cta">
         <div class="container">

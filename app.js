@@ -484,7 +484,202 @@ function initGetAppUX() {
   // Restore state dynamically if PWA gets installed
   window.addEventListener('appinstalled', applyInstalledState);
 }
+// ------------------------------------------------------------
+// BVA 2-Minute Assessment (inline quiz + results-first)
+// ------------------------------------------------------------
+function initBvaAssessment(){
+  const wrap = $('#bva-assessment');
+  if (!wrap) return;
 
+  const el  = (sel, root=wrap) => root.querySelector(sel);
+  const els = (sel, root=wrap) => Array.from(root.querySelectorAll(sel));
+
+  const screens = {
+    intro:   el('[data-screen="intro"]'),
+    q1:      el('[data-screen="q1"]'),
+    q2:      el('[data-screen="q2"]'),
+    q3:      el('[data-screen="q3"]'),
+    q4:      el('[data-screen="q4"]'),
+    q5:      el('[data-screen="q5"]'),
+    lead:    el('[data-screen="lead"]'),
+    results: el('[data-screen="results"]')
+  };
+
+  const progress = {
+    bar:  el('.bva2-progress'),
+    fill: el('.bva2-progress-fill'),
+    step: el('.bva2-progress .bva2-step')
+  };
+
+  const resultsEls = {
+    score:      el('#bva2Score'),
+    status:     el('#bva2Status'),
+    message:    el('#bva2Message'),
+    primaryCta: el('#bva2PrimaryCta'),
+    altCta:     el('#bva2AltCta'),
+  };
+
+  const leadEls = {
+    name:    el('#bva2Name'),
+    email:   el('#bva2Email'),
+    company: el('#bva2Company')
+  };
+
+  const order   = ['q1','q2','q3','q4','q5'];
+  let answers   = { q1:null,q2:null,q3:null,q4:null,q5:null };
+  let stepIndex = 0;
+
+  function show(scr){
+    Object.values(screens).forEach(s => s.hidden = true);
+    screens[scr].hidden = false;
+    if(order.includes(scr)){ progress.bar.removeAttribute('aria-hidden'); }
+    else { progress.bar.setAttribute('aria-hidden','true'); }
+  }
+  function updateProgress(){
+    const current = Math.min(stepIndex, order.length);
+    progress.step.textContent = current;
+    progress.fill.style.width = (current / order.length * 100) + '%';
+  }
+  function next(){
+    if(stepIndex < order.length) show(order[stepIndex]);
+    else show('lead');
+    updateProgress();
+  }
+
+  // Start
+  el('.bva2-start').addEventListener('click', ()=>{
+    stepIndex = 0;
+    updateProgress();
+    next();
+    if(window.gtag){ try{ gtag('event','bva2_start'); }catch(e){} }
+  });
+
+  // Rating choose
+  els('.bva2-scale').forEach(group=>{
+    group.addEventListener('click', (ev)=>{
+      const btn = ev.target.closest('button[data-val]');
+      if(!btn) return;
+      els('button', group).forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      answers[group.getAttribute('data-field')] = parseInt(btn.dataset.val,10);
+    });
+  });
+
+  // Next
+  els('.bva2-next').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = order[stepIndex];
+      if(!answers[key]){
+        const grp = el(`.bva2-scale[data-field="${key}"]`);
+        grp.classList.add('shake'); setTimeout(()=>grp.classList.remove('shake'), 500);
+        return;
+      }
+      stepIndex++; next();
+    });
+  });
+
+  // Share
+  const shareBtn = el('#bva2Share');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async ()=>{
+      const url = location.href.split('#')[0];
+      const text = 'Try this 2-minute Business Agility Scorecard';
+      if(navigator.share){
+        try{ await navigator.share({title:'Business Agility Scorecard', text, url}); }catch(e){}
+      }else{
+        try{ await navigator.clipboard.writeText(url); alert('Link copied to clipboard!'); }catch(e){}
+      }
+    });
+  }
+
+  // Submit -> results (no auto-redirect)
+  el('.bva2-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    if(!leadEls.name.value.trim() || !leadEls.email.validity.valid){
+      [leadEls.name, leadEls.email].forEach(i=>{
+        if(!i.value.trim() || (i.type==='email' && !i.validity.valid)){
+          i.classList.add('bva2-invalid');
+          setTimeout(()=>i.classList.remove('bva2-invalid'), 800);
+        }
+      });
+      return;
+    }
+
+    // lightweight persistence + analytics
+    try {
+      localStorage.setItem('bva2_lead', JSON.stringify({
+        name: leadEls.name.value.trim(),
+        email: leadEls.email.value.trim(),
+        company: leadEls.company.value.trim() || null,
+        ts: Date.now()
+      }));
+    } catch(e){}
+    if(window.gtag){ try{ gtag('event','bva2_lead_submit'); }catch(e){} }
+
+    const total = Object.values(answers).reduce((a,b)=>a+(b||0),0);
+    const outcome = interpret(total);
+
+    resultsEls.score.textContent = total;
+    resultsEls.status.textContent = outcome.label;
+    resultsEls.message.textContent = outcome.message;
+    resultsEls.primaryCta.textContent = outcome.ctaText;
+    resultsEls.primaryCta.href = outcome.href;
+    resultsEls.primaryCta.setAttribute('target', outcome.newTab ? '_blank' : '_self');
+
+    show('results');  // ✅ show results and stop here (no auto-jump)
+  });
+
+  function interpret(score){
+    // Map score → label/message/CTA
+    if(score <= 10){
+      return {
+        label:'🚨 Starting Line',
+        message:'You’re just getting started. Let’s build your baseline.',
+        href:'https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583',
+        ctaText:'Start Lean-Agile Foundations (Free)'
+      };
+    } else if(score <= 15){
+      return {
+        label:'⚠️ Foundations Needed',
+        message:'You’ve taken some steps — but key gaps remain.',
+        href:'https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598',
+        ctaText:'Get the BVA Program'
+      };
+    } else if(score <= 20){
+      return {
+        label:'😐 Untapped Value',
+        message:'You’re making it work — but there’s more value to unlock.',
+        href:'https://calendly.com/cgrupp55/20min',
+        ctaText:'Schedule 3-Day BVA Workshop'
+      };
+    } else if(score <= 23){
+      return {
+        label:'✅ Ready to Scale',
+        message:'Solid execution. Time to optimize and scale.',
+        href:'https://calendly.com/cgrupp55/20min',
+        ctaText:'Talk about 1-Month Guided Program'
+      };
+    }
+    return {
+      label:'🌟 High Performer',
+      message:'Operating at a high level. Ready to lead the next wave?',
+      href:'https://calendly.com/cgrupp55/20min',
+      ctaText:'Partner with Us'
+    };
+  }
+
+  // Simple testimonial auto-rotate
+  const quotes = els('.bva2-quote');
+  let qi = 0;
+  if (quotes.length){
+    setInterval(()=>{
+      quotes[qi].classList.remove('active');
+      qi = (qi + 1) % quotes.length;
+      quotes[qi].classList.add('active');
+    }, 4000);
+  }
+}
 // ------------------------------------------------------------
 // Boot
 // ------------------------------------------------------------
@@ -496,6 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPricingModule();
   initNewsletter();
   initGetAppUX();
+  initBvaAssessment();  
 });
 
 
