@@ -551,3 +551,115 @@ footer {
         width: 100%;
     }
 }
+/* Ensure modal text is readable */
+#installHelpModal,
+#installHelpModal * {
+  color: #222 !important;   /* dark text by default */
+}
+
+#installHelpModal h3,
+#installHelpModal h4 {
+  color: #111 !important;   /* even darker for headings */
+  font-weight: 600;
+}
+
+#installHelpModal a {
+  color: #2b6cb0;           /* blue links for clarity */
+  text-decoration: underline;
+}
+/* ---------- Install Help modal layout & contrast fixes ---------- */
+#installHelpModal,
+#installHelpModal * {
+  color: #1f2937; /* readable default text */
+}
+
+#installHelpModal .cr-modal__dialog {
+  max-width: 720px;
+  width: calc(100% - 32px);
+  padding: 22px 22px 18px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+#installHelpModal .cr-modal__title {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+#installHelpModal .install-hint#helpHint {
+  margin: 2px 0 10px;
+  font-size: .95rem;
+  color: #374151;
+}
+
+/* Buttons: full width, better contrast, consistent spacing */
+#installHelpModal .install-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 8px 0 6px;
+}
+
+#installHelpModal .btn {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+/* Primary install button */
+#installHelpModal #helpInstallBtn {
+  background: #667eea;       /* vivid */
+  color: #fff;
+}
+
+/* Secondary button should NOT look disabled */
+#installHelpModal #helpHowBtn {
+  background: #e5e7eb;       /* light neutral */
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+#installHelpModal #helpHowBtn:hover {
+  background: #f3f4f6;
+}
+
+/* Steps block: readable spacing */
+#installHelpModal .install-steps {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  display: grid;
+  grid-template-columns: 1fr; /* stack by default */
+  gap: 14px;
+}
+
+#installHelpModal h4 {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: #111827;
+}
+
+#installHelpModal ol {
+  margin: 0 0 2px 1.25rem;
+  padding: 0;
+  line-height: 1.45;
+}
+
+/* Unsupported browser note style */
+#installHelpModal #helpBrowserNote {
+  margin-top: 8px;
+  color: #9b1c1c;            /* warning tone */
+  font-weight: 600;
+}
+
+/* Larger screens: 3-column steps grid */
+@media (min-width: 760px) {
+  #installHelpModal .install-steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

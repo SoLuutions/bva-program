@@ -647,3 +647,55 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   #command-results-pricing #reviewerCard #reviewerForm{grid-template-columns:1fr}
   #command-results-pricing #reviewerCard #reviewerContinueBtn.btn{width:100%}
 }
+/* === BVA 2-Minute Assessment (consolidated) =============================== */
+.bva2-wrapper{background:#fff;padding:40px 0}
+.bva2-card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:24px 28px;max-width:1100px;margin:0 auto}
+.bva2-section{max-width:980px;margin:0 auto}
+.bva2-sub{color:var(--muted)}
+.bva2-intro{font-size:1.05rem;color:var(--ink);margin:8px 0 14px}
+
+/* Progress */
+.bva2-progress{display:flex;align-items:center;gap:10px;margin:12px 0 10px}
+.bva2-progress-bar{flex:1;height:10px;background:#eef2f7;border-radius:999px;overflow:hidden}
+.bva2-progress-fill{display:block;height:100%;background:var(--support)}
+.bva2-progress-label{font-weight:800;color:var(--muted)}
+
+/* Questions */
+.bva2-qtitle{color:var(--dark);margin-bottom:6px}
+.bva2-qcopy{color:var(--muted);margin:0 0 10px}
+.bva2-scale{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin:10px 0 16px}
+.bva2-scale button{border:1px solid #d8dee8;background:#fff;border-radius:10px;padding:12px 0;font-weight:800;cursor:pointer}
+.bva2-scale button.active{border-color:var(--primary);outline:3px solid rgba(42,157,143,.15)}
+.bva2-scale.shake{animation:bva2shake .4s}
+@keyframes bva2shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}}
+
+/* Lead capture (filled) */
+.bva2-lead{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;max-width:980px;margin:8px auto 0}
+.bva2-lead label{display:block;font-weight:600}
+.bva2-lead input{width:100%;height:48px;padding:12px 14px;border:1px solid #d8dee8;border-radius:10px}
+.bva2-invalid{border-color:#e63946 !important; box-shadow:0 0 0 3px rgba(230,57,70,.15)}
+
+/* Results */
+.bva2-results-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.bva2-score{font-weight:900;color:var(--dark)}
+.bva2-status{font-weight:800}
+.bva2-message{color:var(--muted);margin:8px 0 14px}
+.bva2-actions{display:grid;grid-template-columns:minmax(220px,1fr) minmax(200px,1fr);gap:12px}
+.bva2-assets{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:10px}
+.bva2-asset{display:inline-block;padding:10px 14px;border-radius:10px;background:#f8fafc;border:1px solid #e6ebf2;text-decoration:none;color:var(--ink)}
+.bva2-testimonials{margin-top:16px;position:relative;min-height:60px}
+.bva2-quote{opacity:0;transition:.25s;position:absolute;left:0;right:0}
+.bva2-quote.active{opacity:1;position:relative}
+
+/* Buttons fill width where appropriate */
+.bva2-form [type="submit"].btn{width:100%;max-width:980px;margin:14px auto 0;display:block}
+
+/* Screens visibility */
+.bva2-screen[hidden]{display:none}
+
+@media (max-width:900px){
+  .bva2-card{padding:18px}
+  .bva2-lead{grid-template-columns:1fr}
+  .bva2-actions{grid-template-columns:1fr}
+  .bva2-assets{grid-template-columns:1fr}
+}
