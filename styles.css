@@ -3125,12 +3125,9 @@ footer {
 
 
 /* === Evidence note below results bullets === */
-.evidence-line {
-  margin: 10px 0 0;
+.evidence-line { font-style: normal; font-weight: 600; margin: 10px 0 0;
   font-size: 0.98rem;
-  color: var(--ink);
-  font-style: italic;
-}
+  color: var(--ink); }
 
 /* === Light Blue Callout ("Would you like to know more?") === */
 .info-callout-section {
