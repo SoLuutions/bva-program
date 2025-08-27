@@ -13,7 +13,7 @@ function bindOnce(el, type, handler, options) {
   el[key] = true;
 }
 
-// ------------------------------------------------------------
+// (section removed)
 // FAQ toggle functionality
 // ------------------------------------------------------------
 function initFaqToggles() {
