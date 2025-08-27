@@ -699,3 +699,73 @@ footer{background:var(--dark);color:rgba(255,255,255,.85);text-align:center;padd
   .bva2-actions{grid-template-columns:1fr}
   .bva2-assets{grid-template-columns:1fr}
 }
+
+
+/* === Evidence note below results bullets === */
+.evidence-line{
+  margin: 10px 0 0;
+  font-size: 0.98rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* === Light Blue Callout ("Would you like to know more?") === */
+.info-callout-section{ padding: 12px 0 24px; }
+.info-callout{
+  background: #eaf4ff;
+  border: 1px solid #d5e8ff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.05);
+}
+.info-callout h4{ margin: 0 0 8px; font-size: 1.25rem; }
+.info-callout p{ margin: 6px 0; }
+
+/* === Quiz interactivity guard (touch/click layers stay clickable) === */
+#bva-assessment .bva2-card,
+#bva-assessment .bva2-section,
+#bva-assessment .bva2-form,
+#bva-assessment .bva2-screen,
+#bva-assessment .bva2-scale{
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+#bva-assessment .bva2-scale button{ pointer-events: auto; }
+
+
+/* Wider layout for the blue callout when single-column */
+@media (min-width: 768px){
+  .info-callout{ padding: 24px 28px; }
+}
+
+
+/* === Bulletproof mobile grid for quiz scale ================================ */
+@media (max-width: 560px){
+  #bva-assessment .bva2-scale{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    overflow: hidden; /* guard against rare rounding overflow */
+  }
+  #bva-assessment .bva2-scale button{
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Ultra-small devices: bias to 2 columns so labels never push width */
+@media (max-width: 360px){
+  #bva-assessment .bva2-scale{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+  #bva-assessment .bva2-scale button{
+    padding: 8px 0 !important;
+    font-size: .9rem !important;
+  }
+}

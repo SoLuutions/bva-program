@@ -56,16 +56,12 @@
             }
         }
     </style>
-
     <!-- Wistia embed scripts -->
-    <script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
-    <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-
-
+    <script async="" src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp"></script>
+    <script async="" src="https://fast.wistia.com/assets/external/E-v1.js"></script>
     <!-- Wistia embed scripts (once) -->
-    <script src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp" async></script>
-    <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-
+    <script async="" src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp"></script>
+    <script async="" src="https://fast.wistia.com/assets/external/E-v1.js"></script>
 </head>
 
 <body>
@@ -104,11 +100,11 @@
         <div class="container">
             <!-- keep the picture at the top -->
             <figure class="hero-image-wrap">
-                <a href="https://www.commandresults.com/bvap-video/" aria-label="Play the introduction video"><a
-                        href="#" id="playHeroVideo" aria-label="Play the introduction video"><img
+                <a aria-label="Play the introduction video" href="https://www.commandresults.com/bvap-video/"><a
+                        aria-label="Play the introduction video" href="#" id="playHeroVideo"><img
                             alt="Leaders collaborating on mobile-first Lean-Agile apps" src="banner.jpg" /> <span
-                            class="play-indicator" aria-hidden="true"></span></a>
-                    <span class="play-indicator" aria-hidden="true"></span></a>
+                            aria-hidden="true" class="play-indicator"></span></a>
+                    <span aria-hidden="true" class="play-indicator"></span></a>
             </figure>
             <h2 class="apps-title">Business Value Accelerator Program</h2>
             <!-- Short, high‑impact panels -->
@@ -116,10 +112,7 @@
                 <!-- Panel 1 – Outcome Hook -->
                 <article class="panel-card">
                     <h3 class="panel-title">Deliver Measurable Results — Faster</h3>
-                    <p class="panel-text">
-                        The Business Value Accelerator Apps help executives, program, project, and product leaders turn
-                        strategy into measurable wins — using the teams, time, and budget they already have.
-                    </p>
+                    <p class="panel-text">From Strategy to Team Execution — Lean and Agile Practices Made Practical</p>
                     <div class="panel-cta"><a class="btn btn-primary" href="https://command-results.passion.io">Free
                             App</a></div>
                 </article>
@@ -131,12 +124,28 @@
                         <li><strong>Efficiency improvements:</strong> 30–60%</li>
                         <li><strong>Profit growth:</strong> up to 60% with Agile done right</li>
                     </ul>
+                    <p class="evidence-line">“These are not projections — they’re published results from 2020–2025 by
+                        companies that have successfully integrated Lean and Agile practices.”</p>
                     <p class="panel-footnote">Across industries, the right Lean‑Agile practices consistently outperform
                         the status quo.</p>
                     <div class="panel-cta"><a class="btn btn-primary"
                             href="https://drive.google.com/file/d/11OhadY9isSlmp1lq_zGL-YP84LC8Mc8Z/view?usp=sharing">Executive
                             Brief</a></div>
                 </article>
+                <section class="info-callout-section">
+                    <div class="container">
+                        <div class="info-callout info-callout--blue">
+                            <h4>Would you like to know more?</h4>
+                            <p>Our Business Value Accelerator Program integrates proven Lean-Agile methods to deliver
+                                measurable results in less than 90 days. These methods reduce cycle times, accelerate
+                                solution delivery, align IT efforts with the most impactful priorities for maximum ROI,
+                                and drive profitability while delivering unmatched customer value.</p>
+                            <p>Discover how to achieve the best of both worlds—lean business operations supported by
+                                agile innovation.</p>
+                            <div class="panel-cta"><a class="btn btn-primary" href="#enroll">ENROLL NOW</a></div>
+                        </div>
+                    </div>
+                </section>
                 <!-- Panel 3 – Reality Check -->
                 <article class="panel-card panel-warning">
                     <h3 class="panel-title">But Here’s the Problem…</h3>
@@ -195,7 +204,6 @@
                     <a class="btn btn-primary" href="https://www.commandresults.com/bvap-video/" target="_blank">
                         Watch Intro Video
                     </a>
-
                     <nav class="video-nav">
                         <a href="#problem">Why Teams Struggle</a>
                         <a href="#command-results-pricing">Plans &amp; Pricing</a>
@@ -376,25 +384,19 @@
                         <p class="reviewer-desc">
                             Have a review token? Unlock complimentary access to preview the BVA apps and courses.
                         </p>
-
-                        <form id="reviewerForm" novalidate>
-                            <label for="reviewerTokenInput" class="sr-only">Reviewer Token</label>
-                            <input type="text" id="reviewerTokenInput" name="token" inputmode="latin"
-                                autocomplete="one-time-code" placeholder="Enter token" required />
-                            <button type="submit" id="reviewerContinueBtn" class="btn">Enter Token</button>
-                            <div id="reviewerMsg" class="reviewer-msg" role="alert" aria-live="polite"></div>
+                        <form id="reviewerForm" novalidate="">
+                            <label class="sr-only" for="reviewerTokenInput">Reviewer Token</label>
+                            <input autocomplete="one-time-code" id="reviewerTokenInput" inputmode="latin" name="token"
+                                placeholder="Enter token" required="" type="text" />
+                            <button class="btn" id="reviewerContinueBtn" type="submit">Enter Token</button>
+                            <div aria-live="polite" class="reviewer-msg" id="reviewerMsg" role="alert"></div>
                         </form>
-
                         <div class="reviewer-hint">
                             For invited reviewers only. Need help? <a href="https://www.commandresults.com/contact-us/"
-                                target="_blank" rel="noopener">Contact Us</a>
+                                rel="noopener" target="_blank">Contact Us</a>
                         </div>
                     </div>
-
-
-
                 </div>
-
                 <p class="cr-asterisk-note">*20+ hrs app-based training
                     with 60+ hrs online Lean, Agile &amp; VSM for continued mastery.</p>
             </section>
@@ -652,11 +654,10 @@
                     <p>Subscribe to our newsletter for exclusive content, productivity tips, and program updates.</p>
                     <form class="newsletter-form" id="newsletterForm">
                         <div class="form-group optional-fields">
-                            <input type="text" id="newsletterName" placeholder="Your name (optional)" />
-                            <input type="text" id="newsletterCompany" placeholder="Company (optional)" />
-                            <input type="tel" id="newsletterPhone" placeholder="Phone (optional)" />
+                            <input id="newsletterName" placeholder="Your name (optional)" type="text" />
+                            <input id="newsletterCompany" placeholder="Company (optional)" type="text" />
+                            <input id="newsletterPhone" placeholder="Phone (optional)" type="tel" />
                         </div>
-
                         <div class="form-group">
                             <input id="newsletterEmail" placeholder="Your best email" required="" type="email" />
                             <button class="btn btn-primary" type="submit">Subscribe</button>
@@ -671,7 +672,7 @@
                 </div>
                 <br />
                 <div class="newsletter-benefits">
-                    <br>
+                    <br />
                     <div class="benefit">
                         <span>⚡</span>
                         <p>Exclusive productivity tips</p>
@@ -691,13 +692,12 @@
     <!-- ===============================
      BVA 2-Minute Assessment
      =============================== -->
-    <section id="bva-assessment" class="bva2-wrapper" aria-labelledby="bva2-title">
+    <section aria-labelledby="bva2-title" class="bva2-wrapper" id="bva-assessment">
         <div class="container">
             <div class="bva2-card" role="region">
                 <div class="bva2-section"><!-- width hook for filled desktop -->
-
                     <!-- Intro -->
-                    <div class="bva2-screen" data-screen="intro" aria-live="polite">
+                    <div aria-live="polite" class="bva2-screen" data-screen="intro">
                         <div class="section-header">
                             <h2 id="bva2-title">Business Agility Scorecard</h2>
                             <p class="bva2-sub">Measure what matters — in just 2 minutes.</p>
@@ -709,123 +709,112 @@
                         </p>
                         <button class="btn btn-primary bva2-start">Start the 2-minute scan</button>
                     </div>
-
                     <!-- Progress -->
-                    <div class="bva2-progress" aria-hidden="true">
+                    <div aria-hidden="true" class="bva2-progress">
                         <div class="bva2-progress-bar"><span class="bva2-progress-fill" style="width:0%"></span></div>
                         <div class="bva2-progress-label"><span class="bva2-step">0</span>/5</div>
                     </div>
-
                     <!-- Qs -->
-                    <form class="bva2-form" novalidate>
-                        <div class="bva2-screen" data-screen="q1" aria-live="polite" hidden>
+                    <form class="bva2-form" novalidate="">
+                        <div aria-live="polite" class="bva2-screen" data-screen="q1" hidden="">
                             <h3 class="bva2-qtitle">Lean-Agile Foundations</h3>
                             <p class="bva2-qcopy">“We apply and integrate Lean and Agile principles to streamline work
                                 and drive innovation.”</p>
-                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q1">
-                                <button type="button" data-val="1">1</button><button type="button"
-                                    data-val="2">2</button>
-                                <button type="button" data-val="3">3</button><button type="button"
-                                    data-val="4">4</button>
-                                <button type="button" data-val="5">5</button>
+                            <div aria-label="Rate 1 to 5" class="bva2-scale" data-field="q1" role="group">
+                                <button data-val="1" type="button">1</button><button data-val="2"
+                                    type="button">2</button>
+                                <button data-val="3" type="button">3</button><button data-val="4"
+                                    type="button">4</button>
+                                <button data-val="5" type="button">5</button>
                             </div>
-                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                            <button class="btn btn-primary bva2-next" type="button">Next</button>
                         </div>
-
-                        <div class="bva2-screen" data-screen="q2" aria-live="polite" hidden>
+                        <div aria-live="polite" class="bva2-screen" data-screen="q2" hidden="">
                             <h3 class="bva2-qtitle">Value Stream Alignment</h3>
                             <p class="bva2-qcopy">“Our product, program, and project delivery efforts are mapped to
                                 customer journeys and business outcomes.”</p>
-                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q2">
-                                <button type="button" data-val="1">1</button><button type="button"
-                                    data-val="2">2</button>
-                                <button type="button" data-val="3">3</button><button type="button"
-                                    data-val="4">4</button>
-                                <button type="button" data-val="5">5</button>
+                            <div aria-label="Rate 1 to 5" class="bva2-scale" data-field="q2" role="group">
+                                <button data-val="1" type="button">1</button><button data-val="2"
+                                    type="button">2</button>
+                                <button data-val="3" type="button">3</button><button data-val="4"
+                                    type="button">4</button>
+                                <button data-val="5" type="button">5</button>
                             </div>
-                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                            <button class="btn btn-primary bva2-next" type="button">Next</button>
                         </div>
-
-                        <div class="bva2-screen" data-screen="q3" aria-live="polite" hidden>
+                        <div aria-live="polite" class="bva2-screen" data-screen="q3" hidden="">
                             <h3 class="bva2-qtitle">Team Collaboration</h3>
                             <p class="bva2-qcopy">“We use team-of-teams frameworks to align cross-functional efforts
                                 across operational, support, and development teams.”</p>
-                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q3">
-                                <button type="button" data-val="1">1</button><button type="button"
-                                    data-val="2">2</button>
-                                <button type="button" data-val="3">3</button><button type="button"
-                                    data-val="4">4</button>
-                                <button type="button" data-val="5">5</button>
+                            <div aria-label="Rate 1 to 5" class="bva2-scale" data-field="q3" role="group">
+                                <button data-val="1" type="button">1</button><button data-val="2"
+                                    type="button">2</button>
+                                <button data-val="3" type="button">3</button><button data-val="4"
+                                    type="button">4</button>
+                                <button data-val="5" type="button">5</button>
                             </div>
-                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                            <button class="btn btn-primary bva2-next" type="button">Next</button>
                         </div>
-
-                        <div class="bva2-screen" data-screen="q4" aria-live="polite" hidden>
+                        <div aria-live="polite" class="bva2-screen" data-screen="q4" hidden="">
                             <h3 class="bva2-qtitle">Decision Intelligence</h3>
                             <p class="bva2-qcopy">“We use data-driven insights with verified metrics to guide product,
                                 program, and project decisions.”</p>
-                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q4">
-                                <button type="button" data-val="1">1</button><button type="button"
-                                    data-val="2">2</button>
-                                <button type="button" data-val="3">3</button><button type="button"
-                                    data-val="4">4</button>
-                                <button type="button" data-val="5">5</button>
+                            <div aria-label="Rate 1 to 5" class="bva2-scale" data-field="q4" role="group">
+                                <button data-val="1" type="button">1</button><button data-val="2"
+                                    type="button">2</button>
+                                <button data-val="3" type="button">3</button><button data-val="4"
+                                    type="button">4</button>
+                                <button data-val="5" type="button">5</button>
                             </div>
-                            <button type="button" class="btn btn-primary bva2-next">Next</button>
+                            <button class="btn btn-primary bva2-next" type="button">Next</button>
                         </div>
-
-                        <div class="bva2-screen" data-screen="q5" aria-live="polite" hidden>
+                        <div aria-live="polite" class="bva2-screen" data-screen="q5" hidden="">
                             <h3 class="bva2-qtitle">Value Stream Flow Focus</h3>
                             <p class="bva2-qcopy">“We take a holistic, cross-functional view of our value streams to
                                 improve flow efficiency and throughput across the organization.”</p>
-                            <div class="bva2-scale" role="group" aria-label="Rate 1 to 5" data-field="q5">
-                                <button type="button" data-val="1">1</button><button type="button"
-                                    data-val="2">2</button>
-                                <button type="button" data-val="3">3</button><button type="button"
-                                    data-val="4">4</button>
-                                <button type="button" data-val="5">5</button>
+                            <div aria-label="Rate 1 to 5" class="bva2-scale" data-field="q5" role="group">
+                                <button data-val="1" type="button">1</button><button data-val="2"
+                                    type="button">2</button>
+                                <button data-val="3" type="button">3</button><button data-val="4"
+                                    type="button">4</button>
+                                <button data-val="5" type="button">5</button>
                             </div>
-                            <button type="button" class="btn btn-primary bva2-next">Continue</button>
+                            <button class="btn btn-primary bva2-next" type="button">Continue</button>
                         </div>
-
                         <!-- Lead capture (filled layout) -->
-                        <div class="bva2-screen" data-screen="lead" aria-live="polite" hidden>
+                        <div aria-live="polite" class="bva2-screen" data-screen="lead" hidden="">
                             <h3 class="bva2-qtitle">Where should we send your tailored plan?</h3>
                             <div class="bva2-lead">
-                                <label>Full Name <input type="text" id="bva2Name" required></label>
-                                <label>Email <input type="email" id="bva2Email" required></label>
-                                <label>Company (optional) <input type="text" id="bva2Company"></label>
+                                <label>Full Name <input id="bva2Name" required="" type="text" /></label>
+                                <label>Email <input id="bva2Email" required="" type="email" /></label>
+                                <label>Company (optional) <input id="bva2Company" type="text" /></label>
                             </div>
-                            <button type="submit" class="btn btn-primary">See my results</button>
+                            <button class="btn btn-primary" type="submit">See my results</button>
                             <p class="bva2-privacy">By continuing, you agree to our terms and privacy policy.</p>
                         </div>
                     </form>
-
                     <!-- Results -->
-                    <div class="bva2-screen" data-screen="results" aria-live="polite" hidden>
+                    <div aria-live="polite" class="bva2-screen" data-screen="results" hidden="">
                         <div class="bva2-results-head">
                             <div class="bva2-score">Your Score: <span id="bva2Score">0</span>/25</div>
                             <div class="bva2-status" id="bva2Status">—</div>
                         </div>
                         <p class="bva2-message" id="bva2Message">Calculating…</p>
-
                         <div class="bva2-actions">
-                            <a class="btn btn-primary" id="bva2PrimaryCta" href="#" rel="noopener">Open
+                            <a class="btn btn-primary" href="#" id="bva2PrimaryCta" rel="noopener">Open
                                 recommendation</a>
-                            <a class="btn btn-secondary" id="bva2AltCta" href="https://calendly.com/cgrupp55/20min"
-                                target="_blank" rel="noopener">
+                            <a class="btn btn-secondary" href="https://calendly.com/cgrupp55/20min" id="bva2AltCta"
+                                rel="noopener" target="_blank">
                                 Book a free strategy call
                             </a>
                         </div>
-
                         <div class="bva2-assets">
                             <a class="bva2-asset" href="https://www.commandresults.com/lean-agile-maturity-checklist/"
-                                target="_blank" rel="noopener">📄 Download full checklist</a>
+                                rel="noopener" target="_blank">📄 Download full checklist</a>
                             <a class="bva2-asset" href="#command-results-pricing">🚀 See BVA Program plans</a>
-                            <button class="bva2-asset" type="button" id="bva2Share">🔗 Share with a colleague</button>
+                            <button class="bva2-asset" id="bva2Share" type="button">🔗 Share with a colleague</button>
                         </div>
-
-                        <div class="bva2-testimonials" aria-label="What leaders say">
+                        <div aria-label="What leaders say" class="bva2-testimonials">
                             <figure class="bva2-quote active">“By applying the BVA methodology, we avoided a 3–4 month
                                 delay and saved $1.4M.” — <figcaption>Mohamad Annan</figcaption>
                             </figure>
@@ -837,12 +826,10 @@
                             </figure>
                         </div>
                     </div>
-
                 </div><!-- /.bva2-section -->
             </div>
         </div>
     </section>
-
     <!-- Final CTA -->
     <section class="final-cta">
         <div class="container">
@@ -880,22 +867,20 @@
                 .catch((err) => console.error("Service worker registration failed:", err));
         }
     </script>
-
     <!-- Video Modal -->
-    <div id="videoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Intro Video">
-        <div class="cr-modal__backdrop" data-close-modal></div>
-        <div class="cr-modal__dialog" role="document" aria-modal="true">
-            <button class="cr-modal__close" type="button" aria-label="Close video" data-close-modal>&times;</button>
+    <div aria-hidden="true" aria-label="Intro Video" class="cr-modal" id="videoModal" role="dialog">
+        <div class="cr-modal__backdrop" data-close-modal=""></div>
+        <div aria-modal="true" class="cr-modal__dialog" role="document">
+            <button aria-label="Close video" class="cr-modal__close" data-close-modal="" type="button">×</button>
             <div class="cr-modal__content">
                 <!-- 16:9 container -->
                 <div class="cr-video-16x9">
                     <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true"
-                        style="height:100%;width:100%">&nbsp;</div>
+                        style="height:100%;width:100%"> </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         // Simple modal controller
         (function () {
@@ -943,11 +928,11 @@
         })();
     </script>
     <!-- Install Gate Modal -->
-    <div id="installGate" class="cr-modal" aria-hidden="true" role="dialog" aria-label="Install the app to continue">
-        <div class="cr-modal__backdrop" data-close-modal></div>
-        <div class="cr-modal__dialog" role="document" aria-modal="true">
-            <button class="cr-modal__close" id="installCloseBtn" type="button" aria-label="Close"
-                data-close-modal>&times;</button>
+    <div aria-hidden="true" aria-label="Install the app to continue" class="cr-modal" id="installGate" role="dialog">
+        <div class="cr-modal__backdrop" data-close-modal=""></div>
+        <div aria-modal="true" class="cr-modal__dialog" role="document">
+            <button aria-label="Close" class="cr-modal__close" data-close-modal="" id="installCloseBtn"
+                type="button">×</button>
             <div class="cr-modal__content">
                 <h3 class="cr-modal__title">Install the App to Continue</h3>
                 <div class="install-steps">
@@ -975,14 +960,13 @@
                         </ol>
                     </div>
                 </div>
-                <p id="installHint" class="install-hint"></p>
+                <p class="install-hint" id="installHint"></p>
                 <div class="install-actions">
-                    <button type="button" id="installContinueBtn" class="btn">I’ve installed — continue</button>
+                    <button class="btn" id="installContinueBtn" type="button">I’ve installed — continue</button>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
