@@ -1252,3 +1252,123 @@ window.requireScorecardSubscription = function() {
   fake.dispatchEvent(evt);
   return false;
 };
+/* ===== DEBUG + INSTALL + GATE FIXES (append-only) ===== */
+
+// 0) Debug toggle
+window.__mailchimpDebug = true;
+function __dbg(...a){ if (window.__mailchimpDebug && console && console.log) console.log('[CR]', ...a); }
+
+// 1) Loud diagnostics for Newsletter/Scorecard wiring
+(function(){
+  const nl = document.getElementById('newsletterForm') || document.querySelector('form[data-mailchimp="newsletter"]') || document.querySelector('#newsletter form');
+  const sc = document.getElementById('scorecardForm')  || document.querySelector('form[data-mailchimp="scorecard"]') || document.querySelector('#scorecard form');
+  __dbg('newsletter form:', !!nl, nl);
+  __dbg('scorecard form:', !!sc, sc);
+
+  function val(form, sel){ const el = sel && form && form.querySelector(sel); return el && 'value' in el ? el.value : undefined; }
+  if (nl) {
+    __dbg('newsletter fields snapshot', {
+      email: val(nl, 'input[type="email"]') || val(nl,'[name="email"]') || (nl.querySelector('#newsletterEmail')||{}).value,
+      lname: val(nl, '[name="lname"]') || (nl.querySelector('#newsletterLastName')||{}).value,
+      jobtitle: val(nl, '[name="jobtitle"]') || (nl.querySelector('#newsletterJobTitle')||{}).value,
+      consent: !!(nl.querySelector('[name="consent"]') || document.getElementById('consentCheckbox'))?.checked
+    });
+  }
+  if (sc) {
+    __dbg('scorecard fields snapshot', {
+      email: val(sc, 'input[type="email"]') || val(sc,'[name="email"]') || (sc.querySelector('#scorecardEmail')||{}).value,
+      lname: val(sc, '[name="lname"]') || (sc.querySelector('#scorecardLastName')||{}).value,
+      jobtitle: val(sc, '[name="jobtitle"]') || (sc.querySelector('#scorecardJobTitle')||{}).value,
+      consent: !!(sc.querySelector('[name="consent"]') || document.getElementById('scorecardConsent'))?.checked
+    });
+  }
+})();
+
+// 2) Make submission logs obvious (wrap fetch)
+(function(){
+  const _post = (typeof __postJSON === 'function') ? __postJSON : null;
+  if (!_post) { __dbg('WARN: __postJSON not found; Mailchimp wiring may not be loaded yet.'); return; }
+
+  // Monkey-patch to add loud logs
+  window.__postJSON = async function(url, data){
+    __dbg('POST', url, { ...data, email: (data.email||'').replace(/(.{2}).+(@.*)/,'$1***$2') });
+    try {
+      const out = await _post(url, data);
+      __dbg('POST OK', url, out);
+      return out;
+    } catch (e) {
+      __dbg('POST FAIL', url, e?.message || e);
+      throw e;
+    }
+  };
+})();
+
+// 3) Results gate (ensure it’s loud)
+window.__scorecardSubscribed = window.__scorecardSubscribed || false;
+window.__deferredNavHref = window.__deferredNavHref || null;
+
+document.addEventListener('click', (e) => {
+  const gateEl = e.target?.closest?.('[data-gate="scorecard-results"]');
+  if (!gateEl) return;
+  __dbg('gate clicked; subscribed?', window.__scorecardSubscribed);
+  if (window.__scorecardSubscribed) return;
+  e.preventDefault();
+  if (gateEl.tagName === 'A' && gateEl.href) window.__deferredNavHref = gateEl.href;
+  const form = document.getElementById('scorecardForm')
+           || document.querySelector('form[data-mailchimp="scorecard"]')
+           || document.querySelector('#scorecard form');
+  if (form) {
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const status = document.querySelector('#scorecard-status')
+               || form.querySelector('[data-status]')
+               || form.querySelector('[role="status"]');
+    if (status) status.textContent = 'Please subscribe to receive your results.';
+  }
+});
+
+window.requireScorecardSubscription = function(){
+  __dbg('requireScorecardSubscription', window.__scorecardSubscribed);
+  if (window.__scorecardSubscribed) return true;
+  // emulate click on a gated thing to show the nudge
+  const fake = document.createElement('a');
+  fake.setAttribute('data-gate','scorecard-results');
+  const ev = new Event('click', { bubbles: true, cancelable: true });
+  fake.dispatchEvent(ev);
+  return false;
+};
+
+// 4) PWA install flow — fix "preventDefault() called" warning by exposing a proper prompt()
+(function(){
+  let deferredPrompt = null;
+  const findTrigger = () => document.querySelector('[data-install-trigger]') || document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // You likely call preventDefault elsewhere; do it here and store the event
+    e.preventDefault();
+    deferredPrompt = e;
+    __dbg('[PWA] beforeinstallprompt captured. Waiting for user gesture to call prompt().');
+    const btn = findTrigger();
+    if (btn) { btn.hidden = false; btn.style.display = ''; }
+  });
+
+  document.addEventListener('click', async (e) => {
+    const btn = e.target?.closest?.('[data-install-trigger], #installBtn');
+    if (!btn) return;
+    if (!deferredPrompt) { __dbg('[PWA] No install prompt available yet.'); return; }
+    try {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      __dbg('[PWA] install outcome:', choice && choice.outcome);
+      deferredPrompt = null;
+    } catch (err) {
+      __dbg('[PWA] prompt() error:', err?.message || err);
+      deferredPrompt = null;
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    __dbg('[PWA] App installed.');
+    const btn = findTrigger();
+    if (btn) btn.style.display = 'none';
+  });
+})();

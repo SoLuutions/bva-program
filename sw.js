@@ -1,5 +1,5 @@
 // sw.js — stable, no forced skipWaiting to avoid refresh loops
-const CACHE_VERSION = 'v2.3.c'; // Increment this for each new version of the service worker
+const CACHE_VERSION = 'v2.3.4'; // Increment this for each new version of the service worker
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
