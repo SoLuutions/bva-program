@@ -1092,3 +1092,163 @@ window.requireScorecardSubscription = function() {
     };
   }
 })();
+
+/* ===== Mailchimp wiring + quiz gate (append-only, CSS-safe) ===== */
+
+// Fallback for PWA update UI if your page hasn't defined one.
+if (typeof window.showUpdateNotification !== 'function') {
+  window.showUpdateNotification = function () {
+    console.info('[PWA] Update available.');
+    try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch (e) {}
+  };
+}
+
+// Simple JSON POST helper
+async function __postJSON(url, data) {
+  const res = await fetch(url, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data), credentials: 'same-origin'
+  });
+  const text = await res.text();
+  let json; try { json = JSON.parse(text); } catch { json = { message: text }; }
+  if (!res.ok) throw new Error(json.message || 'Request failed');
+  return json;
+}
+
+// Read value from form by common names or a fallback selector
+function __read(form, names, fallbackSel) {
+  for (const n of names) {
+    const el = form.querySelector(`[name="${n}"]`);
+    if (el && 'value' in el) return el.value;
+  }
+  if (fallbackSel) {
+    const el = form.querySelector(fallbackSel);
+    if (el && 'value' in el) return el.value;
+  }
+  return '';
+}
+// ID fallbacks to match your existing markup without changing CSS
+function __readByIds(form, ids) {
+  for (const id of ids) {
+    const el = form.querySelector('#' + id);
+    if (el && 'value' in el && String(el.value).trim()) return el.value;
+  }
+  return '';
+}
+function __checked(form, names, idFallbacks=[]) {
+  for (const n of names) {
+    const el = form.querySelector(`[name="${n}"]`);
+    if (el && 'checked' in el) return !!el.checked;
+  }
+  for (const id of idFallbacks) {
+    const el = form.querySelector('#' + id);
+    if (el && 'checked' in el) return !!el.checked;
+  }
+  const el = form.querySelector('[data-field="consent"]');
+  if (el && 'checked' in el) return !!el.checked;
+  return false;
+}
+
+function __wireForm({ scope, id, dataAttr, statusSel, tag }) {
+  let form = null;
+  if (id) form = document.getElementById(id);
+  if (!form && dataAttr) form = document.querySelector(`form[${dataAttr}]`);
+  if (!form && scope) {
+    const s = document.querySelector(scope);
+    if (s) form = s.querySelector('form');
+  }
+  if (!form || form.__wired_mailchimp) return;
+  form.__wired_mailchimp = true;
+
+  const status = statusSel ? document.querySelector(statusSel) : (form.querySelector('[role="status"]') || null);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (status) status.textContent = 'Submitting…';
+
+    // Flexible mapping (names, data-field, types) + ID fallbacks to your current markup
+    const email    = (__read(form, ['email','EMAIL'], 'input[type="email"], [data-field="email"]') || __readByIds(form, ['newsletterEmail','scorecardEmail'])) .trim().toLowerCase();
+    const fname    = (__read(form, ['fname','FNAME'], '[data-field="fname"]') || __readByIds(form, ['newsletterName','scorecardName'])) .trim();
+    const lname    = (__read(form, ['lname','LNAME'], '[data-field="lname"]') || __readByIds(form, ['newsletterLastName','scorecardLastName'])) .trim();
+    const jobtitle = (__read(form, ['jobtitle','JOBTITLE','title'], '[data-field="jobtitle"]') || __readByIds(form, ['newsletterJobTitle','scorecardJobTitle'])) .trim();
+    const company  = (__read(form, ['company','COMPANY'], '[data-field="company"]') || __readByIds(form, ['newsletterCompany','scorecardCompany'])) .trim();
+    const phone    = (__read(form, ['phone','PHONE'], 'input[type="tel"], [data-field="phone"]') || __readByIds(form, ['newsletterPhone','scorecardPhone'])) .trim();
+    const consent  = __checked(form, ['consent','CONSENT'], ['consentCheckbox','scorecardConsent']);
+
+    if (!email || !consent || !lname || !jobtitle) {
+      if (status) status.textContent = 'Please enter email, last name, job title, and accept the privacy policy.';
+      return;
+    }
+
+    try {
+      await __postJSON('/api/subscribe', {
+        source: tag.toLowerCase(),
+        email, fname, lname, jobtitle, company, phone, consent,
+        tags: [tag]
+      });
+
+      if (tag === 'Scorecard') {
+        window.__scorecardSubscribed = true;
+        if (status) status.textContent = 'Almost done! Please confirm via the email we just sent.';
+        if (window.__deferredNavHref) {
+          const href = window.__deferredNavHref; window.__deferredNavHref = null;
+          setTimeout(() => location.href = href, 250);
+        }
+      } else {
+        if (status) status.textContent = 'Check your inbox to confirm your subscription.';
+      }
+
+      // Optional: reset non-critical fields
+      // form.reset();
+    } catch (err) {
+      if (status) status.textContent = `Oops: ${err.message}`;
+      console.error('[Mailchimp] error', err);
+    }
+  });
+}
+
+// Attach when ready (won’t break your existing code)
+(function(){
+  const run = () => {
+    // Newsletter: #newsletterForm OR any form with data-mailchimp="newsletter" OR a form inside #newsletter
+    __wireForm({ scope: '#newsletter', id: 'newsletterForm', dataAttr: 'data-mailchimp="newsletter"', statusSel: '#newsletter-status', tag: 'Newsletter' });
+    // Scorecard: #scorecardForm OR any form with data-mailchimp="scorecard" OR a form inside #scorecard
+    __wireForm({ scope: '#scorecard', id: 'scorecardForm', dataAttr: 'data-mailchimp="scorecard"', statusSel: '#scorecard-status', tag: 'Scorecard' });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true }); else run();
+})();
+
+/* ===== Results Gate ===== */
+window.__scorecardSubscribed = window.__scorecardSubscribed || false;
+window.__deferredNavHref = null;
+
+// Gate clicks on anything marked as "show results" until scorecard subscribe succeeds
+document.addEventListener('click', (e) => {
+  const gateEl = e.target && e.target.closest && e.target.closest('[data-gate="scorecard-results"]');
+  if (!gateEl) return;
+  if (window.__scorecardSubscribed) return; // already allowed
+  e.preventDefault();
+  if (gateEl.tagName === 'A' && gateEl.href) window.__deferredNavHref = gateEl.href;
+
+  // Nudge user to the scorecard form
+  const form = document.getElementById('scorecardForm') ||
+               document.querySelector('form[data-mailchimp="scorecard"]') ||
+               document.querySelector('#scorecard form');
+  if (form) {
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const status = document.querySelector('#scorecard-status') ||
+                   form.querySelector('[data-status]') ||
+                   form.querySelector('[role="status"]');
+    if (status) status.textContent = 'Please subscribe to receive your results.';
+  }
+});
+
+// If your quiz renders results inline (no link), call this at the top:
+window.requireScorecardSubscription = function() {
+  if (window.__scorecardSubscribed) return true;
+  // Trigger the same nudge as clicking a gated element
+  const fake = document.createElement('a'); fake.setAttribute('data-gate', 'scorecard-results');
+  const evt = new Event('click', { bubbles: true, cancelable: true });
+  fake.dispatchEvent(evt);
+  return false;
+};
