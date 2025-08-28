@@ -43,6 +43,15 @@
     <!-- Wistia embed scripts (once) -->
     <script async="" src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp"></script>
     <script async="" src="https://fast.wistia.com/assets/external/E-v1.js"></script>
+
+<script>
+// Guaranteed global stub so app.js can safely call it even if UI isn't present yet.
+window.showUpdateNotification = window.showUpdateNotification || function () {
+  console.info('[PWA] Update available (global stub).');
+  try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch(e){}
+};
+</script>
+
 </head>
 
 <body>
@@ -958,6 +967,7 @@
                 </div>
             </div>
         </div>
-    </div></body>
+    </div>
+</body>
 
 </html>
