@@ -1,15 +1,10 @@
 // sw.js — stable, no forced skipWaiting to avoid refresh loops
-const CACHE_VERSION = 'v2.3.a'; // Increment this for each new version of the service worker
+const CACHE_VERSION = 'v2.3.a.12'; // Increment this for each new version of the service worker
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/registration.html',
-  '/styles.css',
-  '/app.js',
-  '/registration.js',
-  '/manifest.json',
+  '/', '/index.html', '/styles.css', '/app.js',
+  '/registration.js', '/manifest.json',
   '/icons/android/android-launchericon-192-192.png',
   '/icons/android/android-launchericon-512-512.png',
   '/icons/ios/180.png',

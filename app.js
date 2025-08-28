@@ -1010,3 +1010,17 @@ function openInstallGate(onContinue){
     if (input) input.disabled = b;
   }
 })();
+function showUpdateNotification() {
+  const n = document.getElementById('update-notification');
+  if (!n) return;
+  n.hidden = false;
+  const btn = n.querySelector('#reload-btn');
+  if (btn && !btn.__wired) {
+    btn.__wired = true;
+    btn.addEventListener('click', async () => {
+      const reg = await navigator.serviceWorker.getRegistration();
+      const w = reg && (reg.waiting || (reg.installing?.state === 'installed' && reg.installing));
+      if (w) w.postMessage('skipWaiting'); // SW handles this
+    }, { once: true });
+  }
+}
