@@ -1206,9 +1206,9 @@ function __wireForm({ scope, id, dataAttr, statusSel, tag }) {
 (function(){
   const run = () => {
     // Newsletter: #newsletterForm OR any form with data-mailchimp="newsletter" OR a form inside #newsletter
-    __wireForm({ scope: '#newsletter', id: 'newsletterForm', dataAttr: 'data-mailchimp="newsletter"', statusSel: '#newsletter-status', tag: 'Newsletter' });
+    __wireForm({ scope: '#newsletter', id: 'newsletterForm', dataAttr: 'data-mailchimp="newsletter"', statusSel: '#newsletter-status', tag: 'Newsletter - PWA' });
     // Scorecard: #scorecardForm OR any form with data-mailchimp="scorecard" OR a form inside #scorecard
-    __wireForm({ scope: '#scorecard', id: 'scorecardForm', dataAttr: 'data-mailchimp="scorecard"', statusSel: '#scorecard-status', tag: 'Scorecard' });
+    __wireForm({ scope: '#scorecard', id: 'scorecardForm', dataAttr: 'data-mailchimp="scorecard"', statusSel: '#scorecard-status', tag: 'Scorecard - PWA' });
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true }); else run();
 })();
