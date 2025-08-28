@@ -22,7 +22,14 @@ async function mcFetch(dc, path, options = {}) {
 }
 
 module.exports = async (req, res) => {
-  try {
+    // CORS (safe for same-origin; adjust origin if needed)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method === 'GET') return res.status(200).json({ ok: true, message: 'Subscribe API ready' });
+try {
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST');
       return res.status(405).json({ message: 'Method Not Allowed' });

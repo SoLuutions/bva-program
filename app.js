@@ -369,14 +369,9 @@ function initPricingModule() {
 // Newsletter form submission (retained)
 // ------------------------------------------------------------
 function initNewsletter() {
-  const newsletterForm = $('#newsletterForm');
-  if (!newsletterForm) return;
-
-  bindOnce(newsletterForm, 'submit', (e) => {
-    e.preventDefault();
-    alert("Thank you for subscribing!");
-    newsletterForm.reset();
-  });
+  // Legacy handler disabled so Mailchimp wiring (__wireForm) controls submission.
+  // If you want a toast UI, attach it on successful response inside __wireForm instead.
+  console.info('[Mailchimp] Legacy initNewsletter disabled; using __wireForm.');
 }
 
 // ------------------------------------------------------------

@@ -653,7 +653,7 @@ window.showUpdateNotification = window.showUpdateNotification || function () {
                     <div class="nl-badge">Newsletter</div>
                     <h3>Stay Updated with Lean-Agile Insights</h3>
                     <p>Subscribe to our newsletter for exclusive content, productivity tips, and program updates.</p>
-                    <form class="newsletter-form" id="newsletterForm">
+                    <form class="newsletter-form" id="newsletterForm" data-mailchimp="newsletter">
                         <div class="form-group optional-fields">
                           <input id="newsletterName" placeholder="Your name (optional)" type="text" />
                           <input id="newsletterLastName" name="lname" data-field="lname" type="text" placeholder="Last name *" required aria-required="true" />
@@ -661,12 +661,12 @@ window.showUpdateNotification = window.showUpdateNotification || function () {
                           <input id="newsletterCompany" placeholder="Company (optional)" type="text" />
                           <input id="newsletterJobTitle" name="jobtitle" data-field="jobtitle" type="text" placeholder="Job title *" required aria-required="true" />                                                  </div>
                         <div class="form-group">
-                          <input id="newsletterEmail" placeholder="Your best email" required type="email" />
+                          <input id="newsletterEmail" placeholder="Your best email" required type="email" / name="email">
                           <button class="btn btn-primary" type="submit">Subscribe</button>
                         </div>
                         <div class="privacy-note">
                           <label for="consentCheckbox">
-                            <input id="consentCheckbox" required type="checkbox" />
+                            <input id="consentCheckbox" required type="checkbox" / name="consent">
                             I agree to receive emails and accept the <a href="#">privacy policy</a>
                           </label>
                         </div>
