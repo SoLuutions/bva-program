@@ -1010,17 +1010,118 @@ function openInstallGate(onContinue){
     if (input) input.disabled = b;
   }
 })();
-function showUpdateNotification() {
-  const n = document.getElementById('update-notification');
-  if (!n) return;
-  n.hidden = false;
-  const btn = n.querySelector('#reload-btn');
-  if (btn && !btn.__wired) {
-    btn.__wired = true;
-    btn.addEventListener('click', async () => {
-      const reg = await navigator.serviceWorker.getRegistration();
-      const w = reg && (reg.waiting || (reg.installing?.state === 'installed' && reg.installing));
-      if (w) w.postMessage('skipWaiting'); // SW handles this
-    }, { once: true });
-  }
+
+/* ===== Mailchimp wiring (flexible; uses existing sections & CSS) ===== */
+
+async function __postJSON(url, data) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    credentials: 'same-origin',
+  });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); } catch { json = { message: text }; }
+  if (!res.ok) throw new Error(json.message || 'Request failed');
+  return json;
 }
+
+// Utility to pick a field value robustly
+function __read(form, names, fallbackSelector) {
+  for (const n of names) {
+    const el = form.querySelector(`[name="${n}"]`);
+    if (el && 'value' in el) return el.value;
+  }
+  if (fallbackSelector) {
+    const el = form.querySelector(fallbackSelector);
+    if (el && 'value' in el) return el.value;
+  }
+  return '';
+}
+function __checked(form, names) {
+  for (const n of names) {
+    const el = form.querySelector(`[name="${n}"]`);
+    if (el && 'checked' in el) return !!el.checked;
+  }
+  // allow data-field="consent"
+  const el = form.querySelector('[data-field="consent"]');
+  if (el && 'checked' in el) return !!el.checked;
+  return false;
+}
+
+function __wireForm({ scopeSelector, id, dataAttr, statusSelector, tag }) {
+  // Priority: explicit form by id -> data attr -> form within section
+  let form = null;
+  if (id) form = document.getElementById(id);
+  if (!form && dataAttr) form = document.querySelector(`form[${dataAttr}]`);
+  if (!form && scopeSelector) {
+    const section = document.querySelector(scopeSelector);
+    if (section) form = section.querySelector('form');
+  }
+  if (!form || form.__wired_mailchimp) return;
+  form.__wired_mailchimp = true;
+
+  const statusEl = statusSelector ? document.querySelector(statusSelector) : null;
+
+  form.addEventListener('submit', async (e) => {
+    if (form.dataset.mailchimpBypass === 'true') return; // allow bypass
+    e.preventDefault();
+    if (statusEl) statusEl.textContent = 'Submitting…';
+
+    // Flexible field mapping: try common names, then data-field attributes.
+    const email = (__read(form, ['email','EMAIL'], 'input[type="email"], [data-field="email"]') || '').trim().toLowerCase();
+    const fname = (__read(form, ['fname','FNAME'], '[data-field="fname"]') || '').trim();
+    const company = (__read(form, ['company','COMPANY'], '[data-field="company"]') || '').trim();
+    const phone = (__read(form, ['phone','PHONE'], 'input[type="tel"], [data-field="phone"]') || '').trim();
+    const consent = __checked(form, ['consent','CONSENT']);
+
+    if (!email || !consent) {
+      if (statusEl) statusEl.textContent = 'Please enter a valid email and accept the privacy policy.';
+      return;
+    }
+
+    try {
+      await __postJSON('/api/subscribe', {
+        source: tag.toLowerCase(),
+        email, fname, company, phone, consent,
+        tags: [tag]
+      });
+      if (statusEl) statusEl.textContent = tag === 'Scorecard'
+        ? 'Almost done! Please confirm via the email we just sent.'
+        : 'Check your inbox to confirm your subscription.';
+      // If you want to continue native form behavior afterwards, remove preventDefault above.
+      // Optionally reset non-essential fields:
+      // form.reset();
+    } catch (err) {
+      if (statusEl) statusEl.textContent = `Oops: ${err.message}`;
+    }
+  });
+}
+
+(function() {
+  const run = () => {
+    // Newsletter: tries #newsletter-form, then [data-mailchimp="newsletter"], then a form inside #newsletter
+    __wireForm({
+      scopeSelector: '#newsletter',
+      id: 'newsletter-form',
+      dataAttr: 'data-mailchimp="newsletter"',
+      statusSelector: '#newsletter-status',
+      tag: 'Newsletter'
+    });
+
+    // Scorecard: tries #scorecard-form, then [data-mailchimp="scorecard"], then a form inside #scorecard
+    __wireForm({
+      scopeSelector: '#scorecard',
+      id: 'scorecard-form',
+      dataAttr: 'data-mailchimp="scorecard"',
+      statusSelector: '#scorecard-status',
+      tag: 'Scorecard'
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run, { once: true });
+  } else {
+    run();
+  }
+})();
