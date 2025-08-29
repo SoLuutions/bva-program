@@ -3368,3 +3368,16 @@ html.cr-modal-open { overflow: hidden; }
 .lean-agile-intro .btn-primary:hover {
   color: #fff;
 }
+/* --- Lean-Agile Intro (bullet-free benefits) --- */
+.lean-agile-intro .lean-agile-benefits {
+  list-style: none;          /* remove bullets */
+  padding: 0;
+  margin: 0.75rem 0 1rem 0;
+}
+
+.lean-agile-intro .lean-agile-benefits li {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-family: var(--font);
+  color: var(--ink);
+}
