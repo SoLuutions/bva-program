@@ -3196,39 +3196,121 @@
  .reviews-note strong {
    font-weight: 800
  }
- /* --- Hero Video Modal --- */
-.cr-modal { position: fixed; inset: 0; z-index: 2000; display: none; }
-.cr-modal[aria-hidden="false"] { display: block; }
-.cr-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.6); }
-.cr-modal__dialog {
-  position: relative; max-width: 940px; margin: 5vh auto; background: transparent; padding: 0 16px;
-}
-.cr-modal__body { background: transparent; }
-.cr-modal__close {
-  position: absolute; top: -10px; right: 0; width: 40px; height: 40px;
-  border: none; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 24px; cursor: pointer;
-}
+
+/* Page lock when modal is open */
 html.cr-modal-open { overflow: hidden; }
 
-/* Clickable overlay over hero image (no arrow, invisible hit target) */
-.hero { position: relative; }
-.hero-video-link {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  top: 120px; /* roughly sits over the image area on most screens */
-  width: min(1200px, 96vw); height: 46vw; max-height: 540px;
-  background: transparent; border: 0; cursor: pointer;
+/* Modal shell */
+.cr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;              /* single source of truth */
+  display: none;              /* toggled via [aria-hidden] */
+  background: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
 }
+
+/* Accessibility-friendly toggle */
+.cr-modal[aria-hidden="true"]  { display: none; }
+.cr-modal[aria-hidden="false"] { display: flex; }
+
+/* Backdrop (optional separate layer if you want click-to-close) */
+.cr-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+}
+
+/* Dialog */
+.cr-modal__dialog {
+  position: relative;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 640px;           /* keep video readable on mobile/desktop */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Body */
+.cr-modal__body {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Close button */
+.cr-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Video container maintains aspect ratio */
+.video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;       /* replaces height hacks */
+  background: #000;
+}
+
+.video-container iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Clickable overlay over hero image */
+.hero { position: relative; }
+
+.hero-video-link {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 120px;                 /* adjust to your hero image */
+  width: min(1200px, 96vw);
+  height: 46vw;
+  max-height: 540px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
 /* Make sure the clickable area stays aligned on small screens */
 @media (max-width: 640px) {
-  .hero-video-link { top: 80px; height: 52vw; }
+  .hero-video-link {
+    top: 80px;
+    height: 52vw;
+  }
 }
 
 /* Tagline emphasis */
-.tagline strong { font-size: clamp(1.1rem, 1rem + 1.1vw, 1.6rem); font-weight: 900; }
+.tagline strong {
+  font-size: clamp(1.1rem, 1rem + 1.1vw, 1.6rem);
+  font-weight: 900;
+}
 
 /* Mobile typography tweaks */
 @media (max-width: 480px) {
-  /* Hero/Panel bullets and body copy scale up slightly on phones */
   .panel-list li,
   .panel-text,
   .panel-footnote,
@@ -3239,102 +3321,6 @@ html.cr-modal-open { overflow: hidden; }
     line-height: 1.65;
   }
 
-  /* “Results are real” proof list readability */
   .panel-list li { padding: 10px 12px; }
-
-  /* Section subtitles near videos (“Watch the Introductions”) */
   .video-sub { font-size: 1.05rem; line-height: 1.6; }
-}
-
-/* === Modal visual cleanup (added) === */
-.cr-modal__dialog{
-  background: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-.cr-modal__dialog iframe{
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  border: 0 !important;
-}
-
-
-.cr-modal[aria-hidden="true"] { display: none; }
-.cr-modal[aria-hidden="false"] { display: block; }
-.cr-modal-open { overflow: hidden; }
-.cr-modal__dialog {
-  max-width: 90vw;
-  max-height: 90vh;
-  width: 100%;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.cr-modal__body {
-  flex: 1;
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-}
-
-.video-container {
-  width: 100%;
-  height: 0;
-  padding-bottom: 37%; /* 16:9 Aspect Ratio */
-  position: relative;
-}
-
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-/* === Updated Video Modal Styles === */
-.cr-modal__dialog {
-  width: auto;
-  max-width: none;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-}
-
-.cr-modal__body {
-  padding: 0;
-  margin: 0;
-}
-
-.video-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.video-container iframe {
-  width: 640px;
-  height: 360px;
-  max-width: 100vw;
-  max-height: 100vh;
-  border: none;
-}
-
-.cr-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
 }
