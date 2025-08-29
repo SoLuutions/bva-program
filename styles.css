@@ -3324,3 +3324,47 @@ html.cr-modal-open { overflow: hidden; }
   .panel-list li { padding: 10px 12px; }
   .video-sub { font-size: 1.05rem; line-height: 1.6; }
 }
+/* --- Lean-Agile Intro (novice-friendly, updated with palette) --- */
+.lean-agile-intro {
+  padding: 2rem 0;
+  background: var(--light);          /* light background */
+  border-radius: 1rem;
+  margin: 1rem 0 2rem;
+  box-shadow: var(--shadow);
+}
+
+.lean-agile-intro h2 {
+  margin-top: 0;
+  font-size: 1.75rem;
+  color: var(--ink);                 /* main header ink */
+  font-family: var(--font);
+}
+
+.lean-agile-intro p {
+  margin: 0.5rem 0 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);               /* softer text for paragraphs */
+  font-family: var(--font);
+}
+
+.lean-agile-intro .lean-agile-benefits {
+  margin: 0.75rem 0 1rem 1.25rem;
+  color: var(--ink);                 /* darker ink for emphasis */
+  font-family: var(--font);
+}
+
+.lean-agile-intro .lean-agile-benefits li {
+  margin: 0.25rem 0;
+  color: var(--ink);
+}
+
+/* Button override for CTA */
+.lean-agile-intro .btn-primary {
+  background: var(--support);        /* orange support color */
+  color: white;                /* dark text for contrast */
+  border: none;
+}
+
+.lean-agile-intro .btn-primary:hover {
+  color: #fff;
+}
