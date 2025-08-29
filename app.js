@@ -698,7 +698,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initPricingModule();
   initNewsletter();
   initGetAppUX();
-  initBvaAssessment();  
+  initBvaAssessment();
+  initHeroVideoModal();
 });
 
 
@@ -1367,3 +1368,90 @@ window.requireScorecardSubscription = function(){
     if (btn) btn.style.display = 'none';
   });
 })();
+// ------------------------------------------------------------
+// Hero Video Modal (Wistia) — open from hero image
+// ------------------------------------------------------------
+function initHeroVideoModal() {
+  const openBtn  = document.querySelector('[data-open-video]');
+  const modal    = document.getElementById('heroVideoModal');
+  const closeEls = modal ? modal.querySelectorAll('[data-close-modal]') : [];
+  const iframe   = document.getElementById('heroVideoFrame');
+
+  if (!openBtn || !modal || !iframe) return;
+
+  const originalSrc = iframe.getAttribute('data-src') || iframe.src;
+
+  const open = () => {
+    modal.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('cr-modal-open');
+    // restore + autoplay
+    const url = new URL(originalSrc, window.location.href);
+    url.searchParams.set('autoPlay', 'true');
+    iframe.src = url.toString();
+    setTimeout(() => { openBtn.blur?.(); }, 10);
+  };
+
+  const close = () => {
+    modal.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('cr-modal-open');
+    // fully unload to stop audio
+    iframe.src = '';
+    // restore base URL without autoplay
+    const url = new URL(originalSrc, window.location.href);
+    url.searchParams.set('autoPlay', 'false');
+    iframe.src = url.toString();
+  };
+
+  openBtn.addEventListener('click', open);
+  closeEls.forEach(el => el.addEventListener('click', close));
+  // Close on Esc from anywhere
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  // Close when clicking backdrop
+  modal.addEventListener('click', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('cr-modal__backdrop')) close();
+  }, { capture: true });
+};
+
+  openBtn.addEventListener('click', open);
+  closeEls.forEach(el => el.addEventListener('click', close));
+  modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+  // Also close if user taps outside dialog
+  modal.addEventListener('click', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('cr-modal__backdrop')) close();
+  }, { capture: true });
+
+
+function initHeroVideoModal() {
+  const modal = document.getElementById('heroVideoModal');
+  const openBtn = document.querySelector('[data-open-video]');
+  const closeBtns = modal?.querySelectorAll('[data-close-modal]');
+  const iframe = document.getElementById('heroVideoFrame');
+  const iframeSrc = iframe?.getAttribute('data-src') || 'https://fast.wistia.net/embed/iframe/f7fd076enf?autoPlay=true&videoFoam=true';
+
+  if (!modal || !openBtn || !iframe) {
+    console.warn('[Modal] Missing modal elements');
+    return;
+  }
+
+  function openModal() {
+    modal.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('cr-modal-open');
+    iframe.setAttribute('src', iframeSrc);
+  }
+
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('cr-modal-open');
+    iframe.setAttribute('src', '');
+  }
+
+  bindOnce(openBtn, 'click', openModal);
+  closeBtns.forEach(btn => bindOnce(btn, 'click', closeModal));
+
+  modal.addEventListener('click', (e) => {
+    if (e.target.hasAttribute('data-close-modal')) {
+      closeModal();
+    }
+  });
+}

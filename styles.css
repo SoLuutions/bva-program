@@ -1183,7 +1183,7 @@
    max-width: 820px;
    margin: 26px auto;
    aspect-ratio: 16/9;
-   background: #000;
+   background: rgba(0,0,0,.6);
    border-radius: 16px;
    overflow: hidden;
    box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
@@ -3195,3 +3195,105 @@
  .reviews-note strong {
    font-weight: 800
  }
+ /* --- Hero Video Modal --- */
+.cr-modal { position: fixed; inset: 0; z-index: 2000; display: none; }
+.cr-modal[aria-hidden="false"] { display: block; }
+.cr-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.6); }
+.cr-modal__dialog {
+  position: relative; max-width: 940px; margin: 5vh auto; background: transparent; padding: 0 16px;
+}
+.cr-modal__body { background: transparent; }
+.cr-modal__close {
+  position: absolute; top: -10px; right: 0; width: 40px; height: 40px;
+  border: none; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 24px; cursor: pointer;
+}
+html.cr-modal-open { overflow: hidden; }
+
+/* Clickable overlay over hero image (no arrow, invisible hit target) */
+.hero { position: relative; }
+.hero-video-link {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  top: 120px; /* roughly sits over the image area on most screens */
+  width: min(1200px, 96vw); height: 46vw; max-height: 540px;
+  background: transparent; border: 0; cursor: pointer;
+}
+/* Make sure the clickable area stays aligned on small screens */
+@media (max-width: 640px) {
+  .hero-video-link { top: 80px; height: 52vw; }
+}
+
+/* Tagline emphasis */
+.tagline strong { font-size: clamp(1.1rem, 1rem + 1.1vw, 1.6rem); font-weight: 900; }
+
+/* Mobile typography tweaks */
+@media (max-width: 480px) {
+  /* Hero/Panel bullets and body copy scale up slightly on phones */
+  .panel-list li,
+  .panel-text,
+  .panel-footnote,
+  .ref-card p,
+  .problem-card p,
+  .solution-card p {
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  /* “Results are real” proof list readability */
+  .panel-list li { padding: 10px 12px; }
+
+  /* Section subtitles near videos (“Watch the Introductions”) */
+  .video-sub { font-size: 1.05rem; line-height: 1.6; }
+}
+
+/* === Modal visual cleanup (added) === */
+.cr-modal__dialog{
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+.cr-modal__dialog iframe{
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  border: 0 !important;
+}
+
+
+.cr-modal[aria-hidden="true"] { display: none; }
+.cr-modal[aria-hidden="false"] { display: block; }
+.cr-modal-open { overflow: hidden; }
+.cr-modal__dialog {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 100%;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.cr-modal__body {
+  flex: 1;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.video-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 37%; /* 16:9 Aspect Ratio */
+  position: relative;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
