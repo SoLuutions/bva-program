@@ -445,7 +445,7 @@ function initGetAppUX() {
     if (heroBtn)  heroBtn.innerHTML  = '<i class="fas fa-user-plus"></i> Register';
     if (finalBtn) finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
     if (installPopupBtn) installPopupBtn.textContent = 'Register';
-    /* keep Log In button as-is when not installed */
+    if (headerAuthBtn) { headerAuthBtn.innerHTML = 'Register'; headerAuthBtn.href = '/registration.html'; }
 
     // Intercept hero & final CTAs to go to registration page
     [heroBtn, finalBtn].forEach(a => {
