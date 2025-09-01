@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v3.1.0';
+const CACHE_VERSION = 'v3.1.a3';
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -28,7 +28,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  // Network-first for navigations, SWR for others
+
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
