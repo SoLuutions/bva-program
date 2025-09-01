@@ -445,10 +445,7 @@ function initGetAppUX() {
     if (heroBtn)  heroBtn.innerHTML  = '<i class="fas fa-user-plus"></i> Register';
     if (finalBtn) finalBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
     if (installPopupBtn) installPopupBtn.textContent = 'Register';
-    if (headerAuthBtn) {
-      headerAuthBtn.innerHTML = 'Register';
-      headerAuthBtn.href = '/registration.html';
-    }
+    /* keep Log In button as-is when not installed */
 
     // Intercept hero & final CTAs to go to registration page
     [heroBtn, finalBtn].forEach(a => {
@@ -821,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try { if (window.gtag) gtag('event','nav_dropdown_click',{cta_id:id, cta_label:label, destination_url:href}); } catch(e){}
       try { if (window.lintrk && window.LI_CONVERSIONS && window.LI_CONVERSIONS[id]) lintrk('track', {conversion_id: window.LI_CONVERSIONS[id]}); } catch(e){}
     }
-    [['nav-app-link','App'],['nav-trial-link','Free Trial'],['nav-purchase-link','Purchase']].forEach(function(pair){
+    [['nav-bva-program-app-link','BVA Program App'],['nav-app-link','App'],['nav-trial-link','Free Trial'],['nav-purchase-link','Purchase']].forEach(function(pair){
       var el = document.getElementById(pair[0]);
       if (!el) return;
       el.addEventListener('click', function(){
@@ -1609,4 +1606,40 @@ function initHeroVideoModal() {
   } else {
     start();
   }
+})();
+
+
+// Wire the new header Register button to respect install state
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    var el = document.getElementById('header-register');
+    if (el && typeof wireProtectedLink === 'function') {
+      try {
+        wireProtectedLink(el, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: false });
+      } catch(e){}
+    }
+  });
+})();
+
+
+// BVA v3: submenu toggle for global nav
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    var trigger = document.querySelector('.cr-global-nav .has-submenu > .submenu-toggle');
+    var item    = document.querySelector('.cr-global-nav .has-submenu');
+    if (!trigger || !item) return;
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      var open = item.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', open ? 'true':'false');
+    }, { passive:false });
+    document.addEventListener('click', function(e){
+      if (!item.contains(e.target)) {
+        item.classList.remove('open');
+        trigger.setAttribute('aria-expanded','false');
+      }
+    }, { capture:true });
+  });
 })();
