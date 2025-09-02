@@ -854,154 +854,10 @@ window.requireScorecardSubscription = function(){
   });
 })();
 // ------------------------------------------------------------
-// Hero Video Modal (Wistia) — open from hero image
+// Hero Video Modal (Wistia) - Fixed Implementation
 // ------------------------------------------------------------
-function initHeroVideoModal() {
-  const openBtn  = document.querySelector('[data-open-video]');
-  const modal    = document.getElementById('heroVideoModal');
-  const closeEls = modal ? modal.querySelectorAll('[data-close-modal]') : [];
-  const iframe   = document.getElementById('heroVideoFrame');
-
-  if (!openBtn || !modal || !iframe) return;
-
-  const originalSrc = iframe.getAttribute('data-src') || iframe.src;
-
-  const open = () => {
-    modal.setAttribute('aria-hidden', 'false');
-    document.documentElement.classList.add('cr-modal-open');
-    // restore + autoplay
-    const url = new URL(originalSrc, window.location.href);
-    url.searchParams.set('autoPlay', 'true');
-    iframe.src = url.toString();
-    setTimeout(() => { openBtn.blur?.(); }, 10);
-  };
-
-  const close = () => {
-    modal.setAttribute('aria-hidden', 'true');
-    document.documentElement.classList.remove('cr-modal-open');
-    // fully unload to stop audio
-    iframe.src = '';
-    // restore base URL without autoplay
-    const url = new URL(originalSrc, window.location.href);
-    url.searchParams.set('autoPlay', 'false');
-    iframe.src = url.toString();
-  };
-
-  openBtn.addEventListener('click', open);
-  closeEls.forEach(el => el.addEventListener('click', close));
-  // Close on Esc from anywhere
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-  // Close when clicking backdrop
-  modal.addEventListener('click', (e) => {
-    if (e.target && e.target.classList && e.target.classList.contains('cr-modal__backdrop')) close();
-  }, { capture: true });
-};
-
-  openBtn.addEventListener('click', open);
-  closeEls.forEach(el => el.addEventListener('click', close));
-  modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-
-  // Also close if user taps outside dialog
-  modal.addEventListener('click', (e) => {
-    if (e.target && e.target.classList && e.target.classList.contains('cr-modal__backdrop')) close();
-  }, { capture: true });
-
 
 function initHeroVideoModal() {
-  const modal = document.getElementById('heroVideoModal');
-  const openBtn = document.querySelector('[data-open-video]');
-  const closeBtns = modal?.querySelectorAll('[data-close-modal]');
-  const iframe = document.getElementById('heroVideoFrame');
-  const iframeSrc = iframe?.getAttribute('data-src') || 'https://fast.wistia.net/embed/iframe/f7fd076enf?autoPlay=true&videoFoam=true';
-
-  if (!modal || !openBtn || !iframe) {
-    console.warn('[Modal] Missing modal elements');
-    return;
-  }
-
-  function openModal() {
-    modal.setAttribute('aria-hidden', 'false');
-    document.documentElement.classList.add('cr-modal-open');
-    iframe.setAttribute('src', iframeSrc);
-  }
-
-  function closeModal() {
-    modal.setAttribute('aria-hidden', 'true');
-    document.documentElement.classList.remove('cr-modal-open');
-    iframe.setAttribute('src', '');
-  }
-
-  bindOnce(openBtn, 'click', openModal);
-  closeBtns.forEach(btn => bindOnce(btn, 'click', closeModal));
-
-  modal.addEventListener('click', (e) => {
-    if (e.target.hasAttribute('data-close-modal')) {
-      closeModal();
-    }
-  });
-}
-/* ==========================================================
-   Hero Video Modal + Autoplay Hardened (app.js)
-   ========================================================== */
-
-/** Utility: add event listener once, even if called multiple times */
-function bindOnce(el, type, handler, opts = { once: true }) {
-  if (!el) return;
-  const key = `__bound_${type}_${handler.name || 'fn'}`;
-  if (el[key]) return;
-  el.addEventListener(type, handler, opts);
-  el[key] = true;
-}
-
-/** Utility: set or replace a URLSearchParam */
-function withParam(url, key, val) {
-  const u = new URL(url, window.location.href);
-  u.searchParams.set(key, String(val));
-  return u.toString();
-}
-
-/** Utility: normalize scroll lock (support html or body targets) */
-function setScrollLock(locked) {
-  const cls = 'cr-modal-open';
-  document.documentElement.classList.toggle(cls, locked);
-  document.body.classList.toggle(cls, locked);
-}
-
-/** Optional: resilient autoplay for a separate intro <audio id="intro-audio"> */
-function initIntroAudioAutoplay() {
-  const audio = document.getElementById('intro-audio');
-  if (!audio) return;
-
-  function attemptPlay() {
-    audio.play().catch(() => {
-      // Fallback on first user gesture (covers autoplay policy)
-      const resume = () => {
-        audio.play().catch(() => { /* give up silently */ });
-        ['pointerdown','keydown','touchstart','scroll'].forEach(ev =>
-          window.removeEventListener(ev, resume, { passive: true })
-        );
-      };
-      ['pointerdown','keydown','touchstart','scroll'].forEach(ev =>
-        window.addEventListener(ev, resume, { once: true, passive: true })
-      );
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', attemptPlay, { once: true });
-  } else {
-    attemptPlay();
-  }
-}
-
-/** Main: Hero Video Modal (Wistia) */
-function initHeroVideoModal() {
-  // REQUIRED MARKUP:
-  // <div id="heroVideoModal" class="cr-modal" aria-hidden="true">…</div>
-  // <button data-open-video>Open</button> (can have multiple triggers)
-  // <button data-close-modal>Close</button> or .cr-modal__close or backdrop
-  // <iframe id="heroVideoFrame" class="wistia_embed" data-src="..."></iframe>
-
   const modal = document.getElementById('heroVideoModal');
   const iframe = document.getElementById('heroVideoFrame');
   const openBtns = document.querySelectorAll('[data-open-video], .hero-video-link');
@@ -1012,92 +868,106 @@ function initHeroVideoModal() {
     return;
   }
 
-  // --- Ensure no autoplay on first paint ------------------------------------
-  // If the iframe has an active src (e.g. ?autoPlay=true), move it to data-src and clear src.
-  (function normalizeIframeSrc() {
-    const liveSrc = iframe.getAttribute('src');
-    const dataSrc = iframe.getAttribute('data-src');
-    // Prefer explicit data-src. If not present, salvage the live src.
-    if (!dataSrc && liveSrc) {
-      iframe.setAttribute('data-src', liveSrc);
-    }
-    // Always clear src so nothing loads until open.
-    iframe.removeAttribute('src');
-  })();
+  // Prevent multiple initializations
+  if (modal.__videoModalInitialized) {
+    return;
+  }
+  modal.__videoModalInitialized = true;
 
-  // Compute a safe base URL with autoPlay=false
-  const baseRaw = iframe.getAttribute('data-src') || '';
-  const baseSrc = baseRaw ? withParam(baseRaw, 'autoPlay', 'false') : '';
+  // Get the base video URL
+  const baseVideoUrl = iframe.getAttribute('data-src') || 
+                      iframe.getAttribute('src') || 
+                      'https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true';
+
+  // Clear the iframe src initially to prevent autoplay
+  iframe.removeAttribute('src');
 
   function openModal(e) {
-    if (e && typeof e.preventDefault === 'function') e.preventDefault();
-    // Visible state (support both aria and .is-open for CSS/JS compatibility)
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+
+    console.log('[Modal] Opening video modal');
+
+    // Show modal
     modal.setAttribute('aria-hidden', 'false');
     modal.classList.add('is-open');
-    setScrollLock(true);
+    document.documentElement.classList.add('cr-modal-open');
+    document.body.classList.add('cr-modal-open');
 
-    // Load + play the video only now
-    if (baseSrc) {
-      // Ensure videoFoam remains enabled unless explicitly turned off in data-src
-      const urlWithFoam = withParam(baseSrc, 'videoFoam', 'true');
-      iframe.src = withParam(urlWithFoam, 'autoPlay', 'true');
-    }
+    // Load video with autoplay
+    const videoUrl = new URL(baseVideoUrl, window.location.href);
+    videoUrl.searchParams.set('autoPlay', 'true');
+    videoUrl.searchParams.set('videoFoam', 'true');
+
+    iframe.src = videoUrl.toString();
+    console.log('[Modal] Video URL set to:', videoUrl.toString());
   }
 
   function closeModal(e) {
-    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+
+    console.log('[Modal] Closing video modal');
+
+    // Hide modal
     modal.setAttribute('aria-hidden', 'true');
     modal.classList.remove('is-open');
-    setScrollLock(false);
+    document.documentElement.classList.remove('cr-modal-open');
+    document.body.classList.remove('cr-modal-open');
 
-    // Unload iframe fully to stop audio and free resources
+    // Stop video by clearing src
     iframe.src = '';
   }
 
-  // Bind openers (can be multiple)
-  openBtns.forEach(btn => bindOnce(btn, 'click', openModal));
+  // Bind open buttons
+  openBtns.forEach(btn => {
+    // Remove any existing listeners to prevent duplicates
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
 
-  // Bind closers
-  closeBtns.forEach(btn => bindOnce(btn, 'click', closeModal));
+    newBtn.addEventListener('click', openModal, { passive: false });
+    console.log('[Modal] Bound open button:', newBtn);
+  });
 
-  // Backdrop click (clicks directly on backdrop or elements with data-close-modal)
+  // Bind close buttons
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', closeModal, { passive: false });
+  });
+
+  // Close on backdrop click
   modal.addEventListener('click', (e) => {
-    const target = e.target;
-    const isBackdrop = target && (
-      target.classList && target.classList.contains('cr-modal__backdrop')
-    );
-    const isExplicitClose = target && (
-      target.hasAttribute && target.hasAttribute('data-close-modal')
-    );
-    if (isBackdrop || isExplicitClose) closeModal(e);
+    if (e.target === modal || 
+        e.target.classList.contains('cr-modal__backdrop') ||
+        e.target.hasAttribute('data-close-modal')) {
+      closeModal(e);
+    }
   }, { capture: true });
 
-  // ESC to close
+  // Close on ESC key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
       closeModal(e);
     }
   });
+
+  console.log('[Modal] Video modal initialized successfully');
 }
 
-/* ==========================================================
-   Boot
-   ========================================================== */
-(function boot() {
-  const start = () => {
-    initHeroVideoModal();
-    initIntroAudioAutoplay(); // safe: only runs if #intro-audio exists
-  };
-
+// ------------------------------------------------------------
+// Initialize when DOM is ready
+// ------------------------------------------------------------
+function initVideoModal() {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
+    document.addEventListener('DOMContentLoaded', initHeroVideoModal, { once: true });
   } else {
-    start();
+    initHeroVideoModal();
   }
-})();
+}
 
-
-// Wire the new header Register button to respect install state
+// Call initialization
+initVideoModal();
 (function(){
   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
   ready(function(){

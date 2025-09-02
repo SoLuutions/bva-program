@@ -120,8 +120,8 @@
                         <!-- Use the same Wistia library already on the page -->
                         <iframe id="heroVideoFrame" class="wistia_embed" name="wistia_embed" allowfullscreen
                             allowtransparency="true" frameborder="0" scrolling="no"
-                            src="https://fast.wistia.net/embed/iframe/f7fd076enf?autoPlay=true&videoFoam=true"
-                            data-src="">
+                            src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true"
+                            data-data-src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true">
                         </iframe>
 
                     </div>
@@ -950,66 +950,6 @@
                 .then((reg) => console.log("Service worker registered:", reg))
                 .catch((err) => console.error("Service worker registration failed:", err));
         }
-    </script>
-    <!-- Video Modal -->
-    <div aria-hidden="true" aria-label="Intro Video" class="cr-modal" id="videoModal" role="dialog">
-        <div class="cr-modal__backdrop" data-close-modal=""></div>
-        <div aria-modal="true" class="cr-modal__dialog" role="document">
-            <button aria-label="Close video" class="cr-modal__close" data-close-modal="" type="button">×</button>
-            <div class="cr-modal__content">
-                <!-- 16:9 container -->
-                <div class="cr-video-16x9">
-                    <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true"
-                        style="height:100%;width:100%"> </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Simple modal controller
-        (function () {
-            const modal = document.getElementById('videoModal');
-            const openBtn = document.getElementById('playHeroVideo');
-            let player = null;
-
-            // Wistia onReady
-            window._wq = window._wq || [];
-            _wq.push({
-                id: 'd6rdjc4nbs', onReady: function (video) {
-                    player = video;
-                }
-            });
-
-            function openModal(e) {
-                if (e) e.preventDefault();
-                if (!modal) return;
-                modal.setAttribute('aria-hidden', 'false');
-                document.documentElement.classList.add('cr-modal-open');
-                // autoplay when ready
-                try { if (player) player.play(); } catch (e) { }
-            }
-
-            function closeModal() {
-                if (!modal) return;
-                modal.setAttribute('aria-hidden', 'true');
-                document.documentElement.classList.remove('cr-modal-open');
-                try { if (player) player.pause(); } catch (e) { }
-            }
-
-            if (openBtn) {
-                openBtn.addEventListener('click', openModal, { capture: true });
-            }
-            // close on backdrop / close button / Esc
-            modal?.addEventListener('click', function (ev) {
-                if (ev.target && ev.target.hasAttribute('data-close-modal')) closeModal();
-            });
-            document.addEventListener('keydown', function (ev) {
-                if (ev.key === 'Escape') closeModal();
-            });
-            // expose for other buttons if needed
-            window.CR_openIntroVideo = openModal;
-            window.CR_closeIntroVideo = closeModal;
-        })();
     </script>
     <!-- Install Gate Modal -->
     <div aria-hidden="true" aria-label="Install the app to continue" class="cr-modal" id="installGate" role="dialog">
