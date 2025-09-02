@@ -1131,39 +1131,38 @@ function initHeroVideoModal() {
     }, { capture:true });
   });
 })();
-// ===== OneSignal: prompt after first-time PWA install =====
+
 (function () {
   const PROMPT_KEY = 'onesignalPromptedAfterInstall';
 
-  function onOSReady(fn) {
+  function onOS(fn) {
     window.OneSignalDeferred = window.OneSignalDeferred || [];
-    window.OneSignalDeferred.push(function(OneSignal){ fn(OneSignal); });
+    window.OneSignalDeferred.push(async function (OneSignal) {
+      try { await fn(OneSignal); } catch (e) { console.error('[OneSignal]', e); }
+    });
   }
 
-  // If the PWA was already marked installed on a previous run but we never prompted, try once.
+  async function promptAndTag(OneSignal) {
+    if (OneSignal.Slidedown?.promptPush) {
+      await OneSignal.Slidedown.promptPush();
+    } else if (OneSignal.Notifications?.requestPermission) {
+      await OneSignal.Notifications.requestPermission();
+    }
+
+
+    const stamp = String(Date.now());
+    await OneSignal.User.addTag('installed_pwa', 'true');
+    await OneSignal.User.addTag('installed_pwa_at', stamp);
+
+    try { localStorage.setItem(PROMPT_KEY, '1'); } catch (_) { }
+  }
+
   if (localStorage.getItem('pwa-installed') === 'true' && !localStorage.getItem(PROMPT_KEY)) {
-    onOSReady((OneSignal) => {
-      if (OneSignal.Slidedown && OneSignal.Slidedown.promptPush) {
-        OneSignal.Slidedown.promptPush(); // v16 slidedown prompt
-      } else if (OneSignal.Notifications && OneSignal.Notifications.requestPermission) {
-        OneSignal.Notifications.requestPermission(); // native prompt fallback
-      }
-      localStorage.setItem(PROMPT_KEY, '1');
-    });
+    onOS(promptAndTag);
   }
-
-  // On fresh install event, prompt once
   window.addEventListener('appinstalled', function () {
-    try { localStorage.setItem('pwa-installed', 'true'); } catch (e) {}
+    try { localStorage.setItem('pwa-installed', 'true'); } catch (_) { }
     if (localStorage.getItem(PROMPT_KEY)) return;
-
-    onOSReady((OneSignal) => {
-      if (OneSignal.Slidedown && OneSignal.Slidedown.promptPush) {
-        OneSignal.Slidedown.promptPush();
-      } else if (OneSignal.Notifications && OneSignal.Notifications.requestPermission) {
-        OneSignal.Notifications.requestPermission();
-      }
-      localStorage.setItem(PROMPT_KEY, '1');
-    });
+    onOS(promptAndTag);
   });
 })();
