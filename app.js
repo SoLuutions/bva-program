@@ -1200,7 +1200,6 @@ function __wireForm({ scope, id, dataAttr, statusSel, tag }) {
   });
 }
 
-// Attach when ready (won’t break your existing code)
 (function(){
   const run = () => {
     // Newsletter: #newsletterForm OR any form with data-mailchimp="newsletter" OR a form inside #newsletter
