@@ -42,11 +42,21 @@
     <script async="" src="https://fast.wistia.com/assets/external/E-v1.js"></script>
 
     <script>
-        // Guaranteed global stub so app.js can safely call it even if UI isn't present yet.
         window.showUpdateNotification = window.showUpdateNotification || function () {
             console.info('[PWA] Update available (global stub).');
             try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch (e) { }
         };
+    </script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.init({
+                appId: "2add46ea-b309-4c41-8dc7-c4be9f777136",
+                safari_web_id: "web.onesignal.auto.67c39979-7446-4274-a748-fcdf2406257a",
+                notifyButton: { enable: true },  // optional (bell UI)
+            });
+        });
     </script>
 
 </head>
@@ -60,41 +70,44 @@
                         src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" />
                 </div>
                 <div class="nav-buttons-container">
-  <!-- Left group -->
-  <div class="nav-buttons">
-    <a class="btn btn-secondary" href="#command-results-pricing">View Plans</a>
-  </div>
+                    <!-- Left group -->
+                    <div class="nav-buttons">
+                        <a class="btn btn-secondary" href="#command-results-pricing">View Plans</a>
+                    </div>
 
-  <!-- Right group -->
-  <div class="nav-buttons">
-    <a class="btn btn-secondary" href="https://command-results.passion.io/login" id="auth-button">Log In</a>
-    </div>
-  </div>
-</div>
-</div>
-</div>
+                    <!-- Right group -->
+                    <div class="nav-buttons">
+                        <a class="btn btn-secondary" href="https://command-results.passion.io/login"
+                            id="auth-button">Log In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
 
-  <nav class="cr-global-nav">
-    <ul class="cr-global-nav-list">
-      <li><a href="https://www.commandresults.com/about/">About</a></li>
-      <li><a href="https://www.commandresults.com/books/">Books</a></li>
-      <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
-      <li><a href="#command-results-pricing">Pricing</a></li>
-      
-<li class="has-submenu">
-  <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
-  <ul class="submenu" aria-label="BVA Resources submenu">
-    <li><a href="https://app.commandresults.com">BVA Program</a></li>
-    <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a></li>
-    <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive Brief</a></li>
-  </ul>
-</li>
+        <nav class="cr-global-nav">
+            <ul class="cr-global-nav-list">
+                <li><a href="https://www.commandresults.com/about/">About</a></li>
+                <li><a href="https://www.commandresults.com/books/">Books</a></li>
+                <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
+                <li><a href="#command-results-pricing">Pricing</a></li>
 
-      <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
-      <li><a href="/contact">Contact Us</a></li>
-    </ul>
-  </nav>
-</header>
+                <li class="has-submenu">
+                    <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
+                    <ul class="submenu" aria-label="BVA Resources submenu">
+                        <li><a href="https://app.commandresults.com">BVA Program</a></li>
+                        <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA
+                                Guide</a></li>
+                        <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive
+                                Brief</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Hero Video Modal -->
     <div id="heroVideoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-labelledby="heroVideoTitle">
@@ -134,7 +147,8 @@
                     <h2>What is the Lean-Agile Way?</h2>
                     <p>
                         The Lean-Agile Way is a simple approach that combines two proven ideas —
-                        <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> (working in small, fast steps) —
+                        <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> (working in small, fast steps)
+                        —
                         to help businesses focus on what matters most.
                     </p>
                     <p>
@@ -148,10 +162,10 @@
                     </ul>
                     <div class="panel-cta">
                         <div class="video-actions">
-                        <a class="btn btn-primary" href="#" role="button" data-open-video>
-                            Watch how it works in 90 seconds
-                        </a>
-                    </div>
+                            <a class="btn btn-primary" href="#" role="button" data-open-video>
+                                Watch how it works in 90 seconds
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -166,13 +180,10 @@
                             measurable wins.
                         </p>
                         <div class="video-actions">
-                            <a class="btn btn-primary"
-                            href="#"
-                            role="button"
-                            data-open-video>
-                            Watch Intro Video
-                         </a>
-                         
+                            <a class="btn btn-primary" href="#" role="button" data-open-video>
+                                Watch Intro Video
+                            </a>
+
                             <nav class="video-nav">
                                 <a href="#problems">Why Teams Struggle</a>
                                 <a href="#command-results-pricing">Plans &amp; Pricing</a>
@@ -243,16 +254,16 @@
                     </p>
                     <div class="cta-buttons">
                     </div>
-                    </div>
-                    </div>
-                </article>
             </div>
-            <br />
-            <br />
-            <p class="tagline">
-                <strong>🧠 AI doesn’t replace people</strong><br>
-                – It amplifies those with the right foundation. We build that foundation.
-            </p>
+        </div>
+        </article>
+        </div>
+        <br />
+        <br />
+        <p class="tagline">
+            <strong>🧠 AI doesn’t replace people</strong><br>
+            – It amplifies those with the right foundation. We build that foundation.
+        </p>
 
         </div>
     </section>
@@ -313,7 +324,8 @@
                     <footer>— Stacey Bevill</footer>
                 </blockquote>
                 <blockquote class="ref-card">
-                    <p>“For anyone looking to deepen their Lean and Agile understanding on a tight schedule, this app makes the learning both accessible and impactful.”</p>
+                    <p>“For anyone looking to deepen their Lean and Agile understanding on a tight schedule, this app
+                        makes the learning both accessible and impactful.”</p>
                     <footer>- Sumathi Arcot</footer>
                 </blockquote>
             </div>
@@ -519,66 +531,74 @@
             </section>
             <!-- Team Training -->
             <section class="cr-pricing-section">
-  <div class="cr-section-header">
-    <h2>Facilitated Workshops</h2>
-    <p>Our facilitated workshops give product, program, and project teams expert guidance in integrating Lean-Agile practices. Each session blends instruction with hands-on exercises that connect methods to real-world challenges.</p>
-  </div>
+                <div class="cr-section-header">
+                    <h2>Facilitated Workshops</h2>
+                    <p>Our facilitated workshops give product, program, and project teams expert guidance in integrating
+                        Lean-Agile practices. Each session blends instruction with hands-on exercises that connect
+                        methods to real-world challenges.</p>
+                </div>
 
-  <p class="cr-asterisk-note" style="margin-top:-10px">Team-based, hands-on sessions introducing integrated Lean-Agile methods for measurable results on real work.</p>
+                <p class="cr-asterisk-note" style="margin-top:-10px">Team-based, hands-on sessions introducing
+                    integrated Lean-Agile methods for measurable results on real work.</p>
 
-  <div class="cr-pricing-grid three-column">
-    <!-- 4-Hour Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>4-Hour Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$325 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Team-based session introducing the seven methods of the Lean-Agile Way.</li>
-          <li>Learn how integrated methods improve productivity, efficiency, and agility.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
+                <div class="cr-pricing-grid three-column">
+                    <!-- 4-Hour Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>4-Hour Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$325 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Team-based session introducing the seven methods of the Lean-Agile Way.</li>
+                                <li>Learn how integrated methods improve productivity, efficiency, and agility.</li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
 
-    <!-- 8-Hour Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>8-Hour Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$500 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Introduction to integrated Lean-Agile practices with a deeper dive into value stream identification.</li>
-          <li>Apply value stream mapping and management through practical exercises.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
+                    <!-- 8-Hour Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>8-Hour Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$500 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Introduction to integrated Lean-Agile practices with a deeper dive into value stream
+                                    identification.</li>
+                                <li>Apply value stream mapping and management through practical exercises.</li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
 
-    <!-- 3-Day Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>3-Day Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$1,150 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Build a product-oriented value stream improvement plan within 30 days.</li>
-          <li>Deliver measurable progress in 90 days and develop skills to sustain excellence.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
-  </div>
-</section>
+                    <!-- 3-Day Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>3-Day Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$1,150 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Build a product-oriented value stream improvement plan within 30 days.</li>
+                                <li>Deliver measurable progress in 90 days and develop skills to sustain excellence.
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
+                </div>
+            </section>
             <!-- BVA Implementation -->
             <section class="cr-pricing-section">
                 <div class="cr-section-header">

@@ -1131,4 +1131,39 @@ function initHeroVideoModal() {
     }, { capture:true });
   });
 })();
->>>>>>> new
+// ===== OneSignal: prompt after first-time PWA install =====
+(function () {
+  const PROMPT_KEY = 'onesignalPromptedAfterInstall';
+
+  function onOSReady(fn) {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    window.OneSignalDeferred.push(function(OneSignal){ fn(OneSignal); });
+  }
+
+  // If the PWA was already marked installed on a previous run but we never prompted, try once.
+  if (localStorage.getItem('pwa-installed') === 'true' && !localStorage.getItem(PROMPT_KEY)) {
+    onOSReady((OneSignal) => {
+      if (OneSignal.Slidedown && OneSignal.Slidedown.promptPush) {
+        OneSignal.Slidedown.promptPush(); // v16 slidedown prompt
+      } else if (OneSignal.Notifications && OneSignal.Notifications.requestPermission) {
+        OneSignal.Notifications.requestPermission(); // native prompt fallback
+      }
+      localStorage.setItem(PROMPT_KEY, '1');
+    });
+  }
+
+  // On fresh install event, prompt once
+  window.addEventListener('appinstalled', function () {
+    try { localStorage.setItem('pwa-installed', 'true'); } catch (e) {}
+    if (localStorage.getItem(PROMPT_KEY)) return;
+
+    onOSReady((OneSignal) => {
+      if (OneSignal.Slidedown && OneSignal.Slidedown.promptPush) {
+        OneSignal.Slidedown.promptPush();
+      } else if (OneSignal.Notifications && OneSignal.Notifications.requestPermission) {
+        OneSignal.Notifications.requestPermission();
+      }
+      localStorage.setItem(PROMPT_KEY, '1');
+    });
+  });
+})();
