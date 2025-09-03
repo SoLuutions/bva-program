@@ -3452,3 +3452,39 @@ html.cr-modal-open { overflow: hidden; }
 /* optional */
 #command-results-pricing .cr-container{ max-width: 1320px; }
 
+
+
+/* === Bullet size fix: ensure list items are as large as body text === */
+.panel-list li,
+.offering-details li,
+.workshop-details li,
+.founder-bullets li,
+.solution-card li {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+/* ===== Mobile header compaction (<=600px) ===== */
+@media (max-width: 600px) {
+  header { padding: 6px 0; }
+  .logo img {
+    max-height: 28px;  
+    height: auto;
+    width: auto;
+  }
+
+  /* Compact the buttons */
+  .nav-buttons-container { gap: 6px; }
+  .nav-buttons .btn {
+    min-width: auto;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Slim down the secondary nav bar */
+  .cr-global-nav { padding: 6px 0; }
+  .cr-global-nav-list { gap: 8px; }
+  .cr-global-nav a {
+    font-size: 0.9rem;
+    padding: 6px 4px;
+  }
+}
