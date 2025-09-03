@@ -1844,7 +1844,7 @@ footer {
   }
 
   .logo {
-    min-width: auto;
+    min-width: 90%;
     justify-content: flex-start;
     margin-bottom: 0
   }
@@ -3385,10 +3385,10 @@ html.cr-modal-open { overflow: hidden; }
 /* --- BVA updates --- */
 .cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
 .cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
 .cr-global-nav{ background:transparent; padding:.25rem 0 0; }
-.cr-global-nav-list{ display:flex; gap:24px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
-.cr-global-nav-list a{ text-decoration:none; font-weight:600; }
+.cr-global-nav-list{ display:flex; gap:20px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
+.cr-global-nav-list a{ text-decoration:none; font-weight:500; }
 
 /* --- BVA v3 header + menu --- */
 .cr-global-nav{ padding:.35rem 0 .25rem; }
@@ -3406,7 +3406,7 @@ html.cr-modal-open { overflow: hidden; }
 }
 .cr-global-nav-list .submenu li{ margin:0; }
 .cr-global-nav-list .submenu a{
- display:block; padding:.75rem 1rem; color:#fff; text-decoration:none; font-weight:700;
+ display:block; padding:.65rem 1rem; color:#fff; text-decoration:none; font-weight:700;
  border-top:1px solid rgba(255,255,255,.18);
 }
 .cr-global-nav-list .submenu li:first-child a{ border-top:0; }
@@ -3417,16 +3417,16 @@ html.cr-modal-open { overflow: hidden; }
 /* remove bullets and enforce 3-col grid (keep from v2) */
 .cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
 .cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
 
 /* --- BVA layout plan tweaks --- */
 .nav-buttons-container{ display:flex; align-items:center; gap:16px; }
 .nav-buttons-container .nav-buttons{ display:flex; align-items:center; gap:16px; }
-.cr-global-nav-list{ gap:22px; }
+.cr-global-nav-list{ gap:15px; }
 @media (max-width: 980px){
  .nav-buttons-container{ gap:10px; }
  .nav-buttons-container .nav-buttons{ gap:10px; }
- .cr-global-nav-list{ gap:16px; flex-wrap:wrap; }
+ .cr-global-nav-list{ gap:10px; flex-wrap:wrap; }
 }
 /* Replace your current base grid rule with this */
 #command-results-pricing .cr-pricing-grid{
@@ -3478,8 +3478,46 @@ html.cr-modal-open { overflow: hidden; }
 @media (max-width: 600px) {
   .panel-cta .btn { min-width: 0; width: 100%; }
 }
-
+.tagline{
+  color:var(--light);
+  position:relative;
+  justify-content: center;
+}
 
 @media (max-width: 600px) {
   .btn { min-width: 0; }
+}
+.panel-card.small-panel {
+  padding: 16px 18px;
+  font-size: 0.9rem;
+}
+
+.panel-card.small-panel .panel-title {
+  font-size: 1.05rem;
+}
+
+.panel-card.small-panel .panel-text {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+/* Compact + transparent variant for AI panel */
+.panel-card.small-panel {
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.88); /* semi-transparent */
+  font-size: 0.92rem;
+  margin-top: 0;   /* balance spacing with siblings */
+  margin-bottom: 0;
+}
+.panel-card.small-panel .panel-title {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+.panel-card.small-panel .panel-text {
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.tagline {
+  margin: 0 auto;       /* centers the card */
+  max-width: 600px;     /* optional: limit width */
+  display: block;       /* ensures block-level centering */
 }
