@@ -3463,28 +3463,23 @@ html.cr-modal-open { overflow: hidden; }
   font-size: 1rem;
   line-height: 1.6;
 }
-/* ===== Mobile header compaction (<=600px) ===== */
+
+
+/* === Panel CTA improvements === */
+.panel-cta {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.panel-cta .btn { min-width: 160px; }
+
 @media (max-width: 600px) {
-  header { padding: 6px 0; }
-  .logo img {
-    max-height: 28px;  
-    height: auto;
-    width: auto;
-  }
+  .panel-cta .btn { min-width: 0; width: 100%; }
+}
 
-  /* Compact the buttons */
-  .nav-buttons-container { gap: 6px; }
-  .nav-buttons .btn {
-    min-width: auto;
-    padding: 8px 10px;
-    font-size: 0.9rem;
-  }
 
-  /* Slim down the secondary nav bar */
-  .cr-global-nav { padding: 6px 0; }
-  .cr-global-nav-list { gap: 8px; }
-  .cr-global-nav a {
-    font-size: 0.9rem;
-    padding: 6px 4px;
-  }
+@media (max-width: 600px) {
+  .btn { min-width: 0; }
 }
