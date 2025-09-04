@@ -57,8 +57,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  min-width: 100%;
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 12px
@@ -1844,7 +1844,7 @@ footer {
   }
 
   .logo {
-    min-width: 90%;
+    min-width: auto;
     justify-content: flex-start;
     margin-bottom: 0
   }
@@ -3522,17 +3522,75 @@ html.cr-modal-open { overflow: hidden; }
   display: block;       /* ensures block-level centering */
 }
 
-/* === Panel paragraph spacing === */
-.panel-card p { margin-bottom: 1.15em; }
 
-/* Ensure the Watch card always renders as a white panel */
-#video-intros {
-  background: #fff !important;
-  border-radius: 16px !important;
-  box-shadow: var(--shadow) !important;
-  padding: 26px 22px !important;
+/* === Mobile viewport alignment fixes (2025-09-03) === */
+html, body { width: 100%; }
+img, iframe, video { max-width: 100%; height: auto; }
+
+/* Ensure major wrappers always span the viewport width */
+header, nav, .hero, section, footer, .container { width: 100%; }
+
+/* Prevent grid/card layouts from causing off-center/narrow renders on small Android screens */
+@media (max-width: 900px) {
+  .hero-panels { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  .problem-points, .solution-grid, .offering-list, .stats-grid, .workshop-list { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .btn { min-width: 0; width: 100%; }
+  .hero-image-wrap { margin-top: 0 !important; }
 }
 
-/* If it was nested inside .video-intros, neutralize any conflicting wrappers */
-.video-intros { background: transparent !important; padding: 0 !important; }
-.video-intros .video-intros-wrap { padding: 0 !important; }
+/* Make install/update notifications responsive so they never shrink the layout */
+@media (max-width: 768px) {
+  #install-notification, #update-notification {
+    left: 20px; right: 20px; width: auto; max-width: calc(100vw - 40px);
+  }
+}
+
+/* === 2025-09-04: Remove bullets from white panel boxes (Gary request) === */
+/* Scope to panel cards only so pricing and other lists keep their icons */
+.panel-card .panel-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: grid;
+  gap: 10px;
+}
+.panel-card .panel-list li {
+  padding-left: 0 !important;
+  font-size: 1rem;            /* match body text */
+  line-height: 1.6;
+  font-weight: 600;
+  background: transparent !important;
+}
+.panel-card .panel-list li::before {
+  content: none !important;   /* remove dot bullets */
+  display: none !important;
+}
+
+
+/* === 2025-09-04: Mobile overflow guard & layout clamps === */
+html, body { overflow-x: hidden; }
+section, header, footer, .container, .hero, .final-cta, .newsletter-cta { max-width: 100%; overflow-x: clip; }
+.hero-image-wrap, .hero-image-wrap img, .video-container { max-width: 100%; }
+img, video, iframe { max-width: 100%; height: auto; }
+/* Avoid accidental 100vw overflow due to borders/padding */
+[class*="container"], [class*="grid"] { box-sizing: border-box; }
+
+
+/* === 2025-09-04: Mobile header compact + hamburger nav === */
+@media (max-width: 768px) {
+  header { padding: 8px 0; }
+  .logo { font-size: 1.25rem; margin-bottom: 0; }
+  .nav-buttons-container { display: none !important; } /* hide wide buttons */
+  .nav-dropdown { display: inline-block !important; }  /* show dropdown */
+  .nav-dropdown-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
+  }
+  .nav-dropdown-toggle .hamburger { font-size: 1.25rem; line-height: 1; }
+  .nav-dropdown-menu { width: min(92vw, 360px); }
+  .nav-dropdown-menu .dropdown-item { font-size: 1.05rem; padding: 0.9rem 1rem; }
+}
