@@ -57,8 +57,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 1 auto;
-  min-width: 0;
+  flex: 1;
+  min-width: 100%;
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 12px
@@ -1844,7 +1844,7 @@ footer {
   }
 
   .logo {
-    min-width: auto;
+    min-width: 90%;
     justify-content: flex-start;
     margin-bottom: 0
   }
@@ -3522,60 +3522,17 @@ html.cr-modal-open { overflow: hidden; }
   display: block;       /* ensures block-level centering */
 }
 
+/* === Panel paragraph spacing === */
+.panel-card p { margin-bottom: 1.15em; }
 
-/* === Mobile viewport alignment fixes (2025-09-03) === */
-html, body { width: 100%; }
-img, iframe, video { max-width: 100%; height: auto; }
-
-/* Ensure major wrappers always span the viewport width */
-header, nav, .hero, section, footer, .container { width: 100%; }
-
-/* Prevent grid/card layouts from causing off-center/narrow renders on small Android screens */
-@media (max-width: 900px) {
-  .hero-panels { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 768px) {
-  .problem-points, .solution-grid, .offering-list, .stats-grid, .workshop-list { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 480px) {
-  .btn { min-width: 0; width: 100%; }
-  .hero-image-wrap { margin-top: 0 !important; }
+/* Ensure the Watch card always renders as a white panel */
+#video-intros {
+  background: #fff !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow) !important;
+  padding: 26px 22px !important;
 }
 
-/* Make install/update notifications responsive so they never shrink the layout */
-@media (max-width: 768px) {
-  #install-notification, #update-notification {
-    left: 20px; right: 20px; width: auto; max-width: calc(100vw - 40px);
-  }
-}
-
-/* === 2025-09-04: Remove bullets from white panel boxes (Gary request) === */
-/* Scope to panel cards only so pricing and other lists keep their icons */
-.panel-card .panel-list {
-  list-style: none !important;
-  padding-left: 0 !important;
-  display: grid;
-  gap: 10px;
-}
-.panel-card .panel-list li {
-  padding-left: 0 !important;
-  font-size: 1rem;            /* match body text */
-  line-height: 1.6;
-  font-weight: 600;
-  background: transparent !important;
-}
-.panel-card .panel-list li::before {
-  content: none !important;   /* remove dot bullets */
-  display: none !important;
-}
-
-
-/* === Harmonize "Watch the Introductions" with panel cards === */
-.video-intros { background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
-.video-intros .video-intros-wrap { justify-content: center; }
-#watch-intros-card .video-actions { margin-top: 0; }
-#watch-intros-card .video-nav a { font-weight: 700; }
-
-
-/* === 2025-09-04: Improve paragraph spacing inside panel cards === */
-.panel-card p { margin-bottom: 1.2em; }
+/* If it was nested inside .video-intros, neutralize any conflicting wrappers */
+.video-intros { background: transparent !important; padding: 0 !important; }
+.video-intros .video-intros-wrap { padding: 0 !important; }
