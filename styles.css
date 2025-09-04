@@ -3575,3 +3575,7 @@ header, nav, .hero, section, footer, .container { width: 100%; }
 .video-intros .video-intros-wrap { justify-content: center; }
 #watch-intros-card .video-actions { margin-top: 0; }
 #watch-intros-card .video-nav a { font-weight: 700; }
+
+
+/* === 2025-09-04: Improve paragraph spacing inside panel cards === */
+.panel-card p { margin-bottom: 1.2em; }
