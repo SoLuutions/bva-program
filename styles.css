@@ -37,13 +37,14 @@ section {
 }
 
 header {
-  position: sticky;
+  position: sticky !important;
   top: 0;
-  z-index: 1000;
+  width: 100%;
+  z-index: 9999 !important;
   background: var(--primary);
   color: #fff;
   padding: 12px 0;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, .2)
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .2);
 }
 
 .header-container {
