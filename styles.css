@@ -3581,3 +3581,13 @@ section, header, footer, .container, .hero, .final-cta, .newsletter-cta { max-wi
 img, video, iframe { max-width: 100%; height: auto; }
 /* Avoid accidental 100vw overflow due to borders/padding */
 [class*="container"], [class*="grid"] { box-sizing: border-box; }
+
+/* Sticky Header CSS Patch */
+header {
+  position: -webkit-sticky; /* Safari support */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
