@@ -3548,3 +3548,30 @@ header, nav, .hero, section, footer, .container { width: 100%; }
     left: 20px; right: 20px; width: auto; max-width: calc(100vw - 40px);
   }
 }
+
+/* === 2025-09-04: Remove bullets from white panel boxes (Gary request) === */
+/* Scope to panel cards only so pricing and other lists keep their icons */
+.panel-card .panel-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: grid;
+  gap: 10px;
+}
+.panel-card .panel-list li {
+  padding-left: 0 !important;
+  font-size: 1rem;            /* match body text */
+  line-height: 1.6;
+  font-weight: 600;
+  background: transparent !important;
+}
+.panel-card .panel-list li::before {
+  content: none !important;   /* remove dot bullets */
+  display: none !important;
+}
+
+
+/* === Harmonize "Watch the Introductions" with panel cards === */
+.video-intros { background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
+.video-intros .video-intros-wrap { justify-content: center; }
+#watch-intros-card .video-actions { margin-top: 0; }
+#watch-intros-card .video-nav a { font-weight: 700; }
