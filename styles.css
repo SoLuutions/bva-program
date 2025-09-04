@@ -3583,8 +3583,7 @@ img, video, iframe { max-width: 100%; height: auto; }
 @media (max-width: 768px) {
   header { padding: 8px 0; }
   .logo { font-size: 1.25rem; margin-bottom: 0; }
-  .nav-buttons-container { display: none !important; } /* hide wide buttons */
-  .nav-dropdown { display: inline-block !important; }  /* show dropdown */
+  .nav-dropdown { display: inline-block !important; }  
   .nav-dropdown-toggle {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 12px; border-radius: 10px;
