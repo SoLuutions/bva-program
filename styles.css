@@ -74,7 +74,8 @@ header {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  width: auto
+  width: auto;
+  position:sticky
 }
 
 .nav-buttons {
@@ -1851,7 +1852,8 @@ footer {
 
   .nav-buttons-container {
     width: auto;
-    justify-content: flex-end
+    justify-content: flex-end;
+    position:sticky
   }
 }
 
@@ -1934,7 +1936,8 @@ footer {
     justify-content: center !important;
     flex-wrap: wrap;
     width: 100%;
-    gap: 10px
+    gap: 10px;
+    position: sticky !important
   }
 
   .nav-buttons .btn {
@@ -3577,19 +3580,3 @@ section, header, footer, .container, .hero, .final-cta, .newsletter-cta { max-wi
 img, video, iframe { max-width: 100%; height: auto; }
 /* Avoid accidental 100vw overflow due to borders/padding */
 [class*="container"], [class*="grid"] { box-sizing: border-box; }
-
-
-/* === 2025-09-04: Mobile header compact + hamburger nav === */
-@media (max-width: 768px) {
-  header { padding: 8px 0; }
-  .logo { font-size: 1.25rem; margin-bottom: 0; }
-  .nav-dropdown { display: inline-block !important; }  
-  .nav-dropdown-toggle {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 12px; border-radius: 10px;
-    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
-  }
-  .nav-dropdown-toggle .hamburger { font-size: 1.25rem; line-height: 1; }
-  .nav-dropdown-menu { width: min(92vw, 360px); }
-  .nav-dropdown-menu .dropdown-item { font-size: 1.05rem; padding: 0.9rem 1rem; }
-}
