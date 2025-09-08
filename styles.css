@@ -37,13 +37,14 @@ section {
 }
 
 header {
-  position: sticky;
+  position: sticky !important;
   top: 0;
-  z-index: 1000;
+  width: 100%;
+  z-index: 9999 !important;
   background: var(--primary);
   color: #fff;
   padding: 12px 0;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, .2)
+  box-shadow: 0 2px 15px rgba(0, 0, 0, .2);
 }
 
 .header-container {
@@ -57,8 +58,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  min-width: 100%;
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 12px
@@ -74,7 +75,8 @@ header {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  width: auto
+  width: auto;
+  position:sticky
 }
 
 .nav-buttons {
@@ -1851,7 +1853,8 @@ footer {
 
   .nav-buttons-container {
     width: auto;
-    justify-content: flex-end
+    justify-content: flex-end;
+    position:sticky
   }
 }
 
@@ -1934,7 +1937,8 @@ footer {
     justify-content: center !important;
     flex-wrap: wrap;
     width: 100%;
-    gap: 10px
+    gap: 10px;
+    position: sticky !important
   }
 
   .nav-buttons .btn {
@@ -3385,10 +3389,10 @@ html.cr-modal-open { overflow: hidden; }
 /* --- BVA updates --- */
 .cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
 .cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
 .cr-global-nav{ background:transparent; padding:.25rem 0 0; }
-.cr-global-nav-list{ display:flex; gap:24px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
-.cr-global-nav-list a{ text-decoration:none; font-weight:600; }
+.cr-global-nav-list{ display:flex; gap:20px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
+.cr-global-nav-list a{ text-decoration:none; font-weight:500; }
 
 /* --- BVA v3 header + menu --- */
 .cr-global-nav{ padding:.35rem 0 .25rem; }
@@ -3406,7 +3410,7 @@ html.cr-modal-open { overflow: hidden; }
 }
 .cr-global-nav-list .submenu li{ margin:0; }
 .cr-global-nav-list .submenu a{
- display:block; padding:.75rem 1rem; color:#fff; text-decoration:none; font-weight:700;
+ display:block; padding:.65rem 1rem; color:#fff; text-decoration:none; font-weight:700;
  border-top:1px solid rgba(255,255,255,.18);
 }
 .cr-global-nav-list .submenu li:first-child a{ border-top:0; }
@@ -3417,16 +3421,16 @@ html.cr-modal-open { overflow: hidden; }
 /* remove bullets and enforce 3-col grid (keep from v2) */
 .cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
 .cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
 
 /* --- BVA layout plan tweaks --- */
 .nav-buttons-container{ display:flex; align-items:center; gap:16px; }
 .nav-buttons-container .nav-buttons{ display:flex; align-items:center; gap:16px; }
-.cr-global-nav-list{ gap:22px; }
+.cr-global-nav-list{ gap:15px; }
 @media (max-width: 980px){
  .nav-buttons-container{ gap:10px; }
  .nav-buttons-container .nav-buttons{ gap:10px; }
- .cr-global-nav-list{ gap:16px; flex-wrap:wrap; }
+ .cr-global-nav-list{ gap:10px; flex-wrap:wrap; }
 }
 /* Replace your current base grid rule with this */
 #command-results-pricing .cr-pricing-grid{
@@ -3451,4 +3455,139 @@ html.cr-modal-open { overflow: hidden; }
 }
 /* optional */
 #command-results-pricing .cr-container{ max-width: 1320px; }
+
+
+
+/* === Bullet size fix: ensure list items are as large as body text === */
+.panel-list li,
+.offering-details li,
+.workshop-details li,
+.founder-bullets li,
+.solution-card li {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+
+/* === Panel CTA improvements === */
+.panel-cta {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.panel-cta .btn { min-width: 160px; }
+
+@media (max-width: 600px) {
+  .panel-cta .btn { min-width: 0; width: 100%; }
+}
+.tagline{
+  color:var(--light);
+  position:relative;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .btn { min-width: 0; }
+}
+.panel-card.small-panel {
+  padding: 16px 18px;
+  font-size: 0.9rem;
+}
+
+.panel-card.small-panel .panel-title {
+  font-size: 1.05rem;
+}
+
+.panel-card.small-panel .panel-text {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+/* Compact + transparent variant for AI panel */
+.panel-card.small-panel {
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.88); /* semi-transparent */
+  font-size: 0.92rem;
+  margin-top: 0;   /* balance spacing with siblings */
+  margin-bottom: 0;
+}
+.panel-card.small-panel .panel-title {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+.panel-card.small-panel .panel-text {
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.tagline {
+  margin: 0 auto;       /* centers the card */
+  max-width: 600px;     /* optional: limit width */
+  display: block;       /* ensures block-level centering */
+}
+
+
+/* === Mobile viewport alignment fixes (2025-09-03) === */
+html, body { width: 100%; }
+img, iframe, video { max-width: 100%; height: auto; }
+
+/* Ensure major wrappers always span the viewport width */
+header, nav, .hero, section, footer, .container { width: 100%; }
+
+/* Prevent grid/card layouts from causing off-center/narrow renders on small Android screens */
+@media (max-width: 900px) {
+  .hero-panels { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  .problem-points, .solution-grid, .offering-list, .stats-grid, .workshop-list { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .btn { min-width: 0; width: 100%; }
+  .hero-image-wrap { margin-top: 0 !important; }
+}
+
+/* Make install/update notifications responsive so they never shrink the layout */
+@media (max-width: 768px) {
+  #install-notification, #update-notification {
+    left: 20px; right: 20px; width: auto; max-width: calc(100vw - 40px);
+  }
+}
+
+/* === 2025-09-04: Remove bullets from white panel boxes (Gary request) === */
+/* Scope to panel cards only so pricing and other lists keep their icons */
+.panel-card .panel-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: grid;
+  gap: 10px;
+}
+.panel-card .panel-list li {
+  padding-left: 0 !important;
+  font-size: 1rem;            /* match body text */
+  line-height: 1.6;
+  font-weight: 600;
+  background: transparent !important;
+}
+.panel-card .panel-list li::before {
+  content: none !important;   /* remove dot bullets */
+  display: none !important;
+}
+
+
+/* === 2025-09-04: Mobile overflow guard & layout clamps === */
+html, body { overflow-x: hidden; }
+section, header, footer, .container, .hero, .final-cta, .newsletter-cta { max-width: 100%; overflow-x: clip; }
+.hero-image-wrap, .hero-image-wrap img, .video-container { max-width: 100%; }
+img, video, iframe { max-width: 100%; height: auto; }
+/* Avoid accidental 100vw overflow due to borders/padding */
+[class*="container"], [class*="grid"] { box-sizing: border-box; }
+
+/* Sticky Header CSS Patch */
+header {
+  position: -webkit-sticky; /* Safari support */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
 

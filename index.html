@@ -42,11 +42,21 @@
     <script async="" src="https://fast.wistia.com/assets/external/E-v1.js"></script>
 
     <script>
-        // Guaranteed global stub so app.js can safely call it even if UI isn't present yet.
         window.showUpdateNotification = window.showUpdateNotification || function () {
             console.info('[PWA] Update available (global stub).');
             try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch (e) { }
         };
+    </script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.init({
+                appId: "2add46ea-b309-4c41-8dc7-c4be9f777136",
+                safari_web_id: "web.onesignal.auto.67c39979-7446-4274-a748-fcdf2406257a",
+                notifyButton: { enable: true },  // optional (bell UI)
+            });
+        });
     </script>
 
 </head>
@@ -60,41 +70,44 @@
                         src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" />
                 </div>
                 <div class="nav-buttons-container">
-  <!-- Left group -->
-  <div class="nav-buttons">
-    <a class="btn btn-secondary" href="#command-results-pricing">View Plans</a>
-  </div>
+                    <!-- Left group -->
+                    <div class="nav-buttons">
+                        <a class="btn btn-secondary" href="#command-results-pricing">View Plans</a>
+                    </div>
 
-  <!-- Right group -->
-  <div class="nav-buttons">
-    <a class="btn btn-secondary" href="https://command-results.passion.io/login" id="auth-button">Log In</a>
-    </div>
-  </div>
-</div>
-</div>
-</div>
+                    <!-- Right group -->
+                    <div class="nav-buttons">
+                        <a class="btn btn-secondary" href="https://command-results.passion.io/login"
+                            id="auth-button">Log In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
 
-  <nav class="cr-global-nav">
-    <ul class="cr-global-nav-list">
-      <li><a href="https://www.commandresults.com/about/">About</a></li>
-      <li><a href="https://www.commandresults.com/books/">Books</a></li>
-      <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
-      <li><a href="#command-results-pricing">Pricing</a></li>
-      
-<li class="has-submenu">
-  <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
-  <ul class="submenu" aria-label="BVA Resources submenu">
-    <li><a href="https://app.commandresults.com">BVA Program</a></li>
-    <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a></li>
-    <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive Brief</a></li>
-  </ul>
-</li>
+        <nav class="cr-global-nav">
+            <ul class="cr-global-nav-list">
+                <li><a href="https://www.commandresults.com/about/">About</a></li>
+                <li><a href="https://www.commandresults.com/books/">Books</a></li>
+                <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
+                <li><a href="#command-results-pricing">Pricing</a></li>
 
-      <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
-      <li><a href="/contact">Contact Us</a></li>
-    </ul>
-  </nav>
-</header>
+                <li class="has-submenu">
+                    <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
+                    <ul class="submenu" aria-label="BVA Resources submenu">
+                        <li><a href="https://app.commandresults.com">BVA Program</a></li>
+                        <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA
+                                Guide</a></li>
+                        <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive
+                                Brief</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Hero Video Modal -->
     <div id="heroVideoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-labelledby="heroVideoTitle">
@@ -107,8 +120,8 @@
                         <!-- Use the same Wistia library already on the page -->
                         <iframe id="heroVideoFrame" class="wistia_embed" name="wistia_embed" allowfullscreen
                             allowtransparency="true" frameborder="0" scrolling="no"
-                            src="https://fast.wistia.net/embed/iframe/f7fd076enf?autoPlay=true&videoFoam=true"
-                            data-src="">
+                            src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true"
+                            data-data-src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true">
                         </iframe>
 
                     </div>
@@ -129,35 +142,73 @@
             <h2 class="apps-title">Business Value Accelerator Program</h2>
 
             <!-- Added: Plain-language intro for novices -->
-            <section id="what-is-lean-agile" class="lean-agile-intro">
-                <div class="container">
-                    <h2>What is the Lean-Agile Way?</h2>
-                    <p>
-                        The Lean-Agile Way is a simple approach that combines two proven ideas —
-                        <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> (working in small, fast steps) —
-                        to help businesses focus on what matters most.
-                    </p>
-                    <p>
-                        In plain terms: it helps you <strong>get more done with less stress</strong>. You’ll create an
-                        action plan in 30 days, see results in 90, and build lasting skills for long‑term success.
-                    </p>
-                    <ul class="lean-agile-benefits">
-                        <li><strong>Work Smarter</strong> — Focus on what matters most.</li>
-                        <li><strong>Cut Waste</strong> — Eliminate effort that doesn’t add value.</li>
-                        <li><strong>See Results Fast</strong> — Improvements show up in weeks, not months.</li>
-                    </ul>
-                    <div class="panel-cta">
-                        <div class="video-actions">
-                        <a class="btn btn-primary" href="#" role="button" data-open-video>
-                            Watch how it works in 90 seconds
-                        </a>
-                    </div>
-                    </div>
-                </div>
-            </section>
+<!-- Update the "What is the Lean-Agile Way?" section -->
+<section id="what-is-lean-agile" class="lean-agile-intro">
+    <div class="container">
+        <h2>What is the Lean-Agile Way?</h2>
+        <p>
+            The <em>Lean-Agile Way</em> is a simple approach to driving business
+            improvement—combining <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> 
+            (small teams working in short cycles to solve critical problems and deliver
+            solutions)—so organizations can deliver maximum value with the time,
+            funding, and resources available.
+        </p>
+        <p>
+            At its core, the <em>Lean-Agile Way</em> provides seven proven, practical
+            methods that improve business performance across product, program, and
+            project teams.
+        </p>
+        <div class="panel-cta">
+        </div>
+    </div>
+</section>
 
-            <!-- Video Introductions (concise panel) -->
-            <section class="video-intros" id="video-intros">
+<!-- Update the BVA Program panel -->
+<article class="panel-card" id="bva-program-panel">
+    <h3 class="panel-title">The Business Value Accelerator (BVA) Program</h3>
+    <p class="panel-text">
+        Our BVA Program integrates these seven Lean‑Agile Way methods to help teams build a holistic improvement
+        plan within <strong>30 days</strong>, achieve measurable results in <strong>90</strong>, and develop
+        lasting skills for sustained success.
+    </p>
+    <ul class="panel-list">
+        <li><strong>Work Smarter</strong> — Focus on what matters most.</li>
+        <li><strong>Cut Waste</strong> — Eliminate effort that doesn't add customer value.</li>
+        <li><strong>See Results Fast</strong> — Improvements show up in weeks, not months.</li>
+    </ul>
+    <div class="panel-cta">
+        <a class="btn btn-primary" role="button" data-open-vide>
+            Watch how it works in 90 seconds
+        </a>
+    </div>
+</article>
+
+<br>
+<!-- Update the "Would you like to know more?" panel -->
+<article class="panel-card" id="learn-more-panel">
+    <h3 class="panel-title">Would you like to know more?</h3>
+    <p class="panel-text">
+        Our Business Value Accelerator (BVA) Program integrates proven Lean-Agile methods to deliver measurable results in less than 90 days.
+        These methods reduce cycle times, accelerate solution delivery, and align IT and business process improvements with top priorities
+        for maximum ROI—driving profitability while delivering unmatched customer value.
+    </p>
+    <p class="panel-text">
+        Discover how to achieve the best of both worlds—lean business operations supported by agile innovation.
+    </p>
+    <div class="panel-cta">
+        <a class="btn btn-secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-09">Contact Us</a>
+        <a class="btn btn-primary" href="registration.html">Enroll Now</a>
+    </div>
+</article>
+    
+</div>
+</div>
+</div>
+                </section>
+                
+                <!-- Aligned supplemental panels -->
+                <div class="container">
+<br>            <section class="video-intros" id="video-intros">
                 <div class="container video-intros-wrap">
                     <div class="video-copy">
                         <h2 class="video-title">Watch the Introductions</h2>
@@ -166,13 +217,10 @@
                             measurable wins.
                         </p>
                         <div class="video-actions">
-                            <a class="btn btn-primary"
-                            href="#"
-                            role="button"
-                            data-open-video>
-                            Watch Intro Video
-                         </a>
-                         
+                            <a class="btn btn-primary" href="#" role="button" data-open-video>
+                                Watch Intro Video
+                            </a>
+
                             <nav class="video-nav">
                                 <a href="#problems">Why Teams Struggle</a>
                                 <a href="#command-results-pricing">Plans &amp; Pricing</a>
@@ -182,78 +230,24 @@
                     </div>
                 </div>
             </section>
-            <div aria-label="Hero impact panels" class="hero-panels">
-                <!-- Panel 1 – Outcome Hook -->
-                <article class="panel-card">
-                    <h3 class="panel-title">Deliver Measurable Results — Faster</h3>
-                    <p class="panel-text">From Strategy to Team Execution — Lean and Agile Practices Made Practical</p>
-                    <div class="panel-cta"><a class="btn btn-primary" href="https://command-results.passion.io">Free
-                            App</a></div>
-                </article>
-                <!-- Panel 2 – Proof of Potential -->
-                <article class="panel-card">
-                    <h3 class="panel-title">The Results Are Real <span class="panel-sub">(2020–2025 data)</span></h3>
-                    <ul class="panel-list">
-                        <li><strong>Productivity gains:</strong> 20–50%</li>
-                        <li><strong>Efficiency improvements:</strong> 30–60%</li>
-                        <li><strong>Profit growth:</strong> up to 60% with Agile done right</li>
-                    </ul>
-                    <p class="evidence-line">These are not projections — they’re published results from 2020–2025 by
-                        companies that have successfully integrated Lean and Agile practices.</p>
-                    <p class="panel-footnote">Across industries, the right Lean‑Agile practices consistently outperform
-                        the status quo.</p>
-                    <div class="panel-cta"><a class="btn btn-primary"
-                            href="https://drive.google.com/file/d/11OhadY9isSlmp1lq_zGL-YP84LC8Mc8Z/view?usp=sharing">Executive
-                            Brief</a></div>
-                </article>
-                <section class="info-callout-section">
-                    <div class="container">
-                        <div class="info-callout info-callout--blue">
-                            <h4>Would you like to know more?</h4>
-                            <p>Our Business Value Accelerator Program integrates proven Lean-Agile methods to deliver
-                                measurable results in less than 90 days. These methods reduce cycle times, accelerate
-                                solution delivery, align IT efforts with the most impactful priorities for maximum ROI,
-                                and drive profitability while delivering unmatched customer value.</p>
-                            <p>Discover how to achieve the best of both worlds—lean business operations supported by
-                                agile innovation.</p>
-                            <div class="panel-cta"><a class="btn btn-primary" href="registration.html">ENROLL NOW</a>
-                            </div>
-                        </div>
+                    <div class="hero-panels">
+<article class="panel-card" id="better-path-panel-secondary">
+                            <h3 class="panel-title">A Better Path to Measurable Results</h3>
+                            <div class="panel-eyebrow">The BVA Program Way</div>
+                            <p class="panel-text">
+                                Learn to situationally apply the right Lean‑Agile methods and tools for the job at hand —
+                                no waste, no bloat, no dependency. Your team leads the change. We just make it faster, smarter,
+                                and easier.
+                            </p>
+                        </article>
                     </div>
-                </section>
-                <!-- Panel 3 – Reality Check -->
-                <article class="panel-card panel-warning">
-                    <h3 class="panel-title">But Here’s the Problem…</h3>
-                    <p class="panel-text">
-                        88% of large‑scale business transformations fail to achieve their goals (Bain &amp; Co.).
-                        Why? Complex, bloated, expensive frameworks overwhelm teams, slow adoption, and quickly lose
-                        executive support.
-                    </p>
-                    <div class="panel-cta"><a class="btn btn-secondary" href="#problem" id="cta-how-it-works">See
-                            how it works</a></div>
-                </article>
-                <!-- Panel 4 – The BVA Program Way -->
-                <article class="panel-card">
-                    <h3 class="panel-title">A Better Path to Measurable Results</h3>
-                    <h2 class="panel-eyebrow">The BVA Program Way</h2>
-                    <p class="panel-text">
-                        Learn to situationally apply the right Lean‑Agile methods and tools for the job at hand —
-                        no waste, no bloat, no dependency. Your team leads the change. We just make it faster, smarter,
-                        and easier.
-                    </p>
-                    <div class="cta-buttons">
-                    </div>
-                    </div>
-                    </div>
-                </article>
-            </div>
-            <br />
-            <br />
-            <p class="tagline">
-                <strong>🧠 AI doesn’t replace people</strong><br>
-                – It amplifies those with the right foundation. We build that foundation.
-            </p>
-
+                </div>
+<br>
+                <p class="tagline">
+            <strong>🧠 AI doesn’t replace people</strong><br>
+            – It amplifies those with the right foundation. We build that foundation.
+        </p>
+<br>
         </div>
     </section>
 
@@ -313,7 +307,8 @@
                     <footer>— Stacey Bevill</footer>
                 </blockquote>
                 <blockquote class="ref-card">
-                    <p>“For anyone looking to deepen their Lean and Agile understanding on a tight schedule, this app makes the learning both accessible and impactful.”</p>
+                    <p>“For anyone looking to deepen their Lean and Agile understanding on a tight schedule, this app
+                        makes the learning both accessible and impactful.”</p>
                     <footer>- Sumathi Arcot</footer>
                 </blockquote>
             </div>
@@ -519,66 +514,74 @@
             </section>
             <!-- Team Training -->
             <section class="cr-pricing-section">
-  <div class="cr-section-header">
-    <h2>Facilitated Workshops</h2>
-    <p>Our facilitated workshops give product, program, and project teams expert guidance in integrating Lean-Agile practices. Each session blends instruction with hands-on exercises that connect methods to real-world challenges.</p>
-  </div>
+                <div class="cr-section-header">
+                    <h2>Facilitated Workshops</h2>
+                    <p>Our facilitated workshops give product, program, and project teams expert guidance in integrating
+                        Lean-Agile practices. Each session blends instruction with hands-on exercises that connect
+                        methods to real-world challenges.</p>
+                </div>
 
-  <p class="cr-asterisk-note" style="margin-top:-10px">Team-based, hands-on sessions introducing integrated Lean-Agile methods for measurable results on real work.</p>
+                <p class="cr-asterisk-note" style="margin-top:-10px">Team-based, hands-on sessions introducing
+                    integrated Lean-Agile methods for measurable results on real work.</p>
 
-  <div class="cr-pricing-grid three-column">
-    <!-- 4-Hour Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>4-Hour Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$325 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Team-based session introducing the seven methods of the Lean-Agile Way.</li>
-          <li>Learn how integrated methods improve productivity, efficiency, and agility.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
+                <div class="cr-pricing-grid three-column">
+                    <!-- 4-Hour Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>4-Hour Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$325 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Team-based session introducing the seven methods of the Lean-Agile Way.</li>
+                                <li>Learn how integrated methods improve productivity, efficiency, and agility.</li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
 
-    <!-- 8-Hour Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>8-Hour Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$500 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Introduction to integrated Lean-Agile practices with a deeper dive into value stream identification.</li>
-          <li>Apply value stream mapping and management through practical exercises.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
+                    <!-- 8-Hour Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>8-Hour Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$500 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Introduction to integrated Lean-Agile practices with a deeper dive into value stream
+                                    identification.</li>
+                                <li>Apply value stream mapping and management through practical exercises.</li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
 
-    <!-- 3-Day Workshop -->
-    <div class="cr-pricing-card">
-      <div class="cr-bva-banner best-value">Best Value!</div>
-      <h3>3-Day Facilitated Workshop</h3>
-      <div class="cr-price-details">
-        <div class="cr-price-per-student">$1,150 per student</div>
-        <div class="cr-minimum-students">8 student minimum</div>
-      </div>
-      <div class="cr-features">
-        <ul>
-          <li>Build a product-oriented value stream improvement plan within 30 days.</li>
-          <li>Deliver measurable progress in 90 days and develop skills to sustain excellence.</li>
-        </ul>
-      </div>
-      <a class="cr-button secondary" href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
-    </div>
-  </div>
-</section>
+                    <!-- 3-Day Workshop -->
+                    <div class="cr-pricing-card">
+                        <div class="cr-bva-banner best-value">Best Value!</div>
+                        <h3>3-Day Facilitated Workshop</h3>
+                        <div class="cr-price-details">
+                            <div class="cr-price-per-student">$1,150 per student</div>
+                            <div class="cr-minimum-students">8 student minimum</div>
+                        </div>
+                        <div class="cr-features">
+                            <ul>
+                                <li>Build a product-oriented value stream improvement plan within 30 days.</li>
+                                <li>Deliver measurable progress in 90 days and develop skills to sustain excellence.
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="cr-button secondary"
+                            href="https://calendly.com/cgrupp55/20min?back=1&month=2025-03">Contact Us</a>
+                    </div>
+                </div>
+            </section>
             <!-- BVA Implementation -->
             <section class="cr-pricing-section">
                 <div class="cr-section-header">
@@ -930,66 +933,6 @@
                 .then((reg) => console.log("Service worker registered:", reg))
                 .catch((err) => console.error("Service worker registration failed:", err));
         }
-    </script>
-    <!-- Video Modal -->
-    <div aria-hidden="true" aria-label="Intro Video" class="cr-modal" id="videoModal" role="dialog">
-        <div class="cr-modal__backdrop" data-close-modal=""></div>
-        <div aria-modal="true" class="cr-modal__dialog" role="document">
-            <button aria-label="Close video" class="cr-modal__close" data-close-modal="" type="button">×</button>
-            <div class="cr-modal__content">
-                <!-- 16:9 container -->
-                <div class="cr-video-16x9">
-                    <div class="wistia_embed wistia_async_d6rdjc4nbs seo=false videoFoam=true"
-                        style="height:100%;width:100%"> </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Simple modal controller
-        (function () {
-            const modal = document.getElementById('videoModal');
-            const openBtn = document.getElementById('playHeroVideo');
-            let player = null;
-
-            // Wistia onReady
-            window._wq = window._wq || [];
-            _wq.push({
-                id: 'd6rdjc4nbs', onReady: function (video) {
-                    player = video;
-                }
-            });
-
-            function openModal(e) {
-                if (e) e.preventDefault();
-                if (!modal) return;
-                modal.setAttribute('aria-hidden', 'false');
-                document.documentElement.classList.add('cr-modal-open');
-                // autoplay when ready
-                try { if (player) player.play(); } catch (e) { }
-            }
-
-            function closeModal() {
-                if (!modal) return;
-                modal.setAttribute('aria-hidden', 'true');
-                document.documentElement.classList.remove('cr-modal-open');
-                try { if (player) player.pause(); } catch (e) { }
-            }
-
-            if (openBtn) {
-                openBtn.addEventListener('click', openModal, { capture: true });
-            }
-            // close on backdrop / close button / Esc
-            modal?.addEventListener('click', function (ev) {
-                if (ev.target && ev.target.hasAttribute('data-close-modal')) closeModal();
-            });
-            document.addEventListener('keydown', function (ev) {
-                if (ev.key === 'Escape') closeModal();
-            });
-            // expose for other buttons if needed
-            window.CR_openIntroVideo = openModal;
-            window.CR_closeIntroVideo = closeModal;
-        })();
     </script>
     <!-- Install Gate Modal -->
     <div aria-hidden="true" aria-label="Install the app to continue" class="cr-modal" id="installGate" role="dialog">
