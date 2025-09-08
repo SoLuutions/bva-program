@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v3.1.a3';
+const CACHE_VERSION = 'v3.2.a3';
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
