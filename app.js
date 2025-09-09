@@ -1036,3 +1036,86 @@ initVideoModal();
     onOS(promptAndTag);
   });
 })();
+/* ================================
+   PRICING TOGGLE: Monthly <-> Annual
+   ================================ */
+   document.addEventListener('DOMContentLoaded', () => {
+    const toggle   = document.getElementById('online-toggle');
+    const monthly  = document.getElementById('monthly-label-online');
+    const annual   = document.getElementById('annual-label-online');
+    const discount = document.getElementById('online-discount');
+  
+    const priceEl  = document.getElementById('bva-workbooks-price'); // "$47/month"
+    const termsEl  = document.getElementById('bva-workbooks-terms');  // "Billed monthly..."
+  
+    if (!toggle || !priceEl || !termsEl) return;
+  
+    function setMode(isAnnual){
+      toggle.classList.toggle('annual', isAnnual);
+      if (monthly)  monthly.classList.toggle('active', !isAnnual);
+      if (annual)   annual.classList.toggle('active',  isAnnual);
+      if (discount) discount.style.display = isAnnual ? 'inline-block' : 'none';
+  
+      // Update visible price/terms (adjust numbers if you change pricing)
+      if (isAnnual) {
+        priceEl.textContent = '$470/year';
+        termsEl.innerHTML = '<ul><li>Billed annually</li><li>Cancel anytime</li></ul>';
+      } else {
+        priceEl.textContent = '$47/month';
+        termsEl.innerHTML = '<ul><li>Billed monthly</li><li>Cancel anytime</li></ul>';
+      }
+    }
+  
+    // Toggle on click
+    toggle.addEventListener('click', () => {
+      const isAnnual = !toggle.classList.contains('annual');
+      setMode(isAnnual);
+    });
+  });
+  
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const PASSION_URL = 'https://command-results.passion.io/checkout/361d3339-e248-4257-aad9-aee65055cf83';
+    const REG_PAGE    = 'registration.html';
+  
+    // Buttons/links that should follow this rule
+    const targets = [
+      document.getElementById('bva-app-enroll-button'),    // pricing card: "Get Started Free"
+      document.getElementById('reviews-free-app-button'),  // reviews CTA
+    ].filter(Boolean);
+  
+    function isInstalled() {
+      // Prefer your existing helper if present
+      try {
+        if (typeof isAppInstalled === 'function') return !!isAppInstalled();
+      } catch (e) {}
+      // Fallback checks
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+             (navigator.standalone === true) ||
+             ((document.referrer || '').startsWith('android-app://')) ||
+             localStorage.getItem('pwa-installed') === 'true';
+    }
+  
+    // Ensure anchors visibly point to PASSION when installed
+    function syncHrefs() {
+      const installed = isInstalled();
+      targets.forEach(a => {
+        if (!a) return;
+        a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
+      });
+    }
+  
+    // First paint + on click safety
+    syncHrefs();
+    targets.forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const installed = isInstalled();
+        a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
+        if (!installed) {
+          ev.preventDefault();
+          window.location.href = REG_PAGE;
+        }
+      }, { capture: true });
+    });
+  });
+  
