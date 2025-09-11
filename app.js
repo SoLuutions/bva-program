@@ -1118,4 +1118,12 @@ initVideoModal();
       }, { capture: true });
     });
   });
-  
+
+
+// Legacy contact URL guard
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('a[href*="app.commandresults.com/contact"]').forEach(a => {
+    a.href = '/contact.html'; // Route old deep links to the new contact page
+  });
+});
+
