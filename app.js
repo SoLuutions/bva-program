@@ -1127,3 +1127,134 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+(function(){
+  function $(sel,root=document){ return root.querySelector(sel); }
+  function $all(sel,root=document){ return Array.from(root.querySelectorAll(sel)); }
+
+  const card       = $('.bva2-card');
+  if (!card) return;
+
+  const screens    = $all('.bva2-screen', card);
+  const progress   = $('.bva2-progress', card);
+  const fill       = $('.bva2-progress-fill', card);
+  const stepLabel  = $('.bva2-step', card);
+  const startBtn   = $('.bva2-start', card);
+  const form       = $('.bva2-form', card);
+  const primaryCta = $('#bva2PrimaryCta');
+  const scoreEl    = $('#bva2Score');
+  const statusEl   = $('#bva2Status');
+  const messageEl  = $('#bva2Message');
+
+  const order = ['intro','q1','q2','q3','q4','q5','lead','results'];
+  const answers = { q1:null,q2:null,q3:null,q4:null,q5:null };
+
+  function show(screen){
+    screens.forEach(s => s.hidden = (s.getAttribute('data-screen') !== screen));
+    // update progress on Q screens
+    const idx = order.indexOf(screen);
+    const qIndex = Math.max(0, Math.min(idx-1, 5));
+    const pct = (idx>=1 && idx<=5) ? (qIndex/5)*100 : (idx>5 ? 100 : 0);
+    if (progress) {
+      progress.setAttribute('aria-hidden', (idx<=0 || screen==='results') ? 'true' : 'false');
+      if (fill) fill.style.width = pct + '%';
+      if (stepLabel && idx>=1 && idx<=5) stepLabel.textContent = String(qIndex);
+    }
+  }
+
+  function next(from){
+    const i = order.indexOf(from);
+    const nxt = order[i+1] || 'results';
+    show(nxt);
+  }
+
+  function score(){
+    return ['q1','q2','q3','q4','q5'].reduce((t,k)=> t + (Number(answers[k]||0)), 0);
+  }
+
+  function setRecommendation(total){
+    // Low (<=10), Mid (11–18), High (19–25)
+    let href = '#';
+    let status = 'Getting Started';
+    let msg = 'You’re early in your Lean-Agile journey. Start with core practices and quick wins.';
+    if (total >= 19) {
+      status = 'High Performer';
+      msg = 'You’re operating at a strong level. Double down on flow, automation, and scaling.';
+      href = '/recommendations/high.html';
+    } else if (total >= 11) {
+      status = 'On the Way';
+      msg = 'Solid foundation. Focus on alignment, WIP limits, and feedback loops.';
+      href = '/recommendations/mid.html';
+    } else {
+      href = '/recommendations/low.html';
+    }
+    if (scoreEl) scoreEl.textContent = String(total);
+    if (statusEl) statusEl.textContent = status;
+    if (messageEl) messageEl.textContent = msg;
+    if (primaryCta) {
+      primaryCta.href = href;
+      primaryCta.setAttribute('data-gate','scorecard-results');
+    }
+  }
+
+  // start
+  if (startBtn) {
+    startBtn.addEventListener('click', () => show('q1'));
+  }
+
+  // choose scale values and Next on each Q
+  $all('.bva2-screen[data-screen^="q"]', card).forEach(screen => {
+    const field = screen.querySelector('.bva2-scale');
+    const nextBtn = screen.querySelector('.bva2-next');
+    if (!field || !nextBtn) return;
+
+    field.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-val]');
+      if (!btn) return;
+      $all('button', field).forEach(b => b.classList.toggle('active', b===btn));
+      answers[field.getAttribute('data-field')] = Number(btn.getAttribute('data-val'));
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const key = field.getAttribute('data-field');
+      if (!answers[key]) {
+        field.classList.add('shake');
+        setTimeout(() => field.classList.remove('shake'), 400);
+        return;
+      }
+      // update progress step label (1..5)
+      const idx = parseInt(key.slice(1),10);
+      if (stepLabel) stepLabel.textContent = String(idx);
+      next(screen.getAttribute('data-screen'));
+    });
+  });
+
+  // Lead-capture submit -> compute score & show results
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // basic lead validation
+      const name = $('#bva2Name')?.value?.trim?.();
+      const email = $('#bva2Email')?.value?.trim?.();
+      if (!name) { $('#bva2Name')?.classList?.add?.('bva2-invalid'); return; }
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { $('#bva2Email')?.classList?.add?.('bva2-invalid'); return; }
+
+      const total = score();
+      setRecommendation(total);
+      show('results');
+    });
+  }
+
+  // Gate the CTA if subscription required
+  if (primaryCta) {
+    primaryCta.addEventListener('click', (e) => {
+      if (typeof window.requireScorecardSubscription === 'function' && !window.__scorecardSubscribed) {
+        const ok = window.requireScorecardSubscription();
+        if (!ok) e.preventDefault();
+      }
+    }, { capture:true });
+  }
+
+  // Boot to intro
+  show('intro');
+})();
