@@ -60,54 +60,54 @@ document.addEventListener('DOMContentLoaded', () => {
     if (helpModal) closeHelpModal();
   });
 
-  // --- Helpers
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+// --- Helpers
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+}
+
+function setLoading(isLoading) {
+  if (loader) loader.style.display = isLoading ? 'block' : 'none';
+  if (!form) return;
+
+  const submitBtn = form.querySelector('[type="submit"]');
+  if (submitBtn) {
+    submitBtn.disabled = isLoading;
+    submitBtn.ariaBusy = isLoading ? 'true' : 'false';
   }
 
-  function setLoading(isLoading) {
-    if (loader) loader.style.display = isLoading ? 'block' : 'none';
-    if (!form) return;
-
-    const submitBtn = form.querySelector('[type="submit"]');
-    if (submitBtn) {
-      submitBtn.disabled = isLoading;
-      submitBtn.ariaBusy = isLoading ? 'true' : 'false';
+  Array.from(form.elements || []).forEach((el) => {
+    const keepDisabled = el.dataset && el.dataset.keepDisabled === 'true';
+    if (isLoading) {
+      el.disabled = true;
+    } else if (!keepDisabled) {
+      el.disabled = false;
     }
+  });
+}
 
-    Array.from(form.elements || []).forEach((el) => {
-      const keepDisabled = el.dataset && el.dataset.keepDisabled === 'true';
-      if (isLoading) {
-        el.disabled = true;
-      } else if (!keepDisabled) {
-        el.disabled = false;
-      }
-    });
-  }
+async function submitToApi(payload) {
+  const apiUrl = '/api/systeme/register';
+  const resp = await fetch(apiUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload),
+  });
 
-  async function submitToApi(payload) {
-    // Replace with your actual endpoint
-    const apiUrl = '/api/register';
-    const resp = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (!resp.ok) {
-      let msg = 'Registration failed. Please try again.';
-      try {
-        const data = await resp.json();
-        if (data && data.error) msg = data.error;
-      } catch {}
-      throw new Error(msg);
-    }
+  if (!resp.ok) {
+    let msg = 'Registration failed. Please try again.';
     try {
-      return await resp.json();
-    } catch {
-      return { ok: true };
-    }
+      const data = await resp.json();
+      if (data && data.error) msg = data.error;
+    } catch {}
+    throw new Error(msg);
   }
+
+  try {
+    return await resp.json();
+  } catch {
+    return { ok: true };
+  }
+}
 
   function showPlatformInstructionsInline() {
     if (installPanel) installPanel.style.display = 'block';

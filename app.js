@@ -1258,3 +1258,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // Boot to intro
   show('intro');
 })();
+
+// === Auth UI Logic: Systeme.io & PWA install gating ===
+(function authUiLogic(){
+  const SYSTEME_LOGIN = 'https://1a01-gary.systeme.io/dashboard/en/login';
+
+  function setAuthButtons(){
+    const installed = isAppInstalled();
+    const loginBtn = document.getElementById('auth-button');
+    const regBtn   = document.getElementById('register-button');
+
+    if (installed) {
+      if (loginBtn) loginBtn.style.display = '';
+      if (regBtn)   regBtn.style.display   = 'none';
+      if (loginBtn) loginBtn.setAttribute('href', SYSTEME_LOGIN);
+    } else {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (regBtn)   regBtn.style.display   = '';
+    }
+  }
+
+  // Guard ALL auth links sitewide when NOT installed
+  document.addEventListener('click', (e) => {
+    const a = e.target && (e.target.closest ? e.target.closest('a') : null);
+    if (!a) return;
+    const href = (a.getAttribute('href') || '').trim();
+    const isAuthLink = a.hasAttribute('data-auth-link') || href.includes('systeme.io/dashboard/en/login');
+    if (!isAuthLink) return;
+    if (!isAppInstalled()) {
+      e.preventDefault();
+      window.location.href = '/registration.html';
+    }
+  }, { capture: true });
+
+  document.addEventListener('DOMContentLoaded', setAuthButtons);
+  window.addEventListener('load', setAuthButtons);
+
+  // When the PWA is installed, remember and go to Systeme.io login
+  window.addEventListener('appinstalled', () => {
+    try { localStorage.setItem('pwa-installed', 'true'); } catch {}
+    window.location.href = SYSTEME_LOGIN;
+  });
+})();
