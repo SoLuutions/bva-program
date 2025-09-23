@@ -59,10 +59,17 @@ function initSmoothScroll() {
 // Install Notification Logic
 // ------------------------------------------------------------
 function isAppInstalled() {
-  return window.matchMedia('(display-mode: standalone)').matches ||
-    navigator.standalone ||
-    document.referrer.includes('android-app://');
+  try {
+    const inStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+    const iosStandalone = ('standalone' in navigator) ? navigator.standalone === true : false;
+    const androidReferrer = (document.referrer || '').startsWith('android-app://');
+    // Do NOT rely on localStorage flags for gating UI
+    return !!(inStandalone || iosStandalone || androidReferrer);
+  } catch {
+    return false;
+  }
 }
+
 
 function showInstallNotification(force = false) {
   const installNotification = $('#install-notification');

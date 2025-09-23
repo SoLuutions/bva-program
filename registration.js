@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const emailEl = document.getElementById('email');
   const companyEl = document.getElementById('company');
   const phoneEl = document.getElementById('phone');
+  const passwordEl = document.getElementById('password'); // NEW
 
   const confirmationMessage = document.getElementById('confirmationMessage');
 
@@ -48,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     deferredPrompt = e;
     window.deferredPrompt = e;
-    // Show inline panel if we're on the success screen
     if (installPanel) installPanel.style.display = 'block';
     if (installHint) installHint.textContent = 'Tap Install App to add it to your device.';
   });
@@ -58,56 +58,58 @@ document.addEventListener('DOMContentLoaded', () => {
     if (installPanel) installPanel.style.display = 'none';
     if (installHint) installHint.textContent = '';
     if (helpModal) closeHelpModal();
+    // Redirect to Systeme.io login after install
+    window.location.href = 'https://1a01-gary.systeme.io/dashboard/en/login';
   });
 
-// --- Helpers
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
-}
-
-function setLoading(isLoading) {
-  if (loader) loader.style.display = isLoading ? 'block' : 'none';
-  if (!form) return;
-
-  const submitBtn = form.querySelector('[type="submit"]');
-  if (submitBtn) {
-    submitBtn.disabled = isLoading;
-    submitBtn.ariaBusy = isLoading ? 'true' : 'false';
+  // --- Helpers
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
   }
 
-  Array.from(form.elements || []).forEach((el) => {
-    const keepDisabled = el.dataset && el.dataset.keepDisabled === 'true';
-    if (isLoading) {
-      el.disabled = true;
-    } else if (!keepDisabled) {
-      el.disabled = false;
+  function setLoading(isLoading) {
+    if (loader) loader.style.display = isLoading ? 'block' : 'none';
+    if (!form) return;
+
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = isLoading;
+      submitBtn.ariaBusy = isLoading ? 'true' : 'false';
     }
-  });
-}
 
-async function submitToApi(payload) {
-  const apiUrl = '/api/systeme/register';
-  const resp = await fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+    Array.from(form.elements || []).forEach((el) => {
+      const keepDisabled = el.dataset && el.dataset.keepDisabled === 'true';
+      if (isLoading) {
+        el.disabled = true;
+      } else if (!keepDisabled) {
+        el.disabled = false;
+      }
+    });
+  }
 
-  if (!resp.ok) {
-    let msg = 'Registration failed. Please try again.';
+  async function submitToApi(payload) {
+    const apiUrl = '/api/systeme/register';
+    const resp = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+      let msg = 'Registration failed. Please try again.';
+      try {
+        const data = await resp.json();
+        if (data && data.error) msg = data.error;
+      } catch {}
+      throw new Error(msg);
+    }
+
     try {
-      const data = await resp.json();
-      if (data && data.error) msg = data.error;
-    } catch {}
-    throw new Error(msg);
+      return await resp.json();
+    } catch {
+      return { ok: true };
+    }
   }
-
-  try {
-    return await resp.json();
-  } catch {
-    return { ok: true };
-  }
-}
 
   function showPlatformInstructionsInline() {
     if (installPanel) installPanel.style.display = 'block';
@@ -141,7 +143,6 @@ async function submitToApi(payload) {
 
   function openHelpModal() {
     if (!helpModal) return;
-    // Hint for all platforms
     if (helpHint) {
       helpHint.textContent = isIOS && isSafari
         ? 'Use Share → Add to Home Screen'
@@ -151,7 +152,6 @@ async function submitToApi(payload) {
         ? 'Use the address-bar Install icon or Menu → Install app'
         : 'If your browser supports installation, use its menu to Install/Add to Home screen.';
     }
-    // Unsupported browser note
     if (helpBrowserNote) {
       helpBrowserNote.textContent = (isDuckDuckGo || isFirefox)
         ? 'Note: Some browsers (DuckDuckGo, Firefox) may not show an Install option. Use Chrome/Edge on desktop, Chrome on Android, or Safari on iOS.'
@@ -230,7 +230,6 @@ async function submitToApi(payload) {
           window.deferredPrompt = null;
         }
       } else {
-        // No native prompt available: show device-specific steps
         showPlatformInstructionsInModal();
       }
     });
@@ -248,8 +247,9 @@ async function submitToApi(payload) {
       const email = (emailEl?.value || '').trim();
       const company = (companyEl?.value || '').trim();
       const phone = (phoneEl?.value || '').trim();
+      const password = (passwordEl?.value || '').trim(); // NEW
 
-      if (!name || !email || !company || !phone) {
+      if (!name || !email || !company || !phone || !password) {
         alert('Please complete all required fields.');
         return;
       }
@@ -261,7 +261,7 @@ async function submitToApi(payload) {
 
       setLoading(true);
       try {
-        await submitToApi({ name, email, company, phone });
+        await submitToApi({ name, email, company, phone, password }); // NEW
 
         // Hide the form & container card if present
         try {
@@ -270,7 +270,7 @@ async function submitToApi(payload) {
           if (formCard) formCard.style.display = 'none';
         } catch {}
 
-        // Show confirmation & relevant install guidance (still supported after success)
+        // Show confirmation & relevant install guidance
         if (confirmationMessage) {
           confirmationMessage.style.display = 'block';
           showPlatformInstructionsInline();
