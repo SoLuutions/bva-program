@@ -3825,6 +3825,32 @@ header .nav-buttons .btn,
   }
 }
 
+/* Mobile header: keep the three buttons horizontal and visible */
+@media (max-width: 900px) {
+  .header-actions { display: flex; align-items: center; gap: .75rem; }
+  .header-actions .three-pack { display: flex !important; flex-direction: row; gap: .5rem; }
+  .header-actions .three-pack .btn { min-width: auto; width: auto; max-width: none; padding: .5rem .75rem; font-size: .9rem; }
+}
+
+/* Override global mobile btn=100% rule for header buttons so they don't stack */
+@media (max-width: 768px) {
+  header .btn,
+  .header-actions .btn,
+  .nav-buttons.three-pack .btn { width: auto !important; max-width: none !important; }
+}
+
+/* Improve hamburger tap target and accessibility */
+.hamburger {
+  width: 56px;
+  height: 56px;
+  padding: 8px;
+  border-radius: 12px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 10001;
+}
+.hamburger-icon { width: 26px; height: 26px; stroke-width: 2.6; }
+
 /* Header container layout */
 .header-container {
   display: flex;
