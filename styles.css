@@ -3851,6 +3851,27 @@ header .nav-buttons .btn,
 }
 .hamburger-icon { width: 26px; height: 26px; stroke-width: 2.6; }
 
+/* Phones: 4 equal columns (Log In | View Plans | Register | ☰) */
+@media (max-width: 600px) {
+  .header-actions {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    align-items: center;
+  }
+  /* Flatten the three buttons inside into the grid columns */
+  .header-actions .three-pack { display: contents !important; }
+  .header-actions .three-pack .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: .5rem .55rem;
+    font-size: .9rem;
+    white-space: nowrap;
+  }
+  /* Keep the hamburger in its own grid cell at the end */
+  .hamburger { justify-self: end; }
+}
+
 /* Header container layout */
 .header-container {
   display: flex;
