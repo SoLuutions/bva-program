@@ -193,8 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initInstallPromptFlows();
   initServiceWorker();
-  initMobileNavigation(); // Add this line
-  initHeroVideoModal();   // Keep this if you have video modal
+  initMobileNavigation();
+  initHeroVideoModal();
 });
 
 /* ==============================
@@ -448,70 +448,7 @@ function openInstallGate(onContinue){
   closeBtn?.addEventListener('click', handleCloseBtn);
 }
 
-(function(){
-  const qs = new URLSearchParams(location.search);
-  const preview = qs.get('reviewerPreview') === '1' || localStorage.getItem('reviewerPreview') === '1';
-
-  if (preview) {
-    localStorage.setItem('reviewerPreview', '1');
-    const card = document.getElementById('reviewerCard');
-    if (card) card.hidden = false;
-  }
-
-  const form = document.getElementById('reviewerForm');
-  const input = document.getElementById('reviewerTokenInput');
-  const msg = document.getElementById('reviewerMsg');
-  const btn = document.getElementById('reviewerContinueBtn');
-
-  if (!form) return;
-
-  const SUCCESS_REDIRECT_DELAY = 300;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearMsg();
-    const raw = (input.value || '').trim();
-    if (!raw) {
-      showMsg('Please enter your reviewer token.');
-      input.focus();
-      return;
-    }
-
-    setBusy(true);
-    try {
-      const resp = await fetch('/api/reviewer/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: raw })
-      });
-      const data = await resp.json().catch(() => ({}));
-
-      if (!resp.ok || !data) {
-        showMsg(data && data.error ? data.error : 'Token lookup failed.');
-        setBusy(false);
-        return;
-      }
-
-      if (data.ok && data.url) {
-        showMsg('Success! Redirecting…');
-        setTimeout(() => { location.href = data.url; }, SUCCESS_REDIRECT_DELAY);
-      } else {
-        showMsg(data.error || 'Invalid or expired token.');
-      }
-    } catch (err) {
-      showMsg('Network error. Please try again.');
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  function showMsg(t){ if (msg) { msg.textContent = t; msg.style.visibility='visible'; } }
-  function clearMsg(){ if (msg) { msg.textContent = ''; msg.style.visibility='hidden'; } }
-  function setBusy(b){
-    if (btn) { btn.disabled = b; btn.setAttribute('aria-busy', String(b)); }
-    if (input) input.disabled = b;
-  }
-})();
+// (deduped) secondary reviewer wiring removed; primary reviewer handler remains above
 
 
 /* ===== Enhancements: console logging + scorecard gating ===== */
@@ -1378,12 +1315,4 @@ function initDropdownMenu() {
   });
 }
 
-// Update DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-  initFaqToggles();
-  initSmoothScroll();
-  initInstallPromptFlows();
-  initServiceWorker();
-  initMobileNavigation();
-  initHeroVideoModal();
-});
+// (deduped) DOMContentLoaded handled earlier

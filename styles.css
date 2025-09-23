@@ -2500,88 +2500,7 @@ footer {
   }
 }
 
-.cr-modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  z-index: 9999;
-  padding: 24px;
-  align-items: center;
-  justify-content: center
-}
-
-.cr-modal[aria-hidden="false"] {
-  display: flex
-}
-
-.cr-modal__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, .7)
-}
-
-.cr-modal__dialog {
-  position: relative;
-  width: min(100%, 960px);
-  max-height: calc(100vh - 48px);
-  margin: 0;
-  background: #0b0b0b;
-  color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 80px rgba(0, 0, 0, .6);
-  padding: 16px;
-  overflow: auto
-}
-
-.cr-modal__close {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 28px;
-  line-height: 1;
-  background: transparent;
-  border: 0;
-  color: #fff;
-  cursor: pointer
-}
-
-.cr-modal__content {
-  padding-top: 8px
-}
-
-.cr-modal__title {
-  margin: 0 0 8px
-}
-
-.cr-video-16x9 {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%
-}
-
-.cr-video-16x9>* {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%
-}
-
-.cr-modal-open {
-  overflow: hidden
-}
-
-#videoModal .w-bpb-wrapper,
-#videoModal .w-big-play-button {
-  display: none !important
-}
-
-.wistia_embed {
-  display: none
-}
-
-#videoModal .wistia_embed {
-  display: block
-}
+/* Removed older modal styles (duplicated). Keeping unified modal styles below. */
 
 .install-steps {
   display: grid;
@@ -3387,12 +3306,7 @@ html.cr-modal-open { overflow: hidden; }
 }
 
 /* --- BVA updates --- */
-.cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
-.cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
-.cr-global-nav{ background:transparent; padding:.25rem 0 0; }
-.cr-global-nav-list{ display:flex; gap:20px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
-.cr-global-nav-list a{ text-decoration:none; font-weight:500; }
+/* Removed older BVA v2 duplicates (features and fixed 3-col grid). Using unified grid below. */
 
 /* --- BVA v3 header + menu --- */
 .cr-global-nav{ padding:.35rem 0 .25rem; }
@@ -3418,10 +3332,7 @@ html.cr-modal-open { overflow: hidden; }
 @media (hover:hover){
  .cr-global-nav-list li.has-submenu:hover .submenu{ display:block; }
 }
-/* remove bullets and enforce 3-col grid (keep from v2) */
-.cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
-.cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
+/* (deduped) features list styles covered above; 3-col grid is handled by auto-fit rules below. */
 
 /* --- BVA layout plan tweaks --- */
 .nav-buttons-container{ display:flex; align-items:center; gap:16px; }
@@ -3482,11 +3393,7 @@ html.cr-modal-open { overflow: hidden; }
 @media (max-width: 600px) {
   .panel-cta .btn { min-width: 0; width: 100%; }
 }
-.tagline{
-  color:var(--light);
-  position:relative;
-  justify-content: center;
-}
+/* (deduped) tagline base is defined earlier */
 
 @media (max-width: 600px) {
   .btn { min-width: 0; }
@@ -3605,84 +3512,7 @@ header .nav-buttons .btn,
 
 
 /* === Hamburger button === */
-.hamburger {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.35);
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  transition: background .2s ease;
-  margin-left: auto;
-}
-
-.hamburger:hover {
-  background: rgba(255,255,255,.08);
-}
-
-/* SVG lines for animated hamburger -> X */
-.hamburger-icon {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  fill: none;
-}
-
-.hamburger .line1,
-.hamburger .line2,
-.hamburger .line3 {
-  transition: transform .25s ease, opacity .25s ease;
-  transform-origin: 12px 12px;
-}
-
-.hamburger[aria-expanded="true"] .line1 {
-  transform: translateY(5px) rotate(45deg);
-}
-.hamburger[aria-expanded="true"] .line2 {
-  opacity: 0;
-}
-.hamburger[aria-expanded="true"] .line3 {
-  transform: translateY(-5px) rotate(-45deg);
-}
-
-/* Mobile menu slide panel */
-@media (max-width: 900px) {
-  .hamburger { display: inline-flex; }
-
-  /* Collapse lists by default */
-  .cr-global-nav .cr-global-nav-list,
-  .cr-global-nav .nav-buttons {
-    display: none;
-  }
-
-  /* Sliding container */
-  .cr-global-nav {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height .28s ease;
-  }
-
-  .cr-global-nav.open {
-    max-height: 600px;
-  }
-
-  .cr-global-nav.open .cr-global-nav-list,
-  .cr-global-nav.open .nav-buttons {
-    display: block;
-  }
-
-  .cr-global-nav.open .nav-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px 20px 20px;
-  }
-}
+/* Removed early hamburger/menu styles (duplicated). Keeping the later unified set. */
 
 
 
@@ -3977,118 +3807,7 @@ header .nav-buttons .btn,
 }
 
 /* Mobile nav styles */
-.cr-global-nav {
-  display: none;
-}
-
-.cr-global-nav.open {
-  display: block;
-}
-
-.cr-global-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
-.cr-global-nav-list > li {
-  position: relative;
-}
-
-/* Dropdown styles */
-.has-dropdown .dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  border-radius: 4px;
-  min-width: 200px;
-  z-index: 1000;
-}
-
-.has-dropdown:hover .dropdown,
-.has-dropdown.open .dropdown {
-  display: block;
-}
-
-.has-dropdown .dropdown li {
-  margin: 0;
-}
-
-.has-dropdown .dropdown a {
-  display: block;
-  padding: 0.75rem 1rem;
-  color: #333;
-  text-decoration: none;
-  border-bottom: 1px solid #eee;
-  white-space: nowrap;
-}
-
-.has-dropdown .dropdown a:hover {
-  background: #f5f5f5;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-  
-  .cr-global-nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 1000;
-  }
-  
-  .cr-global-nav-list {
-    flex-direction: column;
-    gap: 0;
-    padding: 1rem;
-  }
-  
-  .cr-global-nav-list > li {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-  
-  .cr-global-nav-list a {
-    display: block;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .has-dropdown .dropdown {
-    position: static;
-    box-shadow: none;
-    background: #f9f9f9;
-    margin-left: 1rem;
-    display: none;
-  }
-  
-  .has-dropdown.open .dropdown {
-    display: block;
-  }
-  
-  /* Ensure buttons stay horizontal on mobile */
-  .nav-buttons.three-pack {
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
-  
-  .nav-buttons.three-pack .btn {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-  }
-}
+/* Removed duplicate mobile nav block (keeping earlier unified menu rules) */
 
 /* Very small screens adjustment */
 @media (max-width: 480px) {
