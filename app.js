@@ -1309,3 +1309,15 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 // === BVA v3: Reviewer Token Form ===
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const nav = document.querySelector('.cr-global-nav');
+
+  if (mobileMenuToggle && nav) {
+    mobileMenuToggle.addEventListener('click', () => {
+      const expanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+      mobileMenuToggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open', !expanded);
+    });
+  }
+});
