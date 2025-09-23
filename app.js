@@ -193,8 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initInstallPromptFlows();
   initServiceWorker();
+  initMobileNavigation(); // Add this line
+  initHeroVideoModal();   // Keep this if you have video modal
 });
-
 
 /* ==============================
    Analytics: GA4 + LinkedIn tracking
@@ -1308,16 +1309,92 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// === BVA v3: Reviewer Token Form ===
-document.addEventListener('DOMContentLoaded', () => {
+// ------------------------------------------------------------
+// Mobile Navigation Fix & Dropdown Functionality
+// ------------------------------------------------------------
+function initMobileNavigation() {
   const toggle = document.getElementById('mobileMenuToggle');
   const nav = document.getElementById('mobileNav');
-
+  const headerActions = document.querySelector('.header-actions');
+  
   if (toggle && nav) {
-    toggle.addEventListener('click', () => {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!expanded));
       nav.classList.toggle('open', !expanded);
+      
+      // Keep the header actions (3 main buttons) always visible
+      if (headerActions) {
+        headerActions.style.display = 'flex';
+      }
     });
   }
-});
+
+  // Close mobile nav when clicking outside
+  document.addEventListener('click', (e) => {
+    if (nav && nav.classList.contains('open') && 
+        !nav.contains(e.target) && 
+        e.target !== toggle) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Dropdown functionality for BVA Resources
+  initDropdownMenu();
+}
+
+function initDropdownMenu() {
+  const dropdownTrigger = document.querySelector('.has-dropdown > a');
+  const dropdownMenu = document.querySelector('.has-dropdown .dropdown');
+  const dropdownItem = document.querySelector('.has-dropdown');
+  
+  if (!dropdownTrigger || !dropdownMenu) return;
+
+  // Desktop: hover functionality
+  dropdownItem.addEventListener('mouseenter', () => {
+    if (window.innerWidth > 768) {
+      dropdownMenu.style.display = 'block';
+      dropdownItem.classList.add('open');
+    }
+  });
+
+  dropdownItem.addEventListener('mouseleave', () => {
+    if (window.innerWidth > 768) {
+      dropdownMenu.style.display = 'none';
+      dropdownItem.classList.remove('open');
+    }
+  });
+
+  // Mobile: click functionality
+  dropdownTrigger.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      const isOpen = dropdownMenu.style.display === 'block';
+      dropdownMenu.style.display = isOpen ? 'none' : 'block';
+      dropdownItem.classList.toggle('open', !isOpen);
+    }
+  });
+
+  // Close dropdown when clicking elsewhere
+  document.addEventListener('click', (e) => {
+    if (!dropdownItem.contains(e.target) && window.innerWidth <= 768) {
+      dropdownMenu.style.display = 'none';
+      dropdownItem.classList.remove('open');
+    }
+  });
+}
+
+// Update the existing mobile menu function to remove conflicting code
+(function(){
+  function ready(fn){ 
+    if(document.readyState!=='loading') fn(); 
+    else document.addEventListener('DOMContentLoaded', fn); 
+  }
+  
+  ready(function(){
+    // Remove the existing conflicting mobile menu code
+    // This will be handled by initMobileNavigation above
+  });
+})();

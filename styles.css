@@ -3793,3 +3793,145 @@ header .nav-buttons .btn,
     gap: 10px;
   }
 }
+
+/* Mobile Navigation Styles */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-buttons.three-pack {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.hamburger-icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+}
+
+.hamburger-icon .line {
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+/* Mobile nav styles */
+.cr-global-nav {
+  display: block;
+}
+
+.cr-global-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cr-global-nav-list > li {
+  position: relative;
+}
+
+/* Dropdown styles */
+.has-dropdown .dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.has-dropdown.open .dropdown {
+  display: block;
+}
+
+.has-dropdown .dropdown li {
+  margin: 0;
+}
+
+.has-dropdown .dropdown a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.has-dropdown .dropdown a:hover {
+  background: #f5f5f5;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  
+  .cr-global-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  
+  .cr-global-nav.open {
+    display: block;
+  }
+  
+  .cr-global-nav-list {
+    padding: 1rem;
+  }
+  
+  .cr-global-nav-list > li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .has-dropdown .dropdown {
+    position: static;
+    box-shadow: none;
+    background: #f9f9f9;
+    margin-left: 1rem;
+  }
+  
+  /* Ensure the 3 main buttons stay visible */
+  .nav-buttons.three-pack {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .nav-buttons.three-pack {
+    flex-direction: column;
+  }
+  
+  .nav-buttons.three-pack .btn {
+    min-width: 120px;
+    text-align: center;
+  }
+}
