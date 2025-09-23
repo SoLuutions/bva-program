@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v3.3.9';
+const CACHE_VERSION = 'v3.3.9n';
 const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -25,37 +25,29 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
+// sw.js – safe fetch handler
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-
-
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const fresh = await fetch(event.request);
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(event.request, fresh.clone());
-        return fresh;
-      } catch {
-        const cached = await caches.match(event.request);
-        return cached || caches.match('/index.html');
-      }
-    })());
-    return;
-  }
+  const req = event.request;
+  const url = new URL(req.url);
+  if (req.method !== 'GET') return;
+  if (!/^https?:$/.test(url.protocol)) return;          // skip chrome-extension:, data:, etc.
+  if (url.origin !== self.location.origin) return;      // only same-origin
 
   event.respondWith((async () => {
-    const cached = await caches.match(event.request);
-    const fetchPromise = fetch(event.request).then(async (res) => {
-      try {
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(event.request, res.clone());
-      } catch {}
-      return res;
-    }).catch(() => cached);
-    return cached || fetchPromise;
+    const cache = await caches.open('app-v1');
+    const cached = await cache.match(req);
+    try {
+      const net = await fetch(req);
+      if (net.ok && (net.type === 'basic' || net.type === 'cors')) {
+        cache.put(req, net.clone());
+      }
+      return net;
+    } catch {
+      return cached || Response.error();
+    }
   })());
 });
+
 
 self.addEventListener('message', (event) => {
   const msg = event.data;
