@@ -1310,24 +1310,18 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 // ------------------------------------------------------------
-// Mobile Navigation Fix & Dropdown Functionality
+// Mobile Navigation & Dropdown Functionality
 // ------------------------------------------------------------
 function initMobileNavigation() {
   const toggle = document.getElementById('mobileMenuToggle');
   const nav = document.getElementById('mobileNav');
-  const headerActions = document.querySelector('.header-actions');
   
   if (toggle && nav) {
     toggle.addEventListener('click', (e) => {
       e.preventDefault();
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.classList.toggle('open', !expanded);
-      
-      // Keep the header actions (3 main buttons) always visible
-      if (headerActions) {
-        headerActions.style.display = 'flex';
-      }
+      const isOpen = nav.classList.contains('open');
+      nav.classList.toggle('open', !isOpen);
+      toggle.setAttribute('aria-expanded', String(!isOpen));
     });
   }
 
@@ -1341,31 +1335,29 @@ function initMobileNavigation() {
     }
   });
 
-  // Dropdown functionality for BVA Resources
+  // Dropdown functionality
   initDropdownMenu();
 }
 
 function initDropdownMenu() {
+  const dropdownItem = document.querySelector('.has-dropdown');
   const dropdownTrigger = document.querySelector('.has-dropdown > a');
   const dropdownMenu = document.querySelector('.has-dropdown .dropdown');
-  const dropdownItem = document.querySelector('.has-dropdown');
   
-  if (!dropdownTrigger || !dropdownMenu) return;
+  if (!dropdownItem || !dropdownMenu) return;
 
   // Desktop: hover functionality
-  dropdownItem.addEventListener('mouseenter', () => {
-    if (window.innerWidth > 768) {
+  if (window.innerWidth > 768) {
+    dropdownItem.addEventListener('mouseenter', () => {
       dropdownMenu.style.display = 'block';
       dropdownItem.classList.add('open');
-    }
-  });
+    });
 
-  dropdownItem.addEventListener('mouseleave', () => {
-    if (window.innerWidth > 768) {
+    dropdownItem.addEventListener('mouseleave', () => {
       dropdownMenu.style.display = 'none';
       dropdownItem.classList.remove('open');
-    }
-  });
+    });
+  }
 
   // Mobile: click functionality
   dropdownTrigger.addEventListener('click', (e) => {
@@ -1377,24 +1369,21 @@ function initDropdownMenu() {
     }
   });
 
-  // Close dropdown when clicking elsewhere
+  // Close dropdown when clicking elsewhere on mobile
   document.addEventListener('click', (e) => {
-    if (!dropdownItem.contains(e.target) && window.innerWidth <= 768) {
+    if (window.innerWidth <= 768 && !dropdownItem.contains(e.target)) {
       dropdownMenu.style.display = 'none';
       dropdownItem.classList.remove('open');
     }
   });
 }
 
-// Update the existing mobile menu function to remove conflicting code
-(function(){
-  function ready(fn){ 
-    if(document.readyState!=='loading') fn(); 
-    else document.addEventListener('DOMContentLoaded', fn); 
-  }
-  
-  ready(function(){
-    // Remove the existing conflicting mobile menu code
-    // This will be handled by initMobileNavigation above
-  });
-})();
+// Update DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  initFaqToggles();
+  initSmoothScroll();
+  initInstallPromptFlows();
+  initServiceWorker();
+  initMobileNavigation();
+  initHeroVideoModal();
+});
