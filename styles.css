@@ -3591,3 +3591,175 @@ header {
   width: 100%;
 }
 
+
+
+/* === Header/Nav button sizing override === */
+header .nav-buttons .btn,
+.cr-global-nav .nav-buttons .btn {
+  min-width: auto !important;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  line-height: 1.1;
+}
+
+
+
+/* === Hamburger button === */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease;
+  margin-left: auto;
+}
+
+.hamburger:hover {
+  background: rgba(255,255,255,.08);
+}
+
+/* SVG lines for animated hamburger -> X */
+.hamburger-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.hamburger .line1,
+.hamburger .line2,
+.hamburger .line3 {
+  transition: transform .25s ease, opacity .25s ease;
+  transform-origin: 12px 12px;
+}
+
+.hamburger[aria-expanded="true"] .line1 {
+  transform: translateY(5px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] .line2 {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] .line3 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* Mobile menu slide panel */
+@media (max-width: 900px) {
+  .hamburger { display: inline-flex; }
+
+  /* Collapse lists by default */
+  .cr-global-nav .cr-global-nav-list,
+  .cr-global-nav .nav-buttons {
+    display: none;
+  }
+
+  /* Sliding container */
+  .cr-global-nav {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .28s ease;
+  }
+
+  .cr-global-nav.open {
+    max-height: 600px;
+  }
+
+  .cr-global-nav.open .cr-global-nav-list,
+  .cr-global-nav.open .nav-buttons {
+    display: block;
+  }
+
+  .cr-global-nav.open .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px 20px;
+  }
+}
+
+
+
+/* === Header actions layout: 3 buttons side-by-side + hamburger to the right === */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-actions .three-pack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .nav-buttons .btn,
+.cr-global-nav .nav-buttons .btn,
+.header-actions .three-pack .btn {
+  min-width: auto !important;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  line-height: 1.1;
+}
+
+/* Place hamburger to the RIGHT of the three buttons; hide on desktop */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.hamburger:hover { background: rgba(255,255,255,.08); }
+
+.hamburger-icon { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+.hamburger .line1, .hamburger .line2, .hamburger .line3 {
+  transition: transform .25s ease, opacity .25s ease;
+  transform-origin: 12px 12px;
+}
+
+/* Mobile: hide button row, show hamburger */
+@media (max-width: 900px) {
+  .header-actions .three-pack { display: none; }
+  .hamburger { display: inline-flex; }
+
+  /* Slide-down menu */
+  .cr-global-nav {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .28s ease;
+  }
+  .cr-global-nav.open { max-height: 600px; }
+
+  .cr-global-nav .cr-global-nav-list,
+  .cr-global-nav .nav-buttons { display: none; }
+  .cr-global-nav.open .cr-global-nav-list,
+  .cr-global-nav.open .nav-buttons { display: block; }
+  .cr-global-nav.open .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px 20px;
+  }
+}
+
