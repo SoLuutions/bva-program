@@ -77,22 +77,25 @@
     <header>
         <div class="container">
           <div class="header-container">
-      
-            <!-- Logo first -->
+    
+            <!-- Logo -->
             <div class="logo">
               <img alt="BVA Program Logo"
                 src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" />
             </div>
-      
-            <!-- Main nav buttons -->
+    
+            <!-- Main action buttons (always visible) -->
             <div class="header-actions">
               <div class="nav-buttons three-pack">
-                <a class="btn btn-secondary" id="login-button" href="https://1a01-gary.systeme.io/dashboard/en/login">Log In</a>
-                <a class="btn btn-secondary" id="view-plans-button" href="#command-results-pricing">View Plans</a>
-                <a class="btn btn-primary" id="register-button" href="https://1a01-gary.systeme.io/80e7228b">Register</a>
+                <a class="btn btn-secondary" id="login-button"
+                  href="https://1a01-gary.systeme.io/dashboard/en/login">Log In</a>
+                <a class="btn btn-secondary" id="view-plans-button"
+                  href="#command-results-pricing">View Plans</a>
+                <a class="btn btn-primary" id="register-button"
+                  href="https://1a01-gary.systeme.io/80e7228b">Register</a>
               </div>
-      
-              <!-- Single burger -->
+    
+              <!-- Burger toggle -->
               <button id="mobileMenuToggle" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
                 <svg class="hamburger-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path class="line line1" d="M4 7h16"></path>
@@ -101,12 +104,33 @@
                 </svg>
               </button>
             </div>
-      
           </div>
         </div>
+    
+        <!-- Collapsible nav for site links -->
+        <nav id="mobileNav" class="cr-global-nav">
+          <ul class="cr-global-nav-list">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/books/">Books</a></li>
+            <li><a href="/solutions/">Solutions</a></li>
+            <li><a href="#command-results-pricing">Pricing</a></li>
+    
+            <!-- Dropdown -->
+            <li class="has-dropdown">
+              <a href="#">BVA Resources ▾</a>
+              <ul class="dropdown">
+                <li><a href="/bva-program/">BVA Program</a></li>
+                <li><a href="/bva-guide/">BVA Guide</a></li>
+                <li><a href="/bva-executive-brief/">BVA Executive Brief</a></li>
+              </ul>
+            </li>
+    
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
       </header>
-      
-
+    
     <!-- Hero Video Modal -->
     <div id="heroVideoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-labelledby="heroVideoTitle">
         <div class="cr-modal__backdrop" data-close-modal></div>
