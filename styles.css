@@ -3763,3 +3763,33 @@ header .nav-buttons .btn,
   }
 }
 
+/* Desktop: logo left, buttons right */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  justify-content: flex-start;
+  margin: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    order: -1; /* logo goes on top */
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .nav-buttons.three-pack {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

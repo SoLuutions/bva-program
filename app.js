@@ -1308,28 +1308,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-
-// === Mobile hamburger toggle + Register link sync ===
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('mobileMenuToggle');
-  const nav = document.querySelector('nav.cr-global-nav') || document.querySelector('.cr-global-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const isOpen = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
-    });
-  }
-
-  // Ensure all Register buttons link to Systeme
-  const REGISTER_URL = 'https://1a01-gary.systeme.io/80e7228b';
-  const candidates = Array.from(document.querySelectorAll('a')).filter(a => {
-    const text = (a.textContent || '').trim().toLowerCase();
-    return text === 'register' || a.id === 'register-button' || a.dataset.registerLink !== undefined;
-  });
-  candidates.forEach(a => a.setAttribute('href', REGISTER_URL));
-
-  // Deduplicate: keep first Register link inside header/global nav
-  const scope = document.querySelector('header') || document;
-  const regLinks = Array.from(scope.querySelectorAll(`a[href="https://1a01-gary.systeme.io/80e7228b"]`)).filter(a => /register/i.test((a.textContent||'')));
-  regLinks.slice(1).forEach(a => a.remove());
-});
+// === BVA v3: Reviewer Token Form ===
