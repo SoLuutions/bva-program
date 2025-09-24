@@ -3757,7 +3757,7 @@ header .nav-buttons .btn,
 /* Very small screens */
 @media (max-width: 480px) {
   .nav-buttons.three-pack {
-    flex-direction: column;
+    flex-direction: row;
   }
   
   .nav-buttons.three-pack .btn {
