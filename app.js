@@ -1302,3 +1302,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   })();
 
+// Secondary nav hamburger toggle (mobile)
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('mobileMenuToggle');
+  const nav = document.getElementById('globalSecondaryNav');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  }, { passive: true });
+});
