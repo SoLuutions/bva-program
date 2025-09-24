@@ -3859,8 +3859,10 @@ header .nav-buttons .btn,
     gap: 8px;
     align-items: center;
   }
-  /* Flatten the three buttons inside into the grid columns */
-  .header-actions .three-pack { display: contents !important; }
+  /* Default fallback: keep three-pack as its own 3-col grid */
+  .header-actions .three-pack { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  /* If supported, flatten wrapper so each button is its own grid item */
+  @supports (display: contents) { .header-actions .three-pack { display: contents !important; } }
   .header-actions .three-pack .btn {
     width: 100% !important;
     min-width: 0 !important;
@@ -3869,7 +3871,9 @@ header .nav-buttons .btn,
     white-space: nowrap;
   }
   /* Keep the hamburger in its own grid cell at the end */
-  .hamburger { justify-self: end; }
+  .hamburger { grid-column: 4; justify-self: end; }
+  /* Strong overrides to prevent vertical stacking from older rules */
+  .nav-buttons.three-pack { flex-direction: row !important; flex-wrap: nowrap !important; }
 }
 
 /* Header container layout */
