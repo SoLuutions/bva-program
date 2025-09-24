@@ -3591,3 +3591,24 @@ header {
   width: 100%;
 }
 
+/* --- Mobile header layout fixes (4 columns + visible hamburger) --- */
+@media (max-width: 768px) {
+  /* Keep header buttons from becoming full-width */
+  header .btn,
+  .header-actions .btn,
+  .nav-buttons.three-pack .btn { width: auto !important; max-width: none !important; min-width: auto !important; }
+}
+
+@media (max-width: 600px) {
+  .header-actions { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; align-items: center; }
+  /* Three buttons: make them individual grid items */
+  .header-actions .three-pack { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  @supports (display: contents) { .header-actions .three-pack { display: contents !important; } }
+  .header-actions .three-pack .btn { width: 100% !important; min-width: 0 !important; padding: .6rem .7rem; font-size: 1rem; white-space: nowrap; }
+  /* Hamburger in its own cell on the right */
+  #mobileMenuToggle, .hamburger { grid-column: 4; justify-self: end; display: inline-flex !important; }
+}
+
+/* Larger, easier-to-tap hamburger */
+#mobileMenuToggle, .hamburger { width: 56px; height: 56px; padding: 8px; border-radius: 12px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.hamburger-icon { width: 26px; height: 26px; stroke-width: 2.6; }
