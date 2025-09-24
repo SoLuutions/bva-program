@@ -76,56 +76,55 @@
 <body>
     <header>
         <div class="container">
-            <div class="header-container">
-                <div class="logo">
-                    <img alt="BVA Program Logo"
-                        src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" />
-                </div>
-                <div class="nav-buttons-container">
-                    <!-- Left group -->
-                    <div class="nav-buttons">
-                        <a class="btn btn-secondary" href="#command-results-pricing">View Plans</a>
-                    </div>
-
-                    <!-- Right group -->
-                    <div class="nav-buttons">
-                        <a class="btn btn-secondary" href="https://command-results.passion.io/login"
-                            id="auth-button">Log In</a>
-                    </div>
-                </div>
+          <div class="header-container">
+            <div class="logo">
+              <img alt="BVA Program Logo"
+                   src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" />
             </div>
+      
+            <!-- Primary actions (View Plans, Log In, Register) -->
+            <div class="header-actions">
+              <div class="three-pack">
+                <a class="btn btn-primary" href="#command-results-pricing">View Plans</a>
+                <a class="btn btn-primary" id="auth-button" href="https://1a01-gary.systeme.io/dashboard/en/login">Log In</a>
+                <a class="btn btn-primary" id="register-button" href="/registration.html">Register</a>
+              </div>
+      
+              <!-- Mobile hamburger toggles secondary links -->
+              <button id="mobileMenuToggle"
+                      class="hamburger"
+                      aria-label="Open menu"
+                      aria-controls="globalSecondaryNav"
+                      aria-expanded="false">
+                <span></span><span></span><span></span>
+              </button>
+            </div>
+          </div>
         </div>
-        </div>
-
-        <nav class="cr-global-nav">
-            <ul class="cr-global-nav-list">
-                <li><a href="https://www.commandresults.com/about/">About</a></li>
-                <li><a href="https://www.commandresults.com/books/">Books</a></li>
-                <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
-                <li><a href="#command-results-pricing">Pricing</a></li>
-
-                <li class="has-submenu">
-                    <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
-                    <ul class="submenu" aria-label="BVA Resources submenu">
-                        <li><a href="https://app.commandresults.com">BVA Program</a></li>
-                        <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA
-                                Guide</a></li>
-                        <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive
-                                Brief</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
-                <li><a href="/contact.html">Contact Us</a></li>
-            </ul>
-        <!-- Auth Buttons (managed by app.js) -->
-<div class="nav-buttons">
-  <a class="btn btn-secondary" id="auth-button" data-auth-link="true"
-     href="https://1a01-gary.systeme.io/dashboard/en/login">Log In</a>
-  <a class="btn btn-primary" id="register-button" href="/registration.html" style="display:none">Register</a>
-</div>
-</nav>
-    </header>
+      
+        <!-- Secondary links -->
+        <nav id="globalSecondaryNav" class="cr-global-nav">
+          <ul class="cr-global-nav-list">
+            <li><a href="https://www.commandresults.com/about/">About</a></li>
+            <li><a href="https://www.commandresults.com/books/">Books</a></li>
+            <li><a href="https://www.commandresults.com/solutions/">Solutions</a></li>
+            <li><a href="#command-results-pricing">Pricing</a></li>
+      
+            <li class="has-submenu">
+              <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources ▾</button>
+              <ul class="submenu" aria-label="BVA Resources submenu">
+                <li><a href="https://app.commandresults.com">BVA Program</a></li>
+                <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a></li>
+                <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">BVA Executive Brief</a></li>
+              </ul>
+            </li>
+      
+            <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
+            <li><a href="/contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+      </header>
+      
 
     <!-- Hero Video Modal -->
     <div id="heroVideoModal" class="cr-modal" aria-hidden="true" role="dialog" aria-labelledby="heroVideoTitle">

@@ -192,14 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ==============================
    Analytics: GA4 + LinkedIn tracking
    ============================== */
-(function() {
-  function onReady(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn); }}
+(function () {
+  function onReady(fn) { if (document.readyState !== 'loading') { fn(); } else { document.addEventListener('DOMContentLoaded', fn); } }
 
   // Helper: GA4
-  function trackGA(eventName, params){
+  function trackGA(eventName, params) {
     try {
       if (window.gtag) { window.gtag('event', eventName, params || {}); }
-    } catch(e){ /* no-op */ }
+    } catch (e) { /* no-op */ }
   }
 
   // Helper: LinkedIn (requires configured conversion_id in Campaign Manager)
@@ -211,24 +211,24 @@ document.addEventListener('DOMContentLoaded', () => {
     registration_submit: null,  // optional
     registration_complete: null // optional
   };
-  function trackLI(key){
+  function trackLI(key) {
     try {
       if (window.lintrk && LI_CONVERSIONS[key]) {
         window.lintrk('track', { conversion_id: LI_CONVERSIONS[key] });
       }
-    } catch(e){ /* no-op */ }
+    } catch (e) { /* no-op */ }
   }
 
   // Attach handlers
-  onReady(function(){
+  onReady(function () {
     // CTA buttons
     var appBtn = document.getElementById('app-btn');
     var trialBtn = document.getElementById('trial-btn');
     var purchaseBtn = document.getElementById('purchase-btn');
 
-    function attachClick(el, id, label){
-      if(!el) return;
-      el.addEventListener('click', function(e){
+    function attachClick(el, id, label) {
+      if (!el) return;
+      el.addEventListener('click', function (e) {
         var href = el.getAttribute('href') || '';
         trackGA('cta_click', {
           cta_id: id,
@@ -249,15 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
     attachClick(purchaseBtn, 'purchase_btn', 'Purchase');
 
     // Sitewide outbound link tracking
-    document.addEventListener('click', function(ev){
+    document.addEventListener('click', function (ev) {
       var a = ev.target.closest && ev.target.closest('a[href]');
-      if(!a) return;
+      if (!a) return;
       var url;
-      try { url = new URL(a.href, window.location.href); } catch(e){ return; }
+      try { url = new URL(a.href, window.location.href); } catch (e) { return; }
       if (url.host && url.host !== window.location.host) {
         trackGA('outbound_click', {
           link_url: url.href,
-          link_text: (a.textContent || '').trim().slice(0,120),
+          link_text: (a.textContent || '').trim().slice(0, 120),
           link_host: url.host
         });
         trackLI('outbound_click');
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fire on submit and on success redirect (?registered=1)
     var regForm = document.querySelector('form#registration-form, form[data-analytics="registration"]');
     if (regForm) {
-      regForm.addEventListener('submit', function(){
+      regForm.addEventListener('submit', function () {
         trackGA('registration_submit', { form_id: regForm.id || 'registration-form' });
         trackLI('registration_submit');
       }, { passive: true });
@@ -283,34 +283,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Sticky nav dropdown toggle + analytics
-(function(){
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){
+(function () {
+  function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function () {
     var toggle = document.getElementById('nav-dropdown-toggle');
-    var menu   = document.getElementById('nav-dropdown-menu');
+    var menu = document.getElementById('nav-dropdown-menu');
     if (!toggle || !menu) return;
 
-    function closeMenu(){ menu.classList.remove('show'); toggle.setAttribute('aria-expanded','false'); menu.setAttribute('aria-hidden','true'); }
-    function openMenu(){  menu.classList.add('show');    toggle.setAttribute('aria-expanded','true');  menu.setAttribute('aria-hidden','false'); }
+    function closeMenu() { menu.classList.remove('show'); toggle.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-hidden', 'true'); }
+    function openMenu() { menu.classList.add('show'); toggle.setAttribute('aria-expanded', 'true'); menu.setAttribute('aria-hidden', 'false'); }
 
-    toggle.addEventListener('click', function(e){
+    toggle.addEventListener('click', function (e) {
       e.preventDefault();
       if (menu.classList.contains('show')) closeMenu(); else openMenu();
     }, { passive: false });
 
-    document.addEventListener('click', function(e){
+    document.addEventListener('click', function (e) {
       if (!menu.contains(e.target) && e.target !== toggle) closeMenu();
     }, { capture: true });
 
     // Analytics for nav dropdown links
-    function trackNav(id, label, href){
-      try { if (window.gtag) gtag('event','nav_dropdown_click',{cta_id:id, cta_label:label, destination_url:href}); } catch(e){}
-      try { if (window.lintrk && window.LI_CONVERSIONS && window.LI_CONVERSIONS[id]) lintrk('track', {conversion_id: window.LI_CONVERSIONS[id]}); } catch(e){}
+    function trackNav(id, label, href) {
+      try { if (window.gtag) gtag('event', 'nav_dropdown_click', { cta_id: id, cta_label: label, destination_url: href }); } catch (e) { }
+      try { if (window.lintrk && window.LI_CONVERSIONS && window.LI_CONVERSIONS[id]) lintrk('track', { conversion_id: window.LI_CONVERSIONS[id] }); } catch (e) { }
     }
-    [['nav-bva-program-app-link','BVA Program App'],['nav-app-link','App'],['nav-trial-link','Free Trial'],['nav-purchase-link','Purchase']].forEach(function(pair){
+    [['nav-bva-program-app-link', 'BVA Program App'], ['nav-app-link', 'App'], ['nav-trial-link', 'Free Trial'], ['nav-purchase-link', 'Purchase']].forEach(function (pair) {
       var el = document.getElementById(pair[0]);
       if (!el) return;
-      el.addEventListener('click', function(){
+      el.addEventListener('click', function () {
         trackNav(pair[0], pair[1], el.href);
       }, { passive: true });
     });
@@ -319,29 +319,29 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---------------- Reviewer Card + Install Gate (Vercel Option 2) ----------------
 
 // Reveal card only in preview (approval flow) until you remove the hidden attribute
-(function revealReviewerCardForPreview(){
+(function revealReviewerCardForPreview() {
   const card = document.getElementById('reviewerCard');
   if (!card) return;
   const qp = new URLSearchParams(location.search);
   if (qp.get('reviewerPreview') === '1') {
     card.hidden = false;
-    try { localStorage.setItem('cr.reviewerPreview', '1'); } catch(e){}
+    try { localStorage.setItem('cr.reviewerPreview', '1'); } catch (e) { }
   } else if (localStorage.getItem('cr.reviewerPreview') === '1') {
     card.hidden = false;
   }
 })();
 
-function isPWAInstalled(){
+function isPWAInstalled() {
   try {
     if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
     if (window.navigator.standalone === true) return true; // iOS Safari
     if (document.referrer && document.referrer.startsWith('android-app://')) return true;
     if (localStorage.getItem('pwa-installed') === '1' || localStorage.getItem('cr.pwaInstalled') === '1') return true;
-  } catch(e){}
+  } catch (e) { }
   return false;
 }
 
-(function wireReviewerForm(){
+(function wireReviewerForm() {
   const form = document.getElementById('reviewerForm');
   const tokenInput = document.getElementById('reviewerTokenInput');
   const btn = document.getElementById('reviewerContinueBtn');
@@ -368,11 +368,11 @@ function isPWAInstalled(){
   });
 })();
 
-async function verifyAndRedirect(token, msgEl, btnEl){
+async function verifyAndRedirect(token, msgEl, btnEl) {
   try {
     btnEl.disabled = true;
     msgEl.textContent = 'Validating token…';
-  } catch(e){}
+  } catch (e) { }
 
   let resp;
   try {
@@ -381,20 +381,20 @@ async function verifyAndRedirect(token, msgEl, btnEl){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
-  } catch(err) {
+  } catch (err) {
     msgEl.textContent = 'Network error. Please try again.';
     btnEl.disabled = false;
     return;
   }
 
   if (!resp.ok) {
-    const data = await resp.json().catch(()=> ({}));
+    const data = await resp.json().catch(() => ({}));
     msgEl.textContent = data?.error || 'Invalid or expired token.';
     btnEl.disabled = false;
     return;
   }
 
-  const data = await resp.json().catch(()=> ({}));
+  const data = await resp.json().catch(() => ({}));
   if (data?.ok && data?.url) {
     msgEl.textContent = 'Token accepted. Redirecting…';
     window.location.href = data.url;
@@ -405,25 +405,25 @@ async function verifyAndRedirect(token, msgEl, btnEl){
 }
 
 // ----- Install Gate Modal -----
-function openInstallGate(onContinue){
+function openInstallGate(onContinue) {
   const modal = document.getElementById('installGate');
   const continueBtn = document.getElementById('installContinueBtn');
   const closeBtn = document.getElementById('installCloseBtn');
   const hint = document.getElementById('installHint');
   if (!modal || !continueBtn) return;
 
-  function close(){
+  function close() {
     modal.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('cr-modal-open');
     modal.removeEventListener('click', backdropHandler);
     continueBtn.removeEventListener('click', handleContinue);
     closeBtn?.removeEventListener('click', handleCloseBtn);
   }
-  function backdropHandler(ev){
+  function backdropHandler(ev) {
     if (ev.target && ev.target.hasAttribute('data-close-modal')) close();
   }
-  function handleCloseBtn(){ close(); }
-  function handleContinue(){
+  function handleCloseBtn() { close(); }
+  function handleContinue() {
     if (isPWAInstalled()) {
       close();
       onContinue && onContinue();
@@ -440,7 +440,7 @@ function openInstallGate(onContinue){
   closeBtn?.addEventListener('click', handleCloseBtn);
 }
 
-(function(){
+(function () {
   const qs = new URLSearchParams(location.search);
   const preview = qs.get('reviewerPreview') === '1' || localStorage.getItem('reviewerPreview') === '1';
 
@@ -497,9 +497,9 @@ function openInstallGate(onContinue){
     }
   });
 
-  function showMsg(t){ if (msg) { msg.textContent = t; msg.style.visibility='visible'; } }
-  function clearMsg(){ if (msg) { msg.textContent = ''; msg.style.visibility='hidden'; } }
-  function setBusy(b){
+  function showMsg(t) { if (msg) { msg.textContent = t; msg.style.visibility = 'visible'; } }
+  function clearMsg() { if (msg) { msg.textContent = ''; msg.style.visibility = 'hidden'; } }
+  function setBusy(b) {
     if (btn) { btn.disabled = b; btn.setAttribute('aria-busy', String(b)); }
     if (input) input.disabled = b;
   }
@@ -509,7 +509,7 @@ function openInstallGate(onContinue){
 /* ===== Enhancements: console logging + scorecard gating ===== */
 
 // logging helper
-function __log(...args){ try { console.log('[Mailchimp]', ...args); } catch(_){} }
+function __log(...args) { try { console.log('[Mailchimp]', ...args); } catch (_) { } }
 
 // global flag for scorecard gating
 window.__scorecardSubscribed = window.__scorecardSubscribed || false;
@@ -527,24 +527,24 @@ document.addEventListener('click', (e) => {
     }
     // nudge user to the scorecard form
     const form = document.getElementById('scorecard-form') ||
-                 document.querySelector('form[data-mailchimp="scorecard"]') ||
-                 document.querySelector('#scorecard form');
+      document.querySelector('form[data-mailchimp="scorecard"]') ||
+      document.querySelector('#scorecard form');
     if (form) {
       form.scrollIntoView({ behavior: 'smooth', block: 'center' });
       const status = document.getElementById('scorecard-status') ||
-                     form.querySelector('[data-status]') ||
-                     form.querySelector('[role="status"]');
+        form.querySelector('[data-status]') ||
+        form.querySelector('[role="status"]');
       if (status) status.textContent = 'Please subscribe to receive your results.';
     }
   }
 });
 
 // Expose an optional function quiz code can call to force-check the gate
-window.requireScorecardSubscription = function() {
+window.requireScorecardSubscription = function () {
   if (!window.__scorecardSubscribed) {
     const evt = new Event('click', { bubbles: true });
     const fake = document.createElement('div');
-    fake.setAttribute('data-gate','scorecard-results');
+    fake.setAttribute('data-gate', 'scorecard-results');
     document.body.appendChild(fake);
     fake.dispatchEvent(evt);
     fake.remove();
@@ -554,20 +554,20 @@ window.requireScorecardSubscription = function() {
 };
 
 // Patch into existing handlers if present (from earlier flexible wiring)
-(function patchMailchimpHandlers(){
+(function patchMailchimpHandlers() {
   const oldNewsletter = typeof __attachNewsletterHandler === 'function' ? __attachNewsletterHandler : null;
   const oldScorecard = typeof __attachScorecardHandler === 'function' ? __attachScorecardHandler : null;
 
   if (oldNewsletter) {
     const orig = oldNewsletter;
-    __attachNewsletterHandler = function(){
+    __attachNewsletterHandler = function () {
       __log('attaching newsletter handler…');
       return orig.apply(this, arguments);
     };
   }
   if (oldScorecard) {
     const orig = oldScorecard;
-    __attachScorecardHandler = function(){
+    __attachScorecardHandler = function () {
       __log('attaching scorecard handler…');
       // wrap the submit success path by monkey-patching __postJSON result handling later if needed
       return orig.apply(this, arguments);
@@ -581,7 +581,7 @@ window.requireScorecardSubscription = function() {
 if (typeof window.showUpdateNotification !== 'function') {
   window.showUpdateNotification = function () {
     console.info('[PWA] Update available.');
-    try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch (e) {}
+    try { var n = document.getElementById('update-notification'); if (n) n.hidden = false; } catch (e) { }
   };
 }
 
@@ -617,7 +617,7 @@ function __readByIds(form, ids) {
   }
   return '';
 }
-function __checked(form, names, idFallbacks=[]) {
+function __checked(form, names, idFallbacks = []) {
   for (const n of names) {
     const el = form.querySelector(`[name="${n}"]`);
     if (el && 'checked' in el) return !!el.checked;
@@ -649,13 +649,13 @@ function __wireForm({ scope, id, dataAttr, statusSel, tag }) {
     if (status) status.textContent = 'Submitting…';
 
     // Flexible mapping (names, data-field, types) + ID fallbacks to your current markup
-    const email    = (__read(form, ['email','EMAIL'], 'input[type="email"], [data-field="email"]') || __readByIds(form, ['newsletterEmail','scorecardEmail'])) .trim().toLowerCase();
-    const fname    = (__read(form, ['fname','FNAME'], '[data-field="fname"]') || __readByIds(form, ['newsletterName','scorecardName'])) .trim();
-    const lname    = (__read(form, ['lname','LNAME'], '[data-field="lname"]') || __readByIds(form, ['newsletterLastName','scorecardLastName'])) .trim();
-    const jobtitle = (__read(form, ['jobtitle','JOBTITLE','title'], '[data-field="jobtitle"]') || __readByIds(form, ['newsletterJobTitle','scorecardJobTitle'])) .trim();
-    const company  = (__read(form, ['company','COMPANY'], '[data-field="company"]') || __readByIds(form, ['newsletterCompany','scorecardCompany'])) .trim();
-    const phone    = (__read(form, ['phone','PHONE'], 'input[type="tel"], [data-field="phone"]') || __readByIds(form, ['newsletterPhone','scorecardPhone'])) .trim();
-    const consent  = __checked(form, ['consent','CONSENT'], ['consentCheckbox','scorecardConsent']);
+    const email = (__read(form, ['email', 'EMAIL'], 'input[type="email"], [data-field="email"]') || __readByIds(form, ['newsletterEmail', 'scorecardEmail'])).trim().toLowerCase();
+    const fname = (__read(form, ['fname', 'FNAME'], '[data-field="fname"]') || __readByIds(form, ['newsletterName', 'scorecardName'])).trim();
+    const lname = (__read(form, ['lname', 'LNAME'], '[data-field="lname"]') || __readByIds(form, ['newsletterLastName', 'scorecardLastName'])).trim();
+    const jobtitle = (__read(form, ['jobtitle', 'JOBTITLE', 'title'], '[data-field="jobtitle"]') || __readByIds(form, ['newsletterJobTitle', 'scorecardJobTitle'])).trim();
+    const company = (__read(form, ['company', 'COMPANY'], '[data-field="company"]') || __readByIds(form, ['newsletterCompany', 'scorecardCompany'])).trim();
+    const phone = (__read(form, ['phone', 'PHONE'], 'input[type="tel"], [data-field="phone"]') || __readByIds(form, ['newsletterPhone', 'scorecardPhone'])).trim();
+    const consent = __checked(form, ['consent', 'CONSENT'], ['consentCheckbox', 'scorecardConsent']);
 
     if (!email || !consent || !lname || !jobtitle) {
       if (status) status.textContent = 'Please enter email, last name, job title, and accept the privacy policy.';
@@ -689,7 +689,7 @@ function __wireForm({ scope, id, dataAttr, statusSel, tag }) {
   });
 }
 
-(function(){
+(function () {
   const run = () => {
     // Newsletter: #newsletterForm OR any form with data-mailchimp="newsletter" OR a form inside #newsletter
     __wireForm({ scope: '#newsletter', id: 'newsletterForm', dataAttr: 'data-mailchimp="newsletter"', statusSel: '#newsletter-status', tag: 'Newsletter - PWA' });
@@ -713,19 +713,19 @@ document.addEventListener('click', (e) => {
 
   // Nudge user to the scorecard form
   const form = document.getElementById('scorecardForm') ||
-               document.querySelector('form[data-mailchimp="scorecard"]') ||
-               document.querySelector('#scorecard form');
+    document.querySelector('form[data-mailchimp="scorecard"]') ||
+    document.querySelector('#scorecard form');
   if (form) {
     form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     const status = document.querySelector('#scorecard-status') ||
-                   form.querySelector('[data-status]') ||
-                   form.querySelector('[role="status"]');
+      form.querySelector('[data-status]') ||
+      form.querySelector('[role="status"]');
     if (status) status.textContent = 'Please subscribe to receive your results.';
   }
 });
 
 // If your quiz renders results inline (no link), call this at the top:
-window.requireScorecardSubscription = function() {
+window.requireScorecardSubscription = function () {
   if (window.__scorecardSubscribed) return true;
   // Trigger the same nudge as clicking a gated element
   const fake = document.createElement('a'); fake.setAttribute('data-gate', 'scorecard-results');
@@ -737,42 +737,42 @@ window.requireScorecardSubscription = function() {
 
 // 0) Debug toggle
 window.__mailchimpDebug = true;
-function __dbg(...a){ if (window.__mailchimpDebug && console && console.log) console.log('[CR]', ...a); }
+function __dbg(...a) { if (window.__mailchimpDebug && console && console.log) console.log('[CR]', ...a); }
 
 // 1) Loud diagnostics for Newsletter/Scorecard wiring
-(function(){
+(function () {
   const nl = document.getElementById('newsletterForm') || document.querySelector('form[data-mailchimp="newsletter"]') || document.querySelector('#newsletter form');
-  const sc = document.getElementById('scorecardForm')  || document.querySelector('form[data-mailchimp="scorecard"]') || document.querySelector('#scorecard form');
+  const sc = document.getElementById('scorecardForm') || document.querySelector('form[data-mailchimp="scorecard"]') || document.querySelector('#scorecard form');
   __dbg('newsletter form:', !!nl, nl);
   __dbg('scorecard form:', !!sc, sc);
 
-  function val(form, sel){ const el = sel && form && form.querySelector(sel); return el && 'value' in el ? el.value : undefined; }
+  function val(form, sel) { const el = sel && form && form.querySelector(sel); return el && 'value' in el ? el.value : undefined; }
   if (nl) {
     __dbg('newsletter fields snapshot', {
-      email: val(nl, 'input[type="email"]') || val(nl,'[name="email"]') || (nl.querySelector('#newsletterEmail')||{}).value,
-      lname: val(nl, '[name="lname"]') || (nl.querySelector('#newsletterLastName')||{}).value,
-      jobtitle: val(nl, '[name="jobtitle"]') || (nl.querySelector('#newsletterJobTitle')||{}).value,
+      email: val(nl, 'input[type="email"]') || val(nl, '[name="email"]') || (nl.querySelector('#newsletterEmail') || {}).value,
+      lname: val(nl, '[name="lname"]') || (nl.querySelector('#newsletterLastName') || {}).value,
+      jobtitle: val(nl, '[name="jobtitle"]') || (nl.querySelector('#newsletterJobTitle') || {}).value,
       consent: !!(nl.querySelector('[name="consent"]') || document.getElementById('consentCheckbox'))?.checked
     });
   }
   if (sc) {
     __dbg('scorecard fields snapshot', {
-      email: val(sc, 'input[type="email"]') || val(sc,'[name="email"]') || (sc.querySelector('#scorecardEmail')||{}).value,
-      lname: val(sc, '[name="lname"]') || (sc.querySelector('#scorecardLastName')||{}).value,
-      jobtitle: val(sc, '[name="jobtitle"]') || (sc.querySelector('#scorecardJobTitle')||{}).value,
+      email: val(sc, 'input[type="email"]') || val(sc, '[name="email"]') || (sc.querySelector('#scorecardEmail') || {}).value,
+      lname: val(sc, '[name="lname"]') || (sc.querySelector('#scorecardLastName') || {}).value,
+      jobtitle: val(sc, '[name="jobtitle"]') || (sc.querySelector('#scorecardJobTitle') || {}).value,
       consent: !!(sc.querySelector('[name="consent"]') || document.getElementById('scorecardConsent'))?.checked
     });
   }
 })();
 
 // 2) Make submission logs obvious (wrap fetch)
-(function(){
+(function () {
   const _post = (typeof __postJSON === 'function') ? __postJSON : null;
   if (!_post) { __dbg('WARN: __postJSON not found; Mailchimp wiring may not be loaded yet.'); return; }
 
   // Monkey-patch to add loud logs
-  window.__postJSON = async function(url, data){
-    __dbg('POST', url, { ...data, email: (data.email||'').replace(/(.{2}).+(@.*)/,'$1***$2') });
+  window.__postJSON = async function (url, data) {
+    __dbg('POST', url, { ...data, email: (data.email || '').replace(/(.{2}).+(@.*)/, '$1***$2') });
     try {
       const out = await _post(url, data);
       __dbg('POST OK', url, out);
@@ -796,30 +796,30 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   if (gateEl.tagName === 'A' && gateEl.href) window.__deferredNavHref = gateEl.href;
   const form = document.getElementById('scorecardForm')
-           || document.querySelector('form[data-mailchimp="scorecard"]')
-           || document.querySelector('#scorecard form');
+    || document.querySelector('form[data-mailchimp="scorecard"]')
+    || document.querySelector('#scorecard form');
   if (form) {
     form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     const status = document.querySelector('#scorecard-status')
-               || form.querySelector('[data-status]')
-               || form.querySelector('[role="status"]');
+      || form.querySelector('[data-status]')
+      || form.querySelector('[role="status"]');
     if (status) status.textContent = 'Please subscribe to receive your results.';
   }
 });
 
-window.requireScorecardSubscription = function(){
+window.requireScorecardSubscription = function () {
   __dbg('requireScorecardSubscription', window.__scorecardSubscribed);
   if (window.__scorecardSubscribed) return true;
   // emulate click on a gated thing to show the nudge
   const fake = document.createElement('a');
-  fake.setAttribute('data-gate','scorecard-results');
+  fake.setAttribute('data-gate', 'scorecard-results');
   const ev = new Event('click', { bubbles: true, cancelable: true });
   fake.dispatchEvent(ev);
   return false;
 };
 
 // 4) PWA install flow — fix "preventDefault() called" warning by exposing a proper prompt()
-(function(){
+(function () {
   let deferredPrompt = null;
   const findTrigger = () => document.querySelector('[data-install-trigger]') || document.getElementById('installBtn');
 
@@ -875,9 +875,9 @@ function initHeroVideoModal() {
   modal.__videoModalInitialized = true;
 
   // Get the base video URL
-  const baseVideoUrl = iframe.getAttribute('data-src') || 
-                      iframe.getAttribute('src') || 
-                      'https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true';
+  const baseVideoUrl = iframe.getAttribute('data-src') ||
+    iframe.getAttribute('src') ||
+    'https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true';
 
   // Clear the iframe src initially to prevent autoplay
   iframe.removeAttribute('src');
@@ -938,9 +938,9 @@ function initHeroVideoModal() {
 
   // Close on backdrop click
   modal.addEventListener('click', (e) => {
-    if (e.target === modal || 
-        e.target.classList.contains('cr-modal__backdrop') ||
-        e.target.hasAttribute('data-close-modal')) {
+    if (e.target === modal ||
+      e.target.classList.contains('cr-modal__backdrop') ||
+      e.target.hasAttribute('data-close-modal')) {
       closeModal(e);
     }
   }, { capture: true });
@@ -968,37 +968,37 @@ function initVideoModal() {
 
 // Call initialization
 initVideoModal();
-(function(){
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){
+(function () {
+  function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function () {
     var el = document.getElementById('header-register');
     if (el && typeof wireProtectedLink === 'function') {
       try {
         wireProtectedLink(el, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: false });
-      } catch(e){}
+      } catch (e) { }
     }
   });
 })();
 
 
 // BVA v3: submenu toggle for global nav
-(function(){
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){
+(function () {
+  function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function () {
     var trigger = document.querySelector('.cr-global-nav .has-submenu > .submenu-toggle');
-    var item    = document.querySelector('.cr-global-nav .has-submenu');
+    var item = document.querySelector('.cr-global-nav .has-submenu');
     if (!trigger || !item) return;
-    trigger.addEventListener('click', function(e){
+    trigger.addEventListener('click', function (e) {
       e.preventDefault();
       var open = item.classList.toggle('open');
-      trigger.setAttribute('aria-expanded', open ? 'true':'false');
-    }, { passive:false });
-    document.addEventListener('click', function(e){
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }, { passive: false });
+    document.addEventListener('click', function (e) {
       if (!item.contains(e.target)) {
         item.classList.remove('open');
-        trigger.setAttribute('aria-expanded','false');
+        trigger.setAttribute('aria-expanded', 'false');
       }
-    }, { capture:true });
+    }, { capture: true });
   });
 })();
 
@@ -1039,85 +1039,85 @@ initVideoModal();
 /* ================================
    PRICING TOGGLE: Monthly <-> Annual
    ================================ */
-   document.addEventListener('DOMContentLoaded', () => {
-    const toggle   = document.getElementById('online-toggle');
-    const monthly  = document.getElementById('monthly-label-online');
-    const annual   = document.getElementById('annual-label-online');
-    const discount = document.getElementById('online-discount');
-  
-    const priceEl  = document.getElementById('bva-workbooks-price'); // "$47/month"
-    const termsEl  = document.getElementById('bva-workbooks-terms');  // "Billed monthly..."
-  
-    if (!toggle || !priceEl || !termsEl) return;
-  
-    function setMode(isAnnual){
-      toggle.classList.toggle('annual', isAnnual);
-      if (monthly)  monthly.classList.toggle('active', !isAnnual);
-      if (annual)   annual.classList.toggle('active',  isAnnual);
-      if (discount) discount.style.display = isAnnual ? 'inline-block' : 'none';
-  
-      // Update visible price/terms (adjust numbers if you change pricing)
-      if (isAnnual) {
-        priceEl.textContent = '$470/year';
-        termsEl.innerHTML = '<ul><li>Billed annually</li><li>Cancel anytime</li></ul>';
-      } else {
-        priceEl.textContent = '$47/month';
-        termsEl.innerHTML = '<ul><li>Billed monthly</li><li>Cancel anytime</li></ul>';
-      }
-    }
-  
-    // Toggle on click
-    toggle.addEventListener('click', () => {
-      const isAnnual = !toggle.classList.contains('annual');
-      setMode(isAnnual);
-    });
-  });
-  
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('online-toggle');
+  const monthly = document.getElementById('monthly-label-online');
+  const annual = document.getElementById('annual-label-online');
+  const discount = document.getElementById('online-discount');
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const PASSION_URL = 'https://command-results.passion.io/checkout/361d3339-e248-4257-aad9-aee65055cf83';
-    const REG_PAGE    = 'registration.html';
-  
-    // Buttons/links that should follow this rule
-    const targets = [
-      document.getElementById('bva-app-enroll-button'),    // pricing card: "Get Started Free"
-      document.getElementById('reviews-free-app-button'),  // reviews CTA
-    ].filter(Boolean);
-  
-    function isInstalled() {
-      // Prefer your existing helper if present
-      try {
-        if (typeof isAppInstalled === 'function') return !!isAppInstalled();
-      } catch (e) {}
-      // Fallback checks
-      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
-             (navigator.standalone === true) ||
-             ((document.referrer || '').startsWith('android-app://')) ||
-             localStorage.getItem('pwa-installed') === 'true';
+  const priceEl = document.getElementById('bva-workbooks-price'); // "$47/month"
+  const termsEl = document.getElementById('bva-workbooks-terms');  // "Billed monthly..."
+
+  if (!toggle || !priceEl || !termsEl) return;
+
+  function setMode(isAnnual) {
+    toggle.classList.toggle('annual', isAnnual);
+    if (monthly) monthly.classList.toggle('active', !isAnnual);
+    if (annual) annual.classList.toggle('active', isAnnual);
+    if (discount) discount.style.display = isAnnual ? 'inline-block' : 'none';
+
+    // Update visible price/terms (adjust numbers if you change pricing)
+    if (isAnnual) {
+      priceEl.textContent = '$470/year';
+      termsEl.innerHTML = '<ul><li>Billed annually</li><li>Cancel anytime</li></ul>';
+    } else {
+      priceEl.textContent = '$47/month';
+      termsEl.innerHTML = '<ul><li>Billed monthly</li><li>Cancel anytime</li></ul>';
     }
-  
-    // Ensure anchors visibly point to PASSION when installed
-    function syncHrefs() {
-      const installed = isInstalled();
-      targets.forEach(a => {
-        if (!a) return;
-        a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
-      });
-    }
-  
-    // First paint + on click safety
-    syncHrefs();
-    targets.forEach(a => {
-      a.addEventListener('click', (ev) => {
-        const installed = isInstalled();
-        a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
-        if (!installed) {
-          ev.preventDefault();
-          window.location.href = REG_PAGE;
-        }
-      }, { capture: true });
-    });
+  }
+
+  // Toggle on click
+  toggle.addEventListener('click', () => {
+    const isAnnual = !toggle.classList.contains('annual');
+    setMode(isAnnual);
   });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const PASSION_URL = 'https://command-results.passion.io/checkout/361d3339-e248-4257-aad9-aee65055cf83';
+  const REG_PAGE = 'registration.html';
+
+  // Buttons/links that should follow this rule
+  const targets = [
+    document.getElementById('bva-app-enroll-button'),    // pricing card: "Get Started Free"
+    document.getElementById('reviews-free-app-button'),  // reviews CTA
+  ].filter(Boolean);
+
+  function isInstalled() {
+    // Prefer your existing helper if present
+    try {
+      if (typeof isAppInstalled === 'function') return !!isAppInstalled();
+    } catch (e) { }
+    // Fallback checks
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+      (navigator.standalone === true) ||
+      ((document.referrer || '').startsWith('android-app://')) ||
+      localStorage.getItem('pwa-installed') === 'true';
+  }
+
+  // Ensure anchors visibly point to PASSION when installed
+  function syncHrefs() {
+    const installed = isInstalled();
+    targets.forEach(a => {
+      if (!a) return;
+      a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
+    });
+  }
+
+  // First paint + on click safety
+  syncHrefs();
+  targets.forEach(a => {
+    a.addEventListener('click', (ev) => {
+      const installed = isInstalled();
+      a.setAttribute('href', installed ? PASSION_URL : REG_PAGE);
+      if (!installed) {
+        ev.preventDefault();
+        window.location.href = REG_PAGE;
+      }
+    }, { capture: true });
+  });
+});
 
 
 // Legacy contact URL guard
@@ -1128,51 +1128,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-(function(){
-  function $(sel,root=document){ return root.querySelector(sel); }
-  function $all(sel,root=document){ return Array.from(root.querySelectorAll(sel)); }
+(function () {
+  function $(sel, root = document) { return root.querySelector(sel); }
+  function $all(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
 
-  const card       = $('.bva2-card');
+  const card = $('.bva2-card');
   if (!card) return;
 
-  const screens    = $all('.bva2-screen', card);
-  const progress   = $('.bva2-progress', card);
-  const fill       = $('.bva2-progress-fill', card);
-  const stepLabel  = $('.bva2-step', card);
-  const startBtn   = $('.bva2-start', card);
-  const form       = $('.bva2-form', card);
+  const screens = $all('.bva2-screen', card);
+  const progress = $('.bva2-progress', card);
+  const fill = $('.bva2-progress-fill', card);
+  const stepLabel = $('.bva2-step', card);
+  const startBtn = $('.bva2-start', card);
+  const form = $('.bva2-form', card);
   const primaryCta = $('#bva2PrimaryCta');
-  const scoreEl    = $('#bva2Score');
-  const statusEl   = $('#bva2Status');
-  const messageEl  = $('#bva2Message');
+  const scoreEl = $('#bva2Score');
+  const statusEl = $('#bva2Status');
+  const messageEl = $('#bva2Message');
 
-  const order = ['intro','q1','q2','q3','q4','q5','lead','results'];
-  const answers = { q1:null,q2:null,q3:null,q4:null,q5:null };
+  const order = ['intro', 'q1', 'q2', 'q3', 'q4', 'q5', 'lead', 'results'];
+  const answers = { q1: null, q2: null, q3: null, q4: null, q5: null };
 
-  function show(screen){
+  function show(screen) {
     screens.forEach(s => s.hidden = (s.getAttribute('data-screen') !== screen));
     // update progress on Q screens
     const idx = order.indexOf(screen);
-    const qIndex = Math.max(0, Math.min(idx-1, 5));
-    const pct = (idx>=1 && idx<=5) ? (qIndex/5)*100 : (idx>5 ? 100 : 0);
+    const qIndex = Math.max(0, Math.min(idx - 1, 5));
+    const pct = (idx >= 1 && idx <= 5) ? (qIndex / 5) * 100 : (idx > 5 ? 100 : 0);
     if (progress) {
-      progress.setAttribute('aria-hidden', (idx<=0 || screen==='results') ? 'true' : 'false');
+      progress.setAttribute('aria-hidden', (idx <= 0 || screen === 'results') ? 'true' : 'false');
       if (fill) fill.style.width = pct + '%';
-      if (stepLabel && idx>=1 && idx<=5) stepLabel.textContent = String(qIndex);
+      if (stepLabel && idx >= 1 && idx <= 5) stepLabel.textContent = String(qIndex);
     }
   }
 
-  function next(from){
+  function next(from) {
     const i = order.indexOf(from);
-    const nxt = order[i+1] || 'results';
+    const nxt = order[i + 1] || 'results';
     show(nxt);
   }
 
-  function score(){
-    return ['q1','q2','q3','q4','q5'].reduce((t,k)=> t + (Number(answers[k]||0)), 0);
+  function score() {
+    return ['q1', 'q2', 'q3', 'q4', 'q5'].reduce((t, k) => t + (Number(answers[k] || 0)), 0);
   }
 
-  function setRecommendation(total){
+  function setRecommendation(total) {
     // Low (<=10), Mid (11–18), High (19–25)
     let href = '#';
     let status = 'Getting Started';
@@ -1193,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (messageEl) messageEl.textContent = msg;
     if (primaryCta) {
       primaryCta.href = href;
-      primaryCta.setAttribute('data-gate','scorecard-results');
+      primaryCta.setAttribute('data-gate', 'scorecard-results');
     }
   }
 
@@ -1211,7 +1211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     field.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-val]');
       if (!btn) return;
-      $all('button', field).forEach(b => b.classList.toggle('active', b===btn));
+      $all('button', field).forEach(b => b.classList.toggle('active', b === btn));
       answers[field.getAttribute('data-field')] = Number(btn.getAttribute('data-val'));
     });
 
@@ -1223,7 +1223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       // update progress step label (1..5)
-      const idx = parseInt(key.slice(1),10);
+      const idx = parseInt(key.slice(1), 10);
       if (stepLabel) stepLabel.textContent = String(idx);
       next(screen.getAttribute('data-screen'));
     });
@@ -1252,51 +1252,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const ok = window.requireScorecardSubscription();
         if (!ok) e.preventDefault();
       }
-    }, { capture:true });
+    }, { capture: true });
   }
 
   // Boot to intro
   show('intro');
 })();
 
-// === Auth UI Logic: Systeme.io & PWA install gating ===
-(function authUiLogic(){
+
+
+(function authUiLogic() {
   const SYSTEME_LOGIN = 'https://1a01-gary.systeme.io/dashboard/en/login';
-
-  function setAuthButtons(){
-    const installed = isAppInstalled();
-    const loginBtn = document.getElementById('auth-button');
-    const regBtn   = document.getElementById('register-button');
-
-    if (installed) {
-      if (loginBtn) loginBtn.style.display = '';
-      if (regBtn)   regBtn.style.display   = 'none';
-      if (loginBtn) loginBtn.setAttribute('href', SYSTEME_LOGIN);
-    } else {
-      if (loginBtn) loginBtn.style.display = 'none';
-      if (regBtn)   regBtn.style.display   = '';
-    }
+  const SYSTEME_REGISTER = 'https://1a01-gary.systeme.io/80e7228b';
+  
+  
+  function setAuthButtons() {
+  const loginBtn = document.getElementById('auth-button');
+  const regBtn = document.getElementById('register-button');
+  
+  
+  if (loginBtn) {
+  loginBtn.style.display = ''; // Always show Log In
+  loginBtn.setAttribute('href', SYSTEME_LOGIN);
   }
-
-  // Guard ALL auth links sitewide when NOT installed
-  document.addEventListener('click', (e) => {
-    const a = e.target && (e.target.closest ? e.target.closest('a') : null);
-    if (!a) return;
-    const href = (a.getAttribute('href') || '').trim();
-    const isAuthLink = a.hasAttribute('data-auth-link') || href.includes('systeme.io/dashboard/en/login');
-    if (!isAuthLink) return;
-    if (!isAppInstalled()) {
-      e.preventDefault();
-      window.location.href = '/registration.html';
-    }
-  }, { capture: true });
-
+  if (regBtn) {
+  regBtn.style.display = ''; // Always show Register
+  regBtn.setAttribute('href', SYSTEME_REGISTER);
+  }
+  }
+  
+  
   document.addEventListener('DOMContentLoaded', setAuthButtons);
   window.addEventListener('load', setAuthButtons);
-
-  // When the PWA is installed, remember and go to Systeme.io login
-  window.addEventListener('appinstalled', () => {
-    try { localStorage.setItem('pwa-installed', 'true'); } catch {}
-    window.location.href = SYSTEME_LOGIN;
+  })();
+  
+  
+  // ================================
+  // Hamburger Menu Toggle
+  // ================================
+  (function () {
+  const toggle = document.getElementById('mobileMenuToggle');
+  const nav = document.getElementById('globalSecondaryNav');
+  if (!toggle || !nav) return;
+  
+  
+  toggle.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
-})();
+  })();
+

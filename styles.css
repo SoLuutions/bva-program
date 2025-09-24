@@ -3481,3 +3481,153 @@ header {
 /* Larger, easier-to-tap hamburger */
 #mobileMenuToggle, .hamburger { width: 56px; height: 56px; padding: 8px; border-radius: 12px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .hamburger-icon { width: 26px; height: 26px; stroke-width: 2.6; }
+/* Primary actions container */
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-actions .three-pack {
+  display: flex;
+  gap: 10px;
+}
+
+/* Hamburger button (hidden on desktop) */
+.hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 8px;
+  background: transparent;
+  position: relative;
+  padding: 0;
+}
+.hamburger span {
+  position: absolute;
+  left: 10px; right: 10px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+.hamburger span:nth-child(1) { top: 14px; }
+.hamburger span:nth-child(2) { top: 21px; }
+.hamburger span:nth-child(3) { top: 28px; }
+
+/* Desktop: show full secondary nav, hide hamburger (you already had similar) */
+@media (min-width: 901px) {
+  .cr-global-nav { display: block; }
+  .hamburger { display: none; }
+}
+
+/* Mobile: center the three primary buttons and use hamburger for secondary links */
+@media (max-width: 900px) {
+  .header-container { justify-content: center; }
+  .header-actions { margin-left: 0; justify-content: center; }
+  .header-actions .three-pack { justify-content: center; flex-wrap: wrap; }
+  .hamburger { display: inline-block; }
+
+  /* Hide secondary links until toggled open */
+  .cr-global-nav { display: none; }
+  .cr-global-nav.open { display: block; }
+
+  /* Optional: make secondary list look like a panel on mobile */
+  .cr-global-nav.open .cr-global-nav-list {
+    background: rgba(255,255,255,.95);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    margin: 10px 20px;
+  }
+}
+/* Keep primary actions always on top of the slide-down nav */
+.header-actions { position: relative; z-index: 1001; }
+.cr-global-nav   { position: relative; z-index: 1000; }
+
+/* ---------- Global secondary nav (mobile polish) ---------- */
+.cr-global-nav {
+  /* hidden by default on mobile; shown when .open is set (you already have this) */
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .cr-global-nav {
+    position: absolute;
+    left: 0; right: 0;
+    top: 100%;               /* sits just below the sticky header */
+    padding: 10px 12px;
+  }
+  .cr-global-nav.open .cr-global-nav-list {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .cr-global-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    background: var(--panel);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,.06);
+    display: grid;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .18s ease, transform .18s ease;
+    pointer-events: none;
+  }
+  .cr-global-nav-list > li {
+    margin: 0;
+  }
+  .cr-global-nav-list a,
+  .cr-global-nav .submenu-toggle {
+    display: block;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 700;
+    border-radius: 10px;
+    background: color-mix(in oklab, var(--accent) 6%, #fff);
+    border: 1px solid rgba(0,0,0,.05);
+  }
+  .cr-global-nav-list a:hover,
+  .cr-global-nav .submenu-toggle:hover {
+    background: color-mix(in oklab, var(--accent) 12%, #fff);
+  }
+
+  /* Submenu styling */
+  .cr-global-nav .has-submenu {
+    position: relative;
+  }
+  .cr-global-nav .submenu-toggle {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+  .cr-global-nav .has-submenu.open > .submenu-toggle {
+    background: color-mix(in oklab, var(--accent) 16%, #fff);
+  }
+  .cr-global-nav .submenu {
+    list-style: none;
+    margin: 6px 0 0 0;
+    padding: 8px;
+    display: none;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .cr-global-nav .has-submenu.open > .submenu { display: grid; gap: 6px; }
+  .cr-global-nav .submenu a {
+    padding: 10px 12px;
+    background: color-mix(in oklab, var(--primary) 6%, #fff);
+    border: 1px solid rgba(0,0,0,.04);
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .cr-global-nav .submenu a:hover {
+    background: color-mix(in oklab, var(--primary) 12%, #fff);
+  }
+}
