@@ -53,6 +53,9 @@ header {
   align-items: center;
   flex-wrap: wrap
 }
+/* Keep actions pinned to the right on desktop */
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-actions .three-pack { display: flex; align-items: center; gap: 10px; }
 
 .logo {
   display: flex;
@@ -1856,6 +1859,9 @@ footer {
     justify-content: flex-end;
     position:sticky
   }
+  /* Desktop: show full nav, hide hamburger */
+  .cr-global-nav { display: block; }
+  #mobileMenuToggle, .hamburger { display: none !important; }
 }
 
 @media(min-width:901px) {
@@ -1886,75 +1892,26 @@ footer {
   .hero-panels {
     grid-template-columns: 1fr
   }
+  /* Mobile: center header actions and hide nav until opened */
+  .header-container { justify-content: center; }
+  .header-actions { margin-left: 0; justify-content: center; }
+  .cr-global-nav { display: none; }
+  .cr-global-nav.open { display: block; }
 }
 
-@media(max-width:768px) {
-  .hero {
-    padding: 60px 0
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-    align-items: center
-  }
-
-  .btn {
-    width: 100%;
-    max-width: 300px
-  }
-
-  .section-header h2 {
-    font-size: 1.7rem
-  }
-
-  .problem-points,
-  .solution-grid,
-  .offering-list,
-  .stats-grid,
-  .workshop-list {
-    grid-template-columns: 1fr
-  }
-
-  #install-notification {
-    width: calc(100% - 40px);
-    right: 20px;
-    left: 20px;
-    bottom: 20px;
-    max-width: 400px;
-    margin: 0 auto
-  }
-
-  .hero .btn {
-    min-width: 100%;
-    max-width: 100%
-  }
-
-  #command-results-pricing .cr-pricing-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
-  }
-
-  .nav-buttons-container {
-    justify-content: center !important;
-    flex-wrap: wrap;
-    width: 100%;
-    gap: 10px;
-    position: sticky !important
-  }
-
-  .nav-buttons .btn {
-    min-width: 140px;
-    padding: 12px 18px;
-    font-size: 1rem
-  }
-
-  .newsletter-form .form-group {
-    flex-direction: column
-  }
-
-  .newsletter-form input[type=email],
-  .newsletter-form .btn {
-    width: 100%
-  }
+@media(max-width:768px){
+  .hero{ padding:60px 0 }
+  .cta-buttons{ flex-direction:column; align-items:center }
+  .btn{ width:100%; max-width:300px }
+  .section-header h2{ font-size:1.7rem }
+  .problem-points,.solution-grid,.offering-list,.stats-grid,.workshop-list{ grid-template-columns:1fr }
+  #install-notification{ width:calc(100% - 40px); right:20px; left:20px; bottom:20px; max-width:400px; margin:0 auto }
+  .hero .btn{ min-width:100%; max-width:100% }
+  #command-results-pricing .cr-pricing-grid{ grid-template-columns:repeat(auto-fit,minmax(280px,1fr)) }
+  .nav-buttons-container{ justify-content:center !important; flex-wrap:wrap; width:100%; gap:10px; position:sticky !important }
+  .nav-buttons .btn{ min-width:140px; padding:12px 18px; font-size:1rem }
+  .newsletter-form .form-group{ flex-direction:column }
+  .newsletter-form input[type=email], .newsletter-form .btn{ width:100% }
 }
 
 @media(max-width:640px) {
@@ -3204,67 +3161,13 @@ footer {
 /* Page lock when modal is open */
 html.cr-modal-open { overflow: hidden; }
 
-/* Modal shell */
-.cr-modal {
- position: fixed;
- inset: 0;
- z-index: 9999;              /* single source of truth */
- display: none;              /* toggled via [aria-hidden] */
- background: rgba(0, 0, 0, 0.8);
- align-items: center;
- justify-content: center;
- overflow-y: auto;
- padding: 20px;
-}
-
-/* Accessibility-friendly toggle */
-.cr-modal[aria-hidden="true"]  { display: none; }
-.cr-modal[aria-hidden="false"] { display: flex; }
-
-/* Backdrop (optional separate layer if you want click-to-close) */
-.cr-modal__backdrop {
- position: absolute;
- inset: 0;
- background: rgba(0,0,0,.6);
-}
-
-/* Dialog */
-.cr-modal__dialog {
- position: relative;
- background: #000;
- border-radius: 12px;
- overflow: hidden;
- width: 100%;
- max-width: 640px;           /* keep video readable on mobile/desktop */
- box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
- display: flex;
- flex-direction: column;
-}
-
-/* Body */
-.cr-modal__body {
- flex: 1;
- padding: 0;
- margin: 0;
- overflow: hidden;
- background: #000;
-}
-
-/* Close button */
-.cr-modal__close {
- position: absolute;
- top: 10px;
- right: 10px;
- width: 40px;
- height: 40px;
- border: none;
- border-radius: 50%;
- background: rgba(0,0,0,.6);
- color: #fff;
- font-size: 24px;
- cursor: pointer;
- z-index: 1;
-}
+/* Modal shell (single source) */
+.cr-modal { position:fixed; inset:0; z-index:9999; display:none; background:rgba(0,0,0,.8); align-items:center; justify-content:center; overflow-y:auto; padding:20px }
+.cr-modal[aria-hidden="true"]{ display:none } .cr-modal[aria-hidden="false"]{ display:flex }
+.cr-modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.6) }
+.cr-modal__dialog{ position:relative; background:#000; border-radius:12px; overflow:hidden; width:100%; max-width:640px; box-shadow:0 10px 40px rgba(0,0,0,.6); display:flex; flex-direction:column }
+.cr-modal__body{ flex:1; padding:0; margin:0; overflow:hidden; background:#000 }
+.cr-modal__close{ position:absolute; top:10px; right:10px; width:40px; height:40px; border:none; border-radius:50%; background:rgba(0,0,0,.6); color:#fff; font-size:24px; cursor:pointer; z-index:1 }
 
 /* Video container maintains aspect ratio */
 .video-container {
@@ -3387,41 +3290,7 @@ html.cr-modal-open { overflow: hidden; }
 }
 
 /* --- BVA updates --- */
-.cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
-.cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
-.cr-global-nav{ background:transparent; padding:.25rem 0 0; }
-.cr-global-nav-list{ display:flex; gap:20px; justify-content:center; list-style:none; padding:0; margin:.5rem 0 0; }
-.cr-global-nav-list a{ text-decoration:none; font-weight:500; }
-
-/* --- BVA v3 header + menu --- */
-.cr-global-nav{ padding:.35rem 0 .25rem; }
-.cr-global-nav-list{ display:flex; gap:28px; justify-content:center; list-style:none; padding:0; margin:.4rem 0 0; }
-.cr-global-nav-list a, .cr-global-nav-list button.submenu-toggle{
- font-weight:700; font-size:1rem; line-height:1.4;
- color:#253B57; background:transparent; border:0; padding:.25rem .25rem; cursor:pointer;
-}
-.cr-global-nav-list a:hover, .cr-global-nav-list button.submenu-toggle:hover{ text-decoration:underline; }
-.cr-global-nav-list li.has-submenu{ position:relative; }
-.cr-global-nav-list .submenu{
- position:absolute; top:1.75rem; left:50%; transform:translateX(-50%);
- background:#2E365B; color:#fff; border-radius:.375rem; min-width:240px;
- padding:.5rem 0; margin:0; list-style:none; display:none; box-shadow:0 10px 24px rgba(0,0,0,.18);
-}
-.cr-global-nav-list .submenu li{ margin:0; }
-.cr-global-nav-list .submenu a{
- display:block; padding:.65rem 1rem; color:#fff; text-decoration:none; font-weight:700;
- border-top:1px solid rgba(255,255,255,.18);
-}
-.cr-global-nav-list .submenu li:first-child a{ border-top:0; }
-.cr-global-nav-list li.has-submenu.open .submenu{ display:block; }
-@media (hover:hover){
- .cr-global-nav-list li.has-submenu:hover .submenu{ display:block; }
-}
-/* remove bullets and enforce 3-col grid (keep from v2) */
-.cr-features ul{ list-style:none; padding-left:0; margin-left:0; }
-.cr-features li{ margin:0 0 .5rem; }
-.cr-pricing-grid.three-column{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
+/* unified nav/pricing styles (removed older duplicates) */
 
 /* --- BVA layout plan tweaks --- */
 .nav-buttons-container{ display:flex; align-items:center; gap:16px; }
@@ -3600,13 +3469,12 @@ header {
 }
 
 @media (max-width: 600px) {
-  .header-actions { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; align-items: center; }
-  /* Three buttons: make them individual grid items */
-  .header-actions .three-pack { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  @supports (display: contents) { .header-actions .three-pack { display: contents !important; } }
-  .header-actions .three-pack .btn { width: 100% !important; min-width: 0 !important; padding: .6rem .7rem; font-size: 1rem; white-space: nowrap; }
-  /* Hamburger in its own cell on the right */
-  #mobileMenuToggle, .hamburger { grid-column: 4; justify-self: end; display: inline-flex !important; }
+  /* Keep three CTAs centered in a row */
+  .header-actions { display: flex !important; justify-content: center; align-items: center; gap: 8px; flex-wrap: nowrap; }
+  .header-actions .three-pack { display: flex !important; gap: 8px; }
+  .header-actions .three-pack .btn { width: auto !important; min-width: 120px; padding: .6rem .8rem; font-size: 1rem; white-space: nowrap; }
+  /* Show hamburger below the three buttons to control the site menud */
+  #mobileMenuToggle, .hamburger { display: inline-flex !important; align-self: center; }
 }
 
 /* Larger, easier-to-tap hamburger */
