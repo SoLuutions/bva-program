@@ -285,5 +285,5 @@ async function submitToApi(payload) {
     });
   }
 
-  // NOTE: Service Worker registration happens in registration.html (stable).
+  
 });

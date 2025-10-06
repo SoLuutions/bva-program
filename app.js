@@ -974,7 +974,7 @@ initVideoModal();
     var el = document.getElementById('header-register');
     if (el && typeof wireProtectedLink === 'function') {
       try {
-        wireProtectedLink(el, { whenInstalled: PASSION_APP_URL, whenNotInstalled: '/registration.html', changeLabel: false });
+        wireProtectedLink(el, { whenInstalled: PASSION_APP_URL, whenNotInstalled: 'https://1a01-gary.systeme.io/80e7228b', changeLabel: false });
       } catch (e) { }
     }
   });
@@ -1075,8 +1075,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const PASSION_URL = 'https://command-results.passion.io/checkout/361d3339-e248-4257-aad9-aee65055cf83';
-  const REG_PAGE = 'registration.html';
+  const PASSION_URL = 'https://1a01-gary.systeme.io/80e7228b';
+  const REG_PAGE = 'https://1a01-gary.systeme.io/80e7228b';
 
   // Buttons/links that should follow this rule
   const targets = [
