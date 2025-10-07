@@ -3842,3 +3842,53 @@ header.scrolled .cr-global-nav-list .submenu-toggle:hover {
     background: transparent;
   }
 }
+
+/* =====================================================================
+   PRICING LAYOUT OVERRIDES (scoped & robust)
+   - Section 1 (Online Training): two centered cards + reviewer full row
+   - Section 2 (BVA Program Implementation): single centered card
+   ===================================================================== */
+
+/* Shared card sizing */
+#command-results-pricing .cr-pricing-card{
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+/* ---------- Section 1: Online Training ---------- */
+#command-results-pricing .cr-pricing-section:first-of-type .cr-pricing-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 420px));
+  justify-content: center;
+  justify-items: stretch;
+  gap: 24px;
+  margin: 0 auto;
+}
+/* Reviewer card spans both columns and centers */
+#command-results-pricing .cr-pricing-section:first-of-type .cr-pricing-card.reviewer-card{
+  grid-column: 1 / -1;
+  max-width: 720px;
+  justify-self: center;
+}
+
+/* ---------- Section 2: BVA Program Implementation ---------- */
+#command-results-pricing .cr-pricing-section:nth-of-type(2) .cr-pricing-grid{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+}
+#command-results-pricing .cr-pricing-section:nth-of-type(2) .cr-pricing-card{
+  max-width: 520px; /* single card looks nice a bit wider */
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px){
+  #command-results-pricing .cr-pricing-section:first-of-type .cr-pricing-grid{
+    grid-template-columns: minmax(280px, 1fr);
+  }
+  #command-results-pricing .cr-pricing-card{
+    max-width: 560px;
+  }
+}
