@@ -1324,3 +1324,82 @@ document.addEventListener('DOMContentLoaded', () => {
   sync();
   window.addEventListener('resize', sync, { passive: true });
 });
+
+
+/**
+ * BVA Essentials pricing toggle (hide subline on One-time)
+ */
+(function () {
+  // --- Config ---
+  const ONE_TIME_PRICE = 197;
+  const PAY_IN_3_PRICE = 75;
+  const TOTAL_PRICE = 225;
+
+  // Controls
+  const toggle = document.getElementById("online-toggle");
+  const labelOneTime = document.getElementById("monthly-label-online"); // One-time
+  const labelPayIn3  = document.getElementById("annual-label-online");  // Pay in 3
+
+  // Find the BVA Essentials card
+  const essentialsCard = Array.from(
+    document.querySelectorAll("#command-results-pricing .cr-pricing-card, .cr-pricing-card")
+  ).find(card => /BVA\s*Essentials/i.test(card.textContent || ""));
+
+  if (!toggle || !essentialsCard) return;
+
+  // Elements inside the card (adjust selectors if needed)
+  const priceMain = essentialsCard.querySelector(".cr-price") 
+                    || essentialsCard.querySelector('[data-role="price-main"]');
+  let   priceSub  = essentialsCard.querySelector(".cr-price-per-student")
+                    || essentialsCard.querySelector('[data-role="price-sub"]');
+  const priceTot  = essentialsCard.querySelector(".cr-minimum-students")
+                    || essentialsCard.querySelector('[data-role="price-total"]');
+
+  if (!priceMain) return;
+
+  // If there isn't a subline element, create one so we can show it for Pay-in-3
+  if (!priceSub) {
+    priceSub = document.createElement("p");
+    priceSub.className = "cr-price-per-student";
+    priceMain.insertAdjacentElement("afterend", priceSub);
+  }
+
+  // State: false = One-time, true = Pay in 3
+  let payIn3 = false;
+
+  const money = n => `$${Number(n).toLocaleString()}`;
+
+  function render() {
+    if (payIn3) {
+      // Pay in 3 → show $75 and show subline "3 payments of $75"
+      priceMain.textContent = money(PAY_IN_3_PRICE);
+      priceSub.hidden = false;
+      priceSub.textContent = `3 payments of ${money(PAY_IN_3_PRICE)}`;
+    } else {
+      // One-time → show $197 and HIDE the subline completely
+      priceMain.textContent = money(ONE_TIME_PRICE);
+      priceSub.textContent = "";       // clear text
+      priceSub.hidden = true;          // hide element
+    }
+
+    if (priceTot) priceTot.textContent = `(Total ${money(TOTAL_PRICE)})`;
+
+    // Optional label styling
+    labelOneTime && labelOneTime.classList.toggle("active", !payIn3);
+    labelPayIn3  && labelPayIn3.classList.toggle("active",  payIn3);
+
+    toggle.setAttribute("aria-pressed", String(payIn3));
+  }
+
+  // Toggle interactions
+  toggle.addEventListener("click", () => { payIn3 = !payIn3; render(); });
+
+  const cb = toggle.querySelector('input[type="checkbox"]');
+  cb && cb.addEventListener("change", e => { payIn3 = e.target.checked; render(); });
+
+  labelOneTime && labelOneTime.addEventListener("click", () => { payIn3 = false; render(); });
+  labelPayIn3  && labelPayIn3.addEventListener("click", () => { payIn3 = true;  render(); });
+
+  // Initial render (One-time)
+  render();
+})();
