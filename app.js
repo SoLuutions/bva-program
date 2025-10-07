@@ -1301,3 +1301,42 @@ document.addEventListener('DOMContentLoaded', () => {
   toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
   })();
+
+
+
+// ===== Pricing Toggle repurposed for Essentials: One-time vs 3 payments =====
+(function () {
+  function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn, {once:true}); }
+  ready(function(){
+    var toggle = document.getElementById('online-toggle');
+    var labelOne = document.getElementById('monthly-label-online');   // now "One-time"
+    var labelThree = document.getElementById('annual-label-online');  // now "3 payments"
+    var essentialsPrice = document.getElementById('essentials-price');
+    var essentialsPayments = document.getElementById('essentials-payments');
+    if(!toggle || !labelOne || !labelThree || !essentialsPrice || !essentialsPayments) return;
+
+    function setMode(mode){ // 'one' or 'three'
+      if(mode === 'three'){
+        toggle.classList.add('annual'); // reuse class for slider position
+        labelThree.classList.add('active');
+        labelOne.classList.remove('active');
+        essentialsPrice.textContent = '$75 x 3';
+        essentialsPayments.style.display = '';
+      } else {
+        toggle.classList.remove('annual');
+        labelOne.classList.add('active');
+        labelThree.classList.remove('active');
+        essentialsPrice.textContent = '$197';
+        essentialsPayments.style.display = 'none';
+      }
+    }
+
+    // Default to one-time
+    setMode('one');
+
+    toggle.addEventListener('click', function(){
+      var isThree = toggle.classList.contains('annual');
+      setMode(isThree ? 'one' : 'three');
+    }, {passive:true});
+  });
+})();
