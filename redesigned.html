@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,200 +16,856 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
   <!-- ===== Coherent, single-file styles ===== -->
-  <style>:root{
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  --ink: #1b2430;
-  --muted: #4a4e69;
-  --primary: #2A9D8F;
-  --primary-dark: #38b2ac;
-  --secondary: #4A4E69;
-  --accent: #7B68EE;
-  --support: #F4A261;
-  --alert: #9A031E;
-  --bg: #f1f5f9;
-  --panel:#ffffff;
-  --ring: rgba(42,157,143,.25);
+  <style>
+    :root {
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      --ink: #1b2430;
+      --muted: #4a4e69;
+      --primary: #2A9D8F;
+      --primary-dark: #38b2ac;
+      --secondary: #4A4E69;
+      --accent: #7B68EE;
+      --support: #F4A261;
+      --alert: #9A031E;
+      --bg: #f1f5f9;
+      --panel: #ffffff;
+      --ring: rgba(42, 157, 143, .25);
 
-  /* Adjusted spacing scale for better balance */
-  --space-section-y: 32px;
-  --space-section-y-sm: 24px;
-  --space-hero-y: 28px;
-  --gap-grid: 14px;
-}
+      /* Adjusted spacing scale for better balance */
+      --space-section-y: 32px;
+      --space-section-y-sm: 24px;
+      --space-hero-y: 28px;
+      --gap-grid: 14px;
+    }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-img{max-width:100%;display:block}
-a{color:inherit}
+    * {
+      box-sizing: border-box
+    }
 
-/* Utilities */
-.container{max-width:1120px;margin-inline:auto;padding:0 20px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-.skip-link:focus{left:12px;top:12px;width:auto;height:auto;padding:10px 12px;background:#111827;color:#fff;border-radius:8px;z-index:10000}
+    html,
+    body {
+      height: 100%
+    }
 
-/* Header */
-.site-header{position:sticky;top:0;z-index:1000;background:#ffffffb3;border-bottom:1px solid #e2e8f0;backdrop-filter:saturate(180%) blur(8px)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
-.brand img{height:38px;width:auto}
-.nav-toggle{display:none;background:var(--primary);color:#fff;border:0;border-radius:10px;padding:10px;line-height:0}
-.nav{display:flex;align-items:center;gap:24px}
-.nav-list{display:flex;align-items:center;gap:18px;list-style:none;margin:0;padding:0}
-.nav a,.nav button.submenu-toggle{color:var(--secondary);text-decoration:none;font-weight:700;font-size:15px;background:none;border:0;cursor:pointer;padding:8px 6px;border-radius:8px}
-.nav a:hover,.nav button.submenu-toggle:hover{background:#f1f5f9}
-.nav-cta{display:flex;gap:10px;align-items:center}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border-radius:10px;font-weight:800;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:.2s}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(123,104,238,.35)}
-.btn-outline{background:#fff;color:var(--secondary);border-color:#e5e7eb}
-.btn-secondary{background:var(--support);color:#fff}
-.btn:hover{transform:translateY(-1px)}
-/* Hover brand color per request */
-.btn-primary:hover{background:#f19857}
-.btn-secondary:hover{background:#f19857}
-.has-submenu{position:relative}
-.submenu{position:absolute;left:0;top:calc(100% + 6px);opacity:0;visibility:hidden;min-width:240px;background:var(--secondary);color:#fff;border-radius:10px;padding:6px 0;box-shadow:0 20px 50px rgba(2,6,23,.35)}
-.submenu a{display:block;color:#fff;padding:10px 12px}
-.submenu.open{opacity:1;visibility:visible}
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale
+    }
 
-/* Mobile nav */
-@media (max-width: 900px){
-  .nav-toggle{display:inline-flex}
-  .nav{position:fixed;inset:64px 0 auto 0;background:#ffffff;border-bottom:1px solid #e5e7eb;display:grid;gap:12px;padding:12px 20px;transform:translateY(-120%);transition:.25s;box-shadow:0 8px 30px rgba(0,0,0,.08)}
-  .nav.open{transform:none}
-  .nav-list{flex-direction:column;align-items:flex-start}
-  .nav-cta{justify-content:stretch}
-  .submenu{position:static;opacity:1;visibility:visible;background:#f8fafc;color:var(--secondary);border:1px solid #e5e7eb}
-  .submenu a{color:var(--secondary)}
-}
+    img {
+      max-width: 100%;
+      display: block
+    }
 
-/* Hero */
-.hero{background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:#fff;padding:var(--space-hero-y) 0}
-.hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
-.hero-media{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:420px}
-.hero-media img{width:100%;height:100%;object-fit:cover}
-.hero-play{position:absolute;left:16px;bottom:16px;background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:999px;width:56px;height:56px;display:grid;place-content:center}
-.eyebrow{display:inline-block;background:rgba(255,255,255,.2);padding:6px 10px;border-radius:999px;font-weight:800;letter-spacing:.3px}
-.hero h1{margin:.5rem 0 0;font-size:clamp(1.6rem, 1.1rem + 2.4vw, 2.6rem);line-height:1.15;color:#fff}
-.hero .sub{margin:.5rem 0 0;max-width:60ch;color:rgba(255,255,255,.95)}
-.cta-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-.hero-trust{opacity:.9;margin-top:6px}
-@media (max-width: 900px){.hero-inner{grid-template-columns:1fr;gap:14px}}
+    a {
+      color: inherit
+    }
 
-/* Sections */
-.section{padding:var(--space-section-y) 0}
-.section-head{text-align:center;max-width:860px;margin:0 auto 12px}
-.lead{font-size:1.125rem;color:var(--ink)}
-.sub{color:var(--muted);margin:6px 0 12px}
-.cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+    /* Utilities */
+    .container {
+      max-width: 1120px;
+      margin-inline: auto;
+      padding: 0 20px
+    }
 
-/* Readability fixes for dark problems section */
-#problems .section-head h2{color:#e6eef7}
-#problems .section-head .sub{color:rgba(230,238,247,.92)}
-#problems .panel{color:#e6eef7}
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0
+    }
 
-/* Outcomes panels */
-.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap-grid);margin-top:18px}
-.panel{background:var(--panel);border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-.panel h3{margin:0 0 6px;color:var(--secondary)}
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden
+    }
 
-/* Stats (kept styles for other cards if reused later) */
-.stats-proof{background:linear-gradient(135deg, var(--secondary), #5a5f80);color:#fff}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:18px}
-.stat-card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:20px;text-align:center}
-.stat-number{font-size:2.4rem;font-weight:900;color:#fff;margin-bottom:6px}
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      width: auto;
+      height: auto;
+      padding: 10px 12px;
+      background: #111827;
+      color: #fff;
+      border-radius: 8px;
+      z-index: 10000
+    }
 
-/* Checklist CTA */
-.checklist-cta{background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:#fff}
-.checklist-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center}
-/* Ensure image sits beside text with appropriate size */
-.checklist-grid .art img{width:100%;height:auto;max-height:320px;object-fit:contain}
-/* Checklist hover color */
-.checklist-cta .btn.btn-primary:hover{background:#f19857}
-@media (max-width: 900px){.checklist-grid{grid-template-columns:1fr}}
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #ffffffb3;
+      border-bottom: 1px solid #e2e8f0;
+      backdrop-filter: saturate(180%) blur(8px)
+    }
 
-/* Pricing */
-.pricing{background:#fff}
-.pricing-tabs{display:flex;gap:8px;justify-content:center;margin:6px 0 12px}
-.tab{padding:6px 12px;border:1px solid #e5e7eb;border-radius:999px;background:#fff}
-.tab[aria-selected="true"]{background:var(--primary);color:#fff;border-color:var(--primary)}
-.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:10px}
-.plan{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06);display:flex;flex-direction:column}
-.plan header{display:flex;align-items:center;gap:8px;justify-content:space-between}
-.plan .price{font-size:1.6rem;font-weight:800;margin:8px 0}
-.plan .price .term{font-size:.9rem;color:var(--muted)}
-.plan .features{margin:6px 0 12px;padding-left:18px}
-.plan .features li{margin:6px 0}
-.plan .badge{display:inline-block;background:var(--secondary);color:#fff;border-radius:999px;padding:4px 10px;font-size:.75rem}
-.plan.highlight{outline:2px solid var(--primary)}
-.plan.new{outline:2px dashed var(--support)}
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0
+    }
 
-/* FAQ */
-.faq{background:#fff}
-.accordion details{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:0 0 10px}
-.accordion summary{cursor:pointer;font-weight:900;list-style:none;color:var(--ink)}
-.accordion summary::-webkit-details-marker{display:none}
-.accordion p{color:var(--muted)}
+    .brand img {
+      height: 60px;
+      width: auto
+    }
 
-/* Newsletter */
-.newsletter-card{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-.newsletter-card{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg, var(--accent), rgba(123,104,238,.25)) border-box;border:1px solid transparent;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.newsletter .copy h2{color:var(--secondary);margin:0 0 6px}
-.newsletter .copy p{color:var(--muted)}
-.newsletter .form .btn.btn-primary{box-shadow:0 6px 16px rgba(241,152,87,.35)}
-.newsletter .form .btn.btn-primary:hover{background:#f19857}
-.newsletter .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.newsletter input[type="text"], .newsletter input[type="email"], .newsletter input[type="tel"]{padding:10px;border-radius:10px;border:1px solid #e5e7eb;width:100%}
-.newsletter .checkbox{display:flex;gap:8px;align-items:center;margin:10px 0}
-@media (max-width: 900px){.newsletter-card{grid-template-columns:1fr}}
+    .nav-toggle {
+      display: none;
+      background: var(--primary);
+      color: #fff;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px;
+      line-height: 0
+    }
 
-/* Footer */
-.site-footer{background:var(--secondary);color:#e6eef7;padding:28px 0;position:relative}
-.footer-inner{display:grid;gap:12px;place-items:center}
-.footer-links{display:flex;gap:14px;flex-wrap:wrap}
-.footer-links a{color:#e6eef7;text-decoration:none;font-weight:700;opacity:.95}
-.to-top{position:absolute;right:16px;bottom:12px;width:44px;height:44px;border-radius:999px;background:var(--primary);color:#fff;display:grid;place-content:center;text-decoration:none}
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px
+    }
 
-/* Testimonials carousel */
-.testimonial-track{display:flex;gap:14px;overflow:hidden;mask-image:linear-gradient(90deg,transparent 0,#000 40%,#000 60%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%,#000 60%,transparent 100%)}
-.testimonial-card{flex:0 0 320px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,var(--accent),rgba(123,104,238,.25)) border-box;border:1px solid transparent;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:16px}
-.testimonial-card p{margin:0 0 8px;color:var(--ink)}
-.testimonial-card .who{font-weight:800;color:var(--muted)}
-@keyframes marqueeLeft{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.testimonial-track{position:relative}
-.testimonial-track::after{content:"";position:absolute;inset:0;pointer-events:none}
-/* Duplicate content for seamless loop via JS at runtime if needed */
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
 
-/* Modal */
-html.modal-open{overflow:hidden}
-.modal{position:fixed;inset:0;display:none;z-index:10000;background:rgba(0,0,0,.8);padding:18px}
-.modal[aria-hidden="false"]{display:flex;align-items:center;justify-content:center}
-.modal__dialog{position:relative;width:min(960px,100%);background:#000;border-radius:12px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.6)}
-.modal__body{padding:0}
-.modal__close{position:absolute;top:8px;right:10px;border:0;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;width:40px;height:40px;font-size:24px;cursor:pointer}
-.video-embed{position:relative;aspect-ratio:16/9}
-.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .nav a,
+    .nav button.submenu-toggle {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      padding: 8px 6px;
+      border-radius: 8px
+    }
 
-/* Motion respect */
-@media (prefers-reduced-motion: reduce){*{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important}}
+    .nav a:hover,
+    .nav button.submenu-toggle:hover {
+      background: #f1f5f9
+    }
 
-/* Mobile tightening */
-@media (max-width: 900px){
-  .section{padding:var(--space-section-y-sm) 0}
-}</style>
+    .nav-cta {
+      display: flex;
+      gap: 10px;
+      align-items: center
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(123, 104, 238, .35)
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--secondary);
+      border-color: #e5e7eb
+    }
+
+    .btn-secondary {
+      background: var(--support);
+      color: #fff
+    }
+
+    .btn:hover {
+      transform: translateY(-1px)
+    }
+
+    /* Hover brand color per request */
+    .btn-primary:hover {
+      background: #f19857
+    }
+
+    .btn-secondary:hover {
+      background: #f19857
+    }
+
+    .has-submenu {
+      position: relative
+    }
+
+    .submenu {
+      position: absolute;
+      left: 0;
+      top: calc(100% + 6px);
+      opacity: 0;
+      visibility: hidden;
+      min-width: 240px;
+      background: var(--secondary);
+      color: #fff;
+      border-radius: 10px;
+      padding: 6px 0;
+      box-shadow: 0 20px 50px rgba(2, 6, 23, .35)
+    }
+
+    .submenu a {
+      display: block;
+      color: #fff;
+      padding: 10px 12px
+    }
+
+    .submenu.open {
+      opacity: 1;
+      visibility: visible
+    }
+
+    /* Mobile nav */
+    @media (max-width: 900px) {
+      .nav-toggle {
+        display: inline-flex
+      }
+
+      .nav {
+        position: fixed;
+        inset: 64px 0 auto 0;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        display: grid;
+        gap: 12px;
+        padding: 12px 20px;
+        transform: translateY(-120%);
+        transition: .25s;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, .08)
+      }
+
+      .nav.open {
+        transform: none
+      }
+
+      .nav-list {
+        flex-direction: column;
+        align-items: flex-start
+      }
+
+      .nav-cta {
+        justify-content: stretch
+      }
+
+      .submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        background: #f8fafc;
+        color: var(--secondary);
+        border: 1px solid #e5e7eb
+      }
+
+      .submenu a {
+        color: var(--secondary)
+      }
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: var(--space-hero-y) 0
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 28px;
+      align-items: center
+    }
+
+    .hero-media {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+      max-height: 420px
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .hero-play {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      background: rgba(0, 0, 0, .6);
+      color: #fff;
+      border: 0;
+      border-radius: 999px;
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-content: center
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: rgba(255, 255, 255, .2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: .3px
+    }
+
+    .hero h1 {
+      margin: .5rem 0 0;
+      font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.6rem);
+      line-height: 1.15;
+      color: #fff
+    }
+
+    .hero .sub {
+      margin: .5rem 0 0;
+      max-width: 60ch;
+      color: rgba(255, 255, 255, .95)
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px
+    }
+
+    .hero-trust {
+      opacity: .9;
+      margin-top: 6px
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 14px
+      }
+    }
+
+    /* Sections */
+    .section {
+      padding: var(--space-section-y) 0
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 12px
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      color: var(--ink)
+    }
+
+    .sub {
+      color: var(--muted);
+      margin: 6px 0 12px
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px
+    }
+
+    /* Readability fixes for dark problems section */
+    #problems .section-head h2 {
+      color: #e6eef7
+    }
+
+    #problems .section-head .sub {
+      color: rgba(230, 238, 247, .92)
+    }
+
+    #problems .panel {
+      color: #e6eef7
+    }
+
+    /* Outcomes panels */
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--gap-grid);
+      margin-top: 18px
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
+    }
+
+    .panel h3 {
+      margin: 0 0 6px;
+      color: var(--secondary)
+    }
+
+    /* Stats (kept styles for other cards if reused later) */
+    .stats-proof {
+      background: linear-gradient(135deg, var(--secondary), #5a5f80);
+      color: #fff
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 18px
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center
+    }
+
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px
+    }
+
+    /* Checklist CTA */
+    .checklist-cta {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff
+    }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      align-items: center
+    }
+
+    /* Ensure image sits beside text with appropriate size */
+    .checklist-grid .art img {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: contain
+    }
+
+    /* Checklist hover color */
+    .checklist-cta .btn.btn-primary:hover {
+      background: #f19857
+    }
+
+    @media (max-width: 900px) {
+      .checklist-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* Pricing */
+    .pricing {
+      background: #fff
+    }
+
+    .pricing-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 6px 0 12px
+    }
+
+    .tab {
+      padding: 6px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      background: #fff
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary)
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 10px
+    }
+
+    .plan {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
+      display: flex;
+      flex-direction: column
+    }
+
+    .plan header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between
+    }
+
+    .plan .price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 8px 0
+    }
+
+    .plan .price .term {
+      font-size: .9rem;
+      color: var(--muted)
+    }
+
+    .plan .features {
+      margin: 6px 0 12px;
+      padding-left: 18px
+    }
+
+    .plan .features li {
+      margin: 6px 0
+    }
+
+    .plan .badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: #fff;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: .75rem
+    }
+
+    .plan.highlight {
+      outline: 2px solid var(--primary)
+    }
+
+    .plan.new {
+      outline: 2px dashed var(--support)
+    }
+
+    /* FAQ */
+    .faq {
+      background: #fff
+    }
+
+    .accordion details {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 0 0 10px
+    }
+
+    .accordion summary {
+      cursor: pointer;
+      font-weight: 900;
+      list-style: none;
+      color: var(--ink)
+    }
+
+    .accordion summary::-webkit-details-marker {
+      display: none
+    }
+
+    .accordion p {
+      color: var(--muted)
+    }
+
+    /* Newsletter */
+    .newsletter-card {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
+    }
+
+    .newsletter-card {
+      background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, var(--accent), rgba(123, 104, 238, .25)) border-box;
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .08)
+    }
+
+    .newsletter .copy h2 {
+      color: var(--secondary);
+      margin: 0 0 6px
+    }
+
+    .newsletter .copy p {
+      color: var(--muted)
+    }
+
+    .newsletter .form .btn.btn-primary {
+      box-shadow: 0 6px 16px rgba(241, 152, 87, .35)
+    }
+
+    .newsletter .form .btn.btn-primary:hover {
+      background: #f19857
+    }
+
+    .newsletter .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    .newsletter input[type="text"],
+    .newsletter input[type="email"],
+    .newsletter input[type="tel"] {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      width: 100%
+    }
+
+    .newsletter .checkbox {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin: 10px 0
+    }
+
+    @media (max-width: 900px) {
+      .newsletter-card {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--secondary);
+      color: #e6eef7;
+      padding: 28px 0;
+      position: relative
+    }
+
+    .footer-inner {
+      display: grid;
+      gap: 12px;
+      place-items: center
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap
+    }
+
+    .footer-links a {
+      color: #e6eef7;
+      text-decoration: none;
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .to-top {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-content: center;
+      text-decoration: none
+    }
+
+    /* Testimonials carousel */
+    .testimonial-track {
+      display: flex;
+      gap: 14px;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent 0, #000 40%, #000 60%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40%, #000 60%, transparent 100%)
+    }
+
+    .testimonial-card {
+      flex: 0 0 320px;
+      background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, var(--accent), rgba(123, 104, 238, .25)) border-box;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+      padding: 16px
+    }
+
+    .testimonial-card p {
+      margin: 0 0 8px;
+      color: var(--ink)
+    }
+
+    .testimonial-card .who {
+      font-weight: 800;
+      color: var(--muted)
+    }
+
+    @keyframes marqueeLeft {
+      0% {
+        transform: translateX(0)
+      }
+
+      100% {
+        transform: translateX(-50%)
+      }
+    }
+
+    .testimonial-track {
+      position: relative
+    }
+
+    .testimonial-track::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none
+    }
+
+    /* Duplicate content for seamless loop via JS at runtime if needed */
+
+    /* Modal */
+    html.modal-open {
+      overflow: hidden
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 10000;
+      background: rgba(0, 0, 0, .8);
+      padding: 18px
+    }
+
+    .modal[aria-hidden="false"] {
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .modal__dialog {
+      position: relative;
+      width: min(960px, 100%);
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, .6)
+    }
+
+    .modal__body {
+      padding: 0
+    }
+
+    .modal__close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      border: 0;
+      background: rgba(0, 0, 0, .6);
+      color: #fff;
+      border-radius: 999px;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      cursor: pointer
+    }
+
+    .video-embed {
+      position: relative;
+      aspect-ratio: 16/9
+    }
+
+    .video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0
+    }
+
+    /* Motion respect */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important
+      }
+    }
+
+    /* Mobile tightening */
+    @media (max-width: 900px) {
+      .section {
+        padding: var(--space-section-y-sm) 0
+      }
+    }
+  </style>
 
   <!-- Analytics (kept) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NSDG6DWR5K"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-NSDG6DWR5K');
+    function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-NSDG6DWR5K');
   </script>
 
   <!-- Clarity + LinkedIn (kept) -->
-  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "t7jvo2qqgc");</script>
+  <script>(function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "t7jvo2qqgc");</script>
   <script>_linkedin_partner_id = "2919074"; window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || []; window._linkedin_data_partner_ids.push(_linkedin_partner_id);</script>
-  <script>(function(l){if(!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}var s=document.getElementsByTagName("script")[0];var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src="https://snap.licdn.com/li.lms-analytics/insight.min.js";s.parentNode.insertBefore(b,s);})(window.lintrk);</script>
-  <noscript><img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=2919074&fmt=gif"/></noscript>
+  <script>(function (l) { if (!l) { window.lintrk = function (a, b) { window.lintrk.q.push([a, b]) }; window.lintrk.q = [] } var s = document.getElementsByTagName("script")[0]; var b = document.createElement("script"); b.type = "text/javascript"; b.async = true; b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; s.parentNode.insertBefore(b, s); })(window.lintrk);</script>
+  <noscript><img height="1" width="1" style="display:none;" alt=""
+      src="https://px.ads.linkedin.com/collect/?pid=2919074&fmt=gif" /></noscript>
 
   <!-- Wistia -->
   <script async src="https://fast.wistia.com/embed/medias/d6rdjc4nbs.jsonp"></script>
@@ -237,7 +894,8 @@ html.modal-open{overflow:hidden}
       <a class="brand" href="/">
         <img src="https://d1yei2z3i6k35z.cloudfront.net/14469673/68d2bb2595ba3_Logo.png" alt="Command Results logo" />
       </a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav"><span class="sr-only">Toggle navigation</span><i class="fa-solid fa-bars"></i></button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav"><span class="sr-only">Toggle
+          navigation</span><i class="fa-solid fa-bars"></i></button>
       <nav id="main-nav" class="nav" aria-label="Primary">
         <ul class="nav-list">
           <li><a href="#pricing">View Plans</a></li>
@@ -252,14 +910,12 @@ html.modal-open{overflow:hidden}
               <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
               <li><a href="#contact">Contact</a></li>
               <li><a href="https://app.commandresults.com">BVA Program</a></li>
-              <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a></li>
+              <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a>
+              </li>
               <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">Executive Brief</a></li>
             </ul>
           </li>
         </ul>
-        <div class="nav-cta">
-          <a class="btn btn-primary" href="#start">Start Free</a>
-        </div>
       </nav>
     </div>
   </header>
@@ -268,13 +924,16 @@ html.modal-open{overflow:hidden}
   <section class="hero" aria-label="Hero">
     <div class="container hero-inner">
       <div class="hero-media">
-        <img src="https://app.commandresults.com/banner.jpg" alt="Leaders collaborating on mobile-first Lean-Agile apps" />
-        <button class="play hero-play" type="button" data-open-video aria-label="Play the 90-second explainer"><i class="fa-solid fa-play"></i></button>
+        <img src="https://app.commandresults.com/banner.jpg"
+          alt="Leaders collaborating on mobile-first Lean-Agile apps" />
+        <button class="play hero-play" type="button" data-open-video aria-label="Play the 90-second explainer"><i
+            class="fa-solid fa-play"></i></button>
       </div>
       <div class="hero-copy">
         <p class="eyebrow">Business Value Accelerator</p>
         <h1>Deliver more value in 90 days — without framework bloat</h1>
-        <p class="sub">A practical, app-based program that helps teams focus on what matters, cut waste, and ship measurable results fast.</p>
+        <p class="sub">A practical, app-based program that helps teams focus on what matters, cut waste, and ship
+          measurable results fast.</p>
         <div class="cta-group">
           <a class="btn btn-primary" href="#start">Enroll Free</a>
           <a class="btn btn-outline" href="#pricing">View Plans</a>
@@ -288,9 +947,18 @@ html.modal-open{overflow:hidden}
     <!-- Outcomes -->
     <section class="container section" id="outcomes" aria-label="Program outcomes">
       <div class="panels">
-        <article class="panel"><h3>Work Smarter</h3><p>Focus your team on the few initiatives that move the needle.</p></article>
-        <article class="panel"><h3>Cut Waste</h3><p>Expose hidden delays and rework; streamline delivery across functions.</p></article>
-        <article class="panel"><h3>See Results Fast</h3><p>Plan in 30 days, show measurable progress in 60-90, sustain wins.</p></article>
+        <article class="panel">
+          <h3>Work Smarter</h3>
+          <p>Focus your team on the few initiatives that move the needle.</p>
+        </article>
+        <article class="panel">
+          <h3>Cut Waste</h3>
+          <p>Expose hidden delays and rework; streamline delivery across functions.</p>
+        </article>
+        <article class="panel">
+          <h3>See Results Fast</h3>
+          <p>Plan in 30 days, show measurable progress in 60-90, sustain wins.</p>
+        </article>
       </div>
     </section>
 
@@ -306,45 +974,60 @@ html.modal-open{overflow:hidden}
         </div>
       </div>
     </section>
-    
-    <!-- Lean-Agile Intro (from index, adapted to this design) -->
-    <section class="container section" id="what-is-lean-agile" aria-label="Lean-Agile intro">
-      <div class="panel">
-        <h2>What is the Lean-Agile Way?</h2>
-        <p>The <em>Lean-Agile Way</em> combines <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> (small teams iterating fast) so organizations deliver maximum value with the time, funding, and resources available.</p>
-        <p>It provides seven proven, practical methods that improve business performance across product, program, and project teams.</p>
-        <div class="cta-row">
-          <a class="btn btn-secondary" href="https://1a01-gary.systeme.io/80e7228b">Refresh Your Foundations — Free</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- (Removed) Seven Methods -->
-
-    <!-- (Removed) Proven Impact -->
 
     <!-- Why Teams Struggle -->
     <section class="section" id="problems" aria-label="Why teams struggle" style="background:#0f2745;color:#e6eef7">
       <div class="container">
-        <header class="section-head"><h2>Why Teams Struggle</h2><p class="sub">Even with Agile tools, most teams face these challenges</p></header>
+        <header class="section-head">
+          <h2>Why Teams Struggle</h2>
+          <p class="sub">Even with Agile tools, most teams face these challenges</p>
+        </header>
         <div class="panels">
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Misaligned Goals</h3><p>Product, ops, support, and delivery teams working towards different objectives.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Hidden Waste</h3><p>Delays and rework hidden in plain sight reduce efficiency.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Overwhelmed Teams</h3><p>Too much process, not enough results — leads to burnout.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">ROI Concerns</h3><p>Leaders want ROI but don't see traction from current approaches.</p></article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);">
+            <h3 style="color: #ffffff;">Misaligned Goals</h3>
+            <p>Product, ops, support, and delivery teams working towards different objectives.</p>
+          </article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);">
+            <h3 style="color: #ffffff;">Hidden Waste</h3>
+            <p>Delays and rework hidden in plain sight reduce efficiency.</p>
+          </article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);">
+            <h3 style="color: #ffffff;">Overwhelmed Teams</h3>
+            <p>Too much process, not enough results — leads to burnout.</p>
+          </article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);">
+            <h3 style="color: #ffffff;">ROI Concerns</h3>
+            <p>Leaders want ROI but don't see traction from current approaches.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- Solution (from index) -->
-    <section class="section" aria-label="How BVA cuts complexity" style="background:linear-gradient(to right, #4a4e69, #1d3557);color:#fff">
+    <section class="section" aria-label="How BVA cuts complexity"
+      style="background:linear-gradient(to right, #4a4e69, #1d3557);color:#fff">
       <div class="container">
-        <header class="section-head"><h2 style="color:#fff">How BVA Cuts Complexity</h2><p class="sub" style="color:rgba(255,255,255,.95)">Practical solutions for measurable results</p></header>
+        <header class="section-head">
+          <h2 style="color:#fff">How BVA Cuts Complexity</h2>
+          <p class="sub" style="color:rgba(255,255,255,.95)">Practical solutions for measurable results</p>
+        </header>
         <div class="panels" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
-          <article class="panel"><h3>90-Day Results</h3><p style="color: #494d69;">Measurable productivity gains in just three months.</p></article>
-          <article class="panel"><h3>No Framework Bloat</h3><p style="color: #494d69;">30% faster implementation without unnecessary processes.</p></article>
-          <article class="panel"><h3>App-Based Learning</h3><p style="color: #494d69;">Learn at your own pace with our mobile-friendly app.</p></article>
-          <article class="panel"><h3>ROI-Focused</h3><p style="color: #494d69;">Up to 60% profit increases through smarter prioritization.</p></article>
+          <article class="panel">
+            <h3>90-Day Results</h3>
+            <p style="color: #494d69;">Measurable productivity gains in just three months.</p>
+          </article>
+          <article class="panel">
+            <h3>No Framework Bloat</h3>
+            <p style="color: #494d69;">30% faster implementation without unnecessary processes.</p>
+          </article>
+          <article class="panel">
+            <h3>App-Based Learning</h3>
+            <p style="color: #494d69;">Learn at your own pace with our mobile-friendly app.</p>
+          </article>
+          <article class="panel">
+            <h3>ROI-Focused</h3>
+            <p style="color: #494d69;">Up to 60% profit increases through smarter prioritization.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -354,44 +1037,15 @@ html.modal-open{overflow:hidden}
       <div class="container checklist-grid">
         <div class="copy">
           <h2>Test Your Team's Lean-Agile Readiness</h2>
-          <p>Wondering if BVA Program is right for your team? Take the quick Lean-Agile Maturity Checklist to uncover hidden risks and pinpoint your fastest gains in speed, efficiency, and value.<br><br>
-It’s quick, practical, and the perfect first step before unlocking the full BVA Program App experience.</p>
-          <a class="btn btn-primary" href="https://www.commandresults.com/lean-agile-maturity-checklist/" target="_blank" rel="noopener">Open checklist</a>
+          <p>Wondering if BVA Program is right for your team? Take the quick Lean-Agile Maturity Checklist to uncover
+            hidden risks and pinpoint your fastest gains in speed, efficiency, and value.<br><br>
+            It’s quick, practical, and the perfect first step before unlocking the full BVA Program App experience.</p>
+          <a class="btn btn-primary" href="https://www.commandresults.com/lean-agile-maturity-checklist/"
+            target="_blank" rel="noopener">Open checklist</a>
         </div>
         <figure class="art" aria-hidden="true"><img src="Business-Training-Meeting.png" alt="" /></figure>
       </div>
     </section>
-
-  <!-- Business Agility Scorecard -->
-  <section class="section" id="bva-assessment" aria-labelledby="bva2-title">
-    <div class="container">
-      <div class="panel" role="region">
-        <header class="section-head"><h2 id="bva2-title">Business Agility Scorecard</h2><p class="sub">Measure what matters — in just 2 minutes.</p></header>
-        <div class="panel" style="padding:16px">
-          <p><strong>How Lean-Agile is your team — really?</strong> Take this quick scan to find out.</p>
-          <div class="cta-row"><button class="btn btn-primary" id="bva2Start">Start the 2-minute scan</button></div>
-          <div id="bva2Progress" style="display:none;margin-top:10px">
-            <div style="height:10px;background:#eef2f7;border-radius:999px;overflow:hidden"><span id="bva2Bar" style="display:block;height:10px;background:var(--support);width:0%"></span></div>
-            <div class="sub" id="bva2Step" style="text-align:center;margin-top:6px">0/5</div>
-          </div>
-          <form id="bva2Form" style="display:none;margin-top:10px">
-            <div id="bva2Question" class="sub">Loading…</div>
-            <div class="cta-row" style="margin-top:8px">
-              <button class="btn btn-outline" data-val="1" type="button">1</button>
-              <button class="btn btn-outline" data-val="2" type="button">2</button>
-              <button class="btn btn-outline" data-val="3" type="button">3</button>
-              <button class="btn btn-outline" data-val="4" type="button">4</button>
-              <button class="btn btn-outline" data-val="5" type="button">5</button>
-            </div>
-          </form>
-          <div id="bva2Results" style="display:none;margin-top:12px;text-align:center">
-            <p class="lead">Your Score: <strong id="bva2Score">0</strong>/25</p>
-            <div class="cta-row"><a class="btn btn-primary" href="#pricing">See recommended plan</a><a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Book a free strategy call</a></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
     <!-- Pricing (single source of truth) -->
     <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
@@ -404,7 +1058,9 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         </div>
         <div class="plans-grid" data-billing="monthly">
           <article class="plan">
-            <header><h3>Lean-Agile Foundations App</h3><span class="badge">Available Now</span></header>
+            <header>
+              <h3>Lean-Agile Foundations App</h3><span class="badge">Available Now</span>
+            </header>
             <div class="price">Free</div>
             <ul class="features">
               <li>Certificate of Completion included</li>
@@ -413,10 +1069,13 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
               <li>Mobile-friendly access</li>
               <li>Tools, templates, exercises</li>
             </ul>
-            <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583">Get Started Free</a>
+            <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583">Get
+              Started Free</a>
           </article>
           <article class="plan highlight">
-            <header><h3>BVA Essentials App</h3><span class="badge">Core Course</span></header>
+            <header>
+              <h3>BVA Essentials App</h3><span class="badge">Core Course</span>
+            </header>
             <div class="price">$197 <span class="term">or 3× $75</span></div>
             <ul class="features">
               <li>~3–4 hours structured content</li>
@@ -427,7 +1086,9 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
             <a class="btn btn-primary" href="https://1a01-gary.systeme.io/6048d5ed">Enroll in Essentials</a>
           </article>
           <article class="plan new">
-            <header><h3>Lean-Agile Mastery Series</h3><span class="badge" style="background:var(--support)">New</span></header>
+            <header>
+              <h3>Lean-Agile Mastery Series</h3><span class="badge" style="background:var(--support)">New</span>
+            </header>
             <div class="price">Contact for Pricing</div>
             <ul class="features">
               <li>VS Management, VS Mapping, VS Networks</li>
@@ -444,11 +1105,23 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
     <!-- Stats (from index) -->
     <section class="section stats-proof" aria-label="Backed by real-world success">
       <div class="container">
-        <header class="section-head"><h2 style="color:#fff">Backed by Real-World Success</h2><p class="sub" style="color:#fff">Organizations implementing Lean-Agile practices (2020-2025)</p></header>
+        <header class="section-head">
+          <h2 style="color:#fff">Backed by Real-World Success</h2>
+          <p class="sub" style="color:#fff">Organizations implementing Lean-Agile practices (2020-2025)</p>
+        </header>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-number">20–50%</div><p>Productivity gains across organizations</p></div>
-          <div class="stat-card"><div class="stat-number">30–60%</div><p>Efficiency improvements depending on industry</p></div>
-          <div class="stat-card"><div class="stat-number">60%</div><p>Profit increases through smarter prioritization</p></div>
+          <div class="stat-card">
+            <div class="stat-number">20–50%</div>
+            <p>Productivity gains across organizations</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">30–60%</div>
+            <p>Efficiency improvements depending on industry</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">60%</div>
+            <p>Profit increases through smarter prioritization</p>
+          </div>
         </div>
       </div>
     </section>
@@ -459,13 +1132,45 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         <h2>Facilitated Workshops</h2>
         <p class="sub">Hands-on, team-based sessions that connect methods to real-world challenges.</p>
         <div class="plans-grid">
-          <article class="plan"><header><h3>4-Hour Workshop</h3><span class="badge">Best Value</span></header><div class="price">$325 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>Intro to the seven methods</li><li>Productivity & efficiency focus</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
-          <article class="plan"><header><h3>8-Hour Workshop</h3><span class="badge">Best Value</span></header><div class="price">$500 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>Deeper dive + Value Stream Mapping</li><li>Practical exercises</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
-          <article class="plan"><header><h3>3-Day Workshop</h3><span class="badge">Best Value</span></header><div class="price">$1,150 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>30-day improvement plan</li><li>90-day measurable progress</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
+          <article class="plan">
+            <header>
+              <h3>4-Hour Workshop</h3><span class="badge">Best Value</span>
+            </header>
+            <div class="price">$325 <span class="term">per student</span></div>
+            <ul class="features">
+              <li>8 student minimum</li>
+              <li>Intro to the seven methods</li>
+              <li>Productivity & efficiency focus</li>
+            </ul><a class="btn btn-outline" href="#contact">Contact Us</a>
+          </article>
+          <article class="plan">
+            <header>
+              <h3>8-Hour Workshop</h3><span class="badge">Best Value</span>
+            </header>
+            <div class="price">$500 <span class="term">per student</span></div>
+            <ul class="features">
+              <li>8 student minimum</li>
+              <li>Deeper dive + Value Stream Mapping</li>
+              <li>Practical exercises</li>
+            </ul><a class="btn btn-outline" href="#contact">Contact Us</a>
+          </article>
+          <article class="plan">
+            <header>
+              <h3>3-Day Workshop</h3><span class="badge">Best Value</span>
+            </header>
+            <div class="price">$1,150 <span class="term">per student</span></div>
+            <ul class="features">
+              <li>8 student minimum</li>
+              <li>30-day improvement plan</li>
+              <li>90-day measurable progress</li>
+            </ul><a class="btn btn-outline" href="#contact">Contact Us</a>
+          </article>
         </div>
         <div class="plans-grid" style="margin-top:12px">
           <article class="plan">
-            <header><h3>BVA Program Implementation</h3><span class="badge">Available Now</span></header>
+            <header>
+              <h3>BVA Program Implementation</h3><span class="badge">Available Now</span>
+            </header>
             <p class="sub">Comprehensive programs for organizations seeking personalized, hands-on guidance.</p>
             <div class="price">Contact for Pricing</div>
             <ul class="features">
@@ -474,7 +1179,8 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
               <li>Measurable results in 90 days</li>
               <li>Proven by professionals worldwide</li>
             </ul>
-            <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Contact Us</a>
+            <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Contact
+              Us</a>
           </article>
         </div>
       </div>
@@ -484,7 +1190,9 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
     <section class="section" id="about">
       <div class="container">
         <div class="panel" style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start">
-          <div aria-label="Cecil 'Gary' Rupp portrait" style="width:100%;height:280px;background:#e5e7eb;border-radius:16px"><img src="https://app.commandresults.com/instructor.png"></a></div>
+          <div aria-label="Cecil 'Gary' Rupp portrait"
+            style="width:100%;height:280px;background:#e5e7eb;border-radius:16px"><img
+              src="https://app.commandresults.com/instructor.png"></a></div>
           <div>
             <h2>About the Founder</h2>
             <h3>Gary Rupp — Project Recovery & Lean-Agile Expert</h3>
@@ -506,27 +1214,48 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         <h2>Real Stories. Real Results.</h2>
         <p class="sub">From leaders who deliver — and keep getting better.</p>
         <div class="testimonial-track" aria-live="polite">
-          <div class="testimonial-card"><p>“A revelation—within 90 days, you'll see material organizational improvements and a pipeline for ongoing value growth.”</p><span class="who">— Robb Alexander</span></div>
-          <div class="testimonial-card"><p>“Transforms learning into action. A hands-on journey that energizes teams to deliver results.”</p><span class="who">— Thales Faggiano</span></div>
-          <div class="testimonial-card"><p>“Dynamite. Well-structured, practical, and fills the gap between theory and application.”</p><span class="who">— Jorge Valdés Garciatorres</span></div>
-          <div class="testimonial-card"><p>“By applying the BVA methodology, we avoided a 3–4 month delay and saved $1.4M.”</p><span class="who">— Mohamad Annan</span></div>
-          <div class="testimonial-card"><p>“One of the best 30-minute Lean/Agile overviews I’ve seen.”</p><span class="who">— Michelle Foley</span></div>
-          <div class="testimonial-card"><p>“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”</p><span class="who">— Tord Ronn</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Referrals / Reviews (additional content from index) -->
-    <section class="section" aria-label="Referrals and reviews">
-      <div class="container">
-        <header class="section-head"><h2>Real Stories. Real Results.</h2><p class="sub">From leaders who know how to deliver — and keep improving.</p></header>
-        <div class="panels">
-          <blockquote class="panel">“One of the best 30-minute Lean/Agile overviews I’ve seen.”<br><cite>— Michelle Foley</cite></blockquote>
-          <blockquote class="panel">“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”<br><cite>— Tord Ronn</cite></blockquote>
-          <blockquote class="panel">“Engaging, bite-sized lessons that stick.”<br><cite>— Robb Alexander</cite></blockquote>
-          <blockquote class="panel">“Concise, accurate, and valuable—even for seasoned leaders.”<br><cite>— Rich Holmes</cite></blockquote>
-          <blockquote class="panel">“Short, engaging videos ensure everyone shares the basics.”<br><cite>— Stacey Bevill</cite></blockquote>
-          <blockquote class="panel">“Accessible and impactful on a tight schedule.”<br><cite>— Sumathi Arcot</cite></blockquote>
+          <div class="testimonial-card">
+            <p>“A revelation—within 90 days, you'll see material organizational improvements and a pipeline for ongoing
+              value growth.”</p><span class="who">— Robb Alexander</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Transforms learning into action. A hands-on journey that energizes teams to deliver results.”</p><span
+              class="who">— Thales Faggiano</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Dynamite. Well-structured, practical, and fills the gap between theory and application.”</p><span
+              class="who">— Jorge Valdés Garciatorres</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“By applying the BVA methodology, we avoided a 3–4 month delay and saved $1.4M.”</p><span class="who">—
+              Mohamad Annan</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“One of the best 30-minute Lean/Agile overviews I’ve seen.”</p><span class="who">— Michelle Foley</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”</p><span class="who">— Tord
+              Ronn</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“One of the best 30-minute Lean/Agile overviews I’ve seen.”</p><span class="who">— Michelle Foley</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”</p><span class="who">— Tord
+              Ronn</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Engaging, bite-sized lessons that stick.”</p><span class="who">— Robb Alexander</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Concise, accurate, and valuable—even for seasoned leaders.”</p><span class="who">— Rich Holmes</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Short, engaging videos ensure everyone shares the basics.”</p><span class="who">— Stacey Bevill</span>
+          </div>
+          <div class="testimonial-card">
+            <p>“Accessible and impactful on a tight schedule.”</p><span class="who">— Sumathi Arcot</span>
+          </div>
         </div>
       </div>
     </section>
@@ -537,10 +1266,61 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         <h2>Frequently Asked Questions</h2>
         <p class="sub">Everything you need to know about BVA</p>
         <div class="accordion">
-          <details><summary>Why is the Lean-Agile Foundations App free?</summary><p>We believe every team should share a common foundation before investing in deeper programs. The app removes barriers to that shared understanding.</p></details>
-          <details><summary>Do I need a technical background?</summary><p>No. The apps are designed for business and technical leaders alike—focused on outcomes, not jargon.</p></details>
-          <details><summary>How fast can we expect to see results?</summary><p>Most teams create a focused plan in 30 days and begin seeing measurable improvements within 60–90 days.</p></details>
-          <details><summary>Do you offer team licensing?</summary><p>Yes. Contact us for team pricing and enterprise access.</p></details>
+          <details>
+            <summary>Why is the Lean-Agile Foundations App free?</summary>
+            <p>We believe every team should share a common foundation before investing in deeper programs. The app
+              removes barriers to that shared understanding.</p>
+          </details>
+          <details>
+            <summary>Do I need a technical background?</summary>
+            <p>No. The apps are designed for business and technical leaders alike—focused on outcomes, not jargon.</p>
+          </details>
+          <details>
+            <summary>How fast can we expect to see results?</summary>
+            <p>Most teams create a focused plan in 30 days and begin seeing measurable improvements within 60–90 days.
+            </p>
+          </details>
+          <details>
+            <summary>Do you offer team licensing?</summary>
+            <p>Yes. Contact us for team pricing and enterprise access.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Agility Scorecard -->
+    <section class="section" id="bva-assessment" aria-labelledby="bva2-title">
+      <div class="container">
+        <div class="panel" role="region">
+          <header class="section-head">
+            <h2 id="bva2-title">Business Agility Scorecard</h2>
+            <p class="sub">Measure what matters — in just 2 minutes.</p>
+          </header>
+          <div class="panel" style="padding:16px">
+            <p><strong>How Lean-Agile is your team — really?</strong> Take this quick scan to find out.</p>
+            <div class="cta-row"><button class="btn btn-primary" id="bva2Start">Start the 2-minute scan</button></div>
+            <div id="bva2Progress" style="display:none;margin-top:10px">
+              <div style="height:10px;background:#eef2f7;border-radius:999px;overflow:hidden"><span id="bva2Bar"
+                  style="display:block;height:10px;background:var(--support);width:0%"></span></div>
+              <div class="sub" id="bva2Step" style="text-align:center;margin-top:6px">0/5</div>
+            </div>
+            <form id="bva2Form" style="display:none;margin-top:10px">
+              <div id="bva2Question" class="sub">Loading…</div>
+              <div class="cta-row" style="margin-top:8px">
+                <button class="btn btn-outline" data-val="1" type="button">1</button>
+                <button class="btn btn-outline" data-val="2" type="button">2</button>
+                <button class="btn btn-outline" data-val="3" type="button">3</button>
+                <button class="btn btn-outline" data-val="4" type="button">4</button>
+                <button class="btn btn-outline" data-val="5" type="button">5</button>
+              </div>
+            </form>
+            <div id="bva2Results" style="display:none;margin-top:12px;text-align:center">
+              <p class="lead">Your Score: <strong id="bva2Score">0</strong>/25</p>
+              <div class="cta-row"><a class="btn btn-primary" href="#pricing">See recommended plan</a><a
+                  class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Book
+                  a free strategy call</a></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -567,7 +1347,8 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
               <input type="text" name="job_title" placeholder="Job title" />
               <input type="tel" name="phone" placeholder="Phone" />
             </div>
-            <label class="checkbox"><input type="checkbox" required> I agree to receive emails and accept the <a href="#privacy">privacy policy</a></label>
+            <label class="checkbox"><input type="checkbox" required> I agree to receive emails and accept the <a
+                href="#privacy">privacy policy</a></label>
             <button class="btn btn-primary" type="submit">Subscribe</button>
           </form>
         </div>
@@ -580,8 +1361,10 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         <h2>Ready to Accelerate Your Business Value?</h2>
         <p>Join organizations that have transformed productivity and profitability with BVA.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583">Get Started Free</a>
-          <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Schedule Consultation</a>
+          <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583">Get
+            Started Free</a>
+          <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Schedule
+            Consultation</a>
         </div>
       </div>
     </section>
@@ -607,26 +1390,51 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
       <button class="modal__close" type="button" aria-label="Close video" data-close-modal>&times;</button>
       <div class="modal__body">
         <div class="video-embed">
-          <iframe id="heroVideoFrame" class="wistia_embed" name="wistia_embed" allowfullscreen allowtransparency="true" frameborder="0" src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true" title="BVA 90-second intro"></iframe>
+          <iframe id="heroVideoFrame" class="wistia_embed" name="wistia_embed" allowfullscreen allowtransparency="true"
+            frameborder="0" src="https://fast.wistia.net/embed/iframe/f7fd076enf?videoFoam=true"
+            title="BVA 90-second intro"></iframe>
         </div>
       </div>
     </div>
   </div>
-  
+
   <!-- Install Gate Modal (parity with index) -->
-  <div aria-hidden="true" aria-label="Install the app to continue" class="modal" id="installGate" role="dialog" style="display:none">
+  <div aria-hidden="true" aria-label="Install the app to continue" class="modal" id="installGate" role="dialog"
+    style="display:none">
     <div class="modal__backdrop" data-close-modal></div>
     <div aria-modal="true" class="modal__dialog" role="document">
       <button aria-label="Close" class="modal__close" data-close-modal type="button">×</button>
       <div class="modal__body" style="padding:16px;color:#fff">
         <h3 style="margin:0 0 8px">Install the App to Continue</h3>
-        <div class="install-steps" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));color:#e6eef7">
-          <div><h4>iOS (Safari)</h4><ol><li>Tap <strong>Share</strong>.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Open the app from your Home Screen.</li></ol></div>
-          <div><h4>Android (Chrome)</h4><ol><li>Tap <strong>⋮</strong> (Menu).</li><li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li><li>Open the app from your Home Screen.</li></ol></div>
-          <div><h4>Desktop</h4><ol><li>Click the <strong>Install</strong> icon in the address bar.</li><li>Launch the installed app.</li></ol></div>
+        <div class="install-steps"
+          style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));color:#e6eef7">
+          <div>
+            <h4>iOS (Safari)</h4>
+            <ol>
+              <li>Tap <strong>Share</strong>.</li>
+              <li>Choose <strong>Add to Home Screen</strong>.</li>
+              <li>Open the app from your Home Screen.</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Android (Chrome)</h4>
+            <ol>
+              <li>Tap <strong>⋮</strong> (Menu).</li>
+              <li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+              <li>Open the app from your Home Screen.</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Desktop</h4>
+            <ol>
+              <li>Click the <strong>Install</strong> icon in the address bar.</li>
+              <li>Launch the installed app.</li>
+            </ol>
+          </div>
         </div>
         <p class="install-hint" style="color:#fbbf24"></p>
-        <div class="install-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="btn btn-primary" type="button">I’ve installed — continue</button></div>
+        <div class="install-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button
+            class="btn btn-primary" type="button">I’ve installed — continue</button></div>
       </div>
     </div>
   </div>
@@ -664,7 +1472,7 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
     openBtns.forEach(btn => btn.addEventListener('click', openModal));
     if (modal) {
       modal.addEventListener('click', (e) => { if (e.target.matches('[data-close-modal], .modal, .modal__backdrop')) closeModal(); });
-      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
     // FAQ accordion: one open at a time
@@ -674,8 +1482,8 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
     // Pricing tabs
     const tabs = document.querySelectorAll('.pricing .tab');
     tabs.forEach(tab => tab.addEventListener('click', () => {
-      tabs.forEach(t => t.setAttribute('aria-selected','false'));
-      tab.setAttribute('aria-selected','true');
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      tab.setAttribute('aria-selected', 'true');
     }));
 
     // Testimonials auto-scrolling carousel (duplicate content to loop)
@@ -685,7 +1493,7 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
       const cards = Array.from(track.children);
       cards.forEach(card => track.appendChild(card.cloneNode(true)));
       let offset = 0;
-      function step(){
+      function step() {
         offset += 0.5; // speed
         track.scrollLeft = offset;
         if (offset >= track.scrollWidth / 2) { offset = 0; }
@@ -711,15 +1519,15 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         'End-to-end flow focus across value streams'
       ];
       let idx = 0; let score = 0;
-      function showQ(){ qEl.textContent = questions[idx]; stepLabel.textContent = `${idx+1}/5`; progressBar.style.width = `${((idx)/5)*100}%`; }
+      function showQ() { qEl.textContent = questions[idx]; stepLabel.textContent = `${idx + 1}/5`; progressBar.style.width = `${((idx) / 5) * 100}%`; }
       startBtn.addEventListener('click', () => {
         startBtn.disabled = true; progressWrap.style.display = 'block'; formEl.style.display = 'block'; idx = 0; score = 0; showQ();
       });
-      formEl.addEventListener('click', (e)=>{
-        const btn = e.target.closest('button[data-val]'); if(!btn) return;
-        score += parseInt(btn.dataset.val||'0',10);
+      formEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-val]'); if (!btn) return;
+        score += parseInt(btn.dataset.val || '0', 10);
         idx++;
-        if(idx < questions.length){ showQ(); }
+        if (idx < questions.length) { showQ(); }
         else { progressBar.style.width = '100%'; stepLabel.textContent = '5/5'; formEl.style.display = 'none'; resultsEl.style.display = 'block'; document.getElementById('bva2Score').textContent = String(score); }
       });
     }
@@ -730,4 +1538,5 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
     }
   </script>
 </body>
+
 </html>
