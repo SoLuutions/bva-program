@@ -1363,12 +1363,13 @@ document.addEventListener('DOMContentLoaded', () => {
       priceMain.textContent = money(PAY_IN_3_PRICE);
       priceSub.hidden = false;
       priceSub.textContent = `3 payments of ${money(PAY_IN_3_PRICE)}`;
+      if (priceTot) priceTot.textContent = `(Total ${money(TOTAL_PRICE)})`;
     } else {
       priceMain.textContent = money(ONE_TIME_PRICE);
       priceSub.textContent = "";
       priceSub.hidden = true;
+      if (priceTot) priceTot.textContent = "";
     }
-    if (priceTot) priceTot.textContent = `(Total ${money(TOTAL_PRICE)})`;
 
     // labels
     labelOneTime && labelOneTime.classList.toggle("active", !payIn3);
@@ -1390,5 +1391,5 @@ document.addEventListener('DOMContentLoaded', () => {
   labelOneTime && labelOneTime.addEventListener("click", () => { payIn3 = false; render(); });
   labelPayIn3  && labelPayIn3.addEventListener("click", () => { payIn3 = true;  render(); });
 
-  render(); // default One-time
+  render(); // default One-time (197)
 })();
