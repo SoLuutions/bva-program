@@ -4,7 +4,7 @@ const CACHE_NAME = `bva-cache-${CACHE_VERSION}`;
 const PRECACHE_URLS = [
   '/', '/index.html', '/manifest.json',
   '/styles.css', '/app.js',
-  '/registration.html', '/registration.js',
+  '/registration.js',
   '/icons/android/android-launchericon-192-192.png',
   '/icons/android/android-launchericon-512-512.png',
   '/icons/ios/180.png',
