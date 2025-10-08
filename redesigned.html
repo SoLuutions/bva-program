@@ -17,10 +17,10 @@
   <!-- ===== Coherent, single-file styles ===== -->
   <style>:root{
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  --ink: #0f172a;
-  --muted: #475569;
+  --ink: #1b2430;
+  --muted: #4a4e69;
   --primary: #2A9D8F;
-  --primary-dark: #238b81;
+  --primary-dark: #38b2ac;
   --secondary: #4A4E69;
   --accent: #7B68EE;
   --support: #F4A261;
@@ -63,6 +63,9 @@ a{color:inherit}
 .btn-outline{background:#fff;color:var(--secondary);border-color:#e5e7eb}
 .btn-secondary{background:var(--support);color:#fff}
 .btn:hover{transform:translateY(-1px)}
+/* Hover brand color per request */
+.btn-primary:hover{background:#f19857}
+.btn-secondary:hover{background:#f19857}
 .has-submenu{position:relative}
 .submenu{position:absolute;left:0;top:calc(100% + 6px);opacity:0;visibility:hidden;min-width:240px;background:var(--secondary);color:#fff;border-radius:10px;padding:6px 0;box-shadow:0 20px 50px rgba(2,6,23,.35)}
 .submenu a{display:block;color:#fff;padding:10px 12px}
@@ -81,8 +84,8 @@ a{color:inherit}
 
 /* Hero */
 .hero{background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:#fff;padding:var(--space-hero-y) 0}
-.hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center}
-.hero-media{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.hero-media{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:420px}
 .hero-media img{width:100%;height:100%;object-fit:cover}
 .hero-play{position:absolute;left:16px;bottom:16px;background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:999px;width:56px;height:56px;display:grid;place-content:center}
 .eyebrow{display:inline-block;background:rgba(255,255,255,.2);padding:6px 10px;border-radius:999px;font-weight:800;letter-spacing:.3px}
@@ -99,6 +102,11 @@ a{color:inherit}
 .sub{color:var(--muted);margin:6px 0 12px}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
 
+/* Readability fixes for dark problems section */
+#problems .section-head h2{color:#e6eef7}
+#problems .section-head .sub{color:rgba(230,238,247,.92)}
+#problems .panel{color:#e6eef7}
+
 /* Outcomes panels */
 .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap-grid);margin-top:18px}
 .panel{background:var(--panel);border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
@@ -113,6 +121,10 @@ a{color:inherit}
 /* Checklist CTA */
 .checklist-cta{background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:#fff}
 .checklist-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center}
+/* Ensure image sits beside text with appropriate size */
+.checklist-grid .art img{width:100%;height:auto;max-height:320px;object-fit:contain}
+/* Checklist hover color */
+.checklist-cta .btn.btn-primary:hover{background:#f19857}
 @media (max-width: 900px){.checklist-grid{grid-template-columns:1fr}}
 
 /* Pricing */
@@ -140,6 +152,11 @@ a{color:inherit}
 
 /* Newsletter */
 .newsletter-card{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.newsletter-card{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg, var(--accent), rgba(123,104,238,.25)) border-box;border:1px solid transparent;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.newsletter .copy h2{color:var(--secondary);margin:0 0 6px}
+.newsletter .copy p{color:var(--muted)}
+.newsletter .form .btn.btn-primary{box-shadow:0 6px 16px rgba(241,152,87,.35)}
+.newsletter .form .btn.btn-primary:hover{background:#f19857}
 .newsletter .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .newsletter input[type="text"], .newsletter input[type="email"], .newsletter input[type="tel"]{padding:10px;border-radius:10px;border:1px solid #e5e7eb;width:100%}
 .newsletter .checkbox{display:flex;gap:8px;align-items:center;margin:10px 0}
@@ -151,6 +168,16 @@ a{color:inherit}
 .footer-links{display:flex;gap:14px;flex-wrap:wrap}
 .footer-links a{color:#e6eef7;text-decoration:none;font-weight:700;opacity:.95}
 .to-top{position:absolute;right:16px;bottom:12px;width:44px;height:44px;border-radius:999px;background:var(--primary);color:#fff;display:grid;place-content:center;text-decoration:none}
+
+/* Testimonials carousel */
+.testimonial-track{display:flex;gap:14px;overflow:hidden;mask-image:linear-gradient(90deg,transparent 0,#000 40%,#000 60%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%,#000 60%,transparent 100%)}
+.testimonial-card{flex:0 0 320px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,var(--accent),rgba(123,104,238,.25)) border-box;border:1px solid transparent;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:16px}
+.testimonial-card p{margin:0 0 8px;color:var(--ink)}
+.testimonial-card .who{font-weight:800;color:var(--muted)}
+@keyframes marqueeLeft{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.testimonial-track{position:relative}
+.testimonial-track::after{content:"";position:absolute;inset:0;pointer-events:none}
+/* Duplicate content for seamless loop via JS at runtime if needed */
 
 /* Modal */
 html.modal-open{overflow:hidden}
@@ -208,27 +235,29 @@ html.modal-open{overflow:hidden}
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a class="brand" href="/">
-        <img src="https://www.commandresults.com/wp-content/uploads/2025/04/command-results-small-logo-200px-x-50px.png" alt="Command Results logo" />
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/14469673/68d2bb2595ba3_Logo.png" alt="Command Results logo" />
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav"><span class="sr-only">Toggle navigation</span><i class="fa-solid fa-bars"></i></button>
       <nav id="main-nav" class="nav" aria-label="Primary">
         <ul class="nav-list">
-          <li><a href="#about">About</a></li>
-          <li><a href="https://www.commandresults.com/books/">Books</a></li>
+          <li><a href="#pricing">View Plans</a></li>
+          <li><a href="https://1a01-gary.systeme.io/dashboard/en/login" id="auth-button">Log in</a></li>
+          <li><a href="https://1a01-gary.systeme.io/80e7228b-991f175d" id="register-button">Register</a></li>
           <li class="has-submenu">
-            <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">BVA Resources</button>
-            <ul class="submenu" aria-label="BVA Resources submenu">
+            <button class="submenu-toggle" aria-haspopup="true" aria-expanded="false">More</button>
+            <ul class="submenu" aria-label="More submenu">
+              <li><a href="#about">About</a></li>
+              <li><a href="https://www.commandresults.com/books/">Books</a></li>
+              <li><a href="#workshops">Workshops</a></li>
+              <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
               <li><a href="https://app.commandresults.com">BVA Program</a></li>
               <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a></li>
               <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">Executive Brief</a></li>
             </ul>
           </li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
-          <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-cta">
-          <a class="btn btn-secondary" href="https://commandresults.passion.io/login" id="auth-button">Log in</a>
           <a class="btn btn-primary" href="#start">Start Free</a>
         </div>
       </nav>
@@ -277,6 +306,18 @@ html.modal-open{overflow:hidden}
         </div>
       </div>
     </section>
+    
+    <!-- Lean-Agile Intro (from index, adapted to this design) -->
+    <section class="container section" id="what-is-lean-agile" aria-label="Lean-Agile intro">
+      <div class="panel">
+        <h2>What is the Lean-Agile Way?</h2>
+        <p>The <em>Lean-Agile Way</em> combines <strong>Lean</strong> (cutting waste) and <strong>Agile</strong> (small teams iterating fast) so organizations deliver maximum value with the time, funding, and resources available.</p>
+        <p>It provides seven proven, practical methods that improve business performance across product, program, and project teams.</p>
+        <div class="cta-row">
+          <a class="btn btn-secondary" href="https://1a01-gary.systeme.io/80e7228b">Refresh Your Foundations — Free</a>
+        </div>
+      </div>
+    </section>
 
     <!-- (Removed) Seven Methods -->
 
@@ -287,10 +328,23 @@ html.modal-open{overflow:hidden}
       <div class="container">
         <header class="section-head"><h2>Why Teams Struggle</h2><p class="sub">Even with Agile tools, most teams face these challenges</p></header>
         <div class="panels">
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3>Misaligned Goals</h3><p>Product, ops, support, and delivery teams working towards different objectives.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3>Hidden Waste</h3><p>Delays and rework hidden in plain sight reduce efficiency.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3>Overwhelmed Teams</h3><p>Too much process, not enough results — leads to burnout.</p></article>
-          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3>ROI Concerns</h3><p>Leaders want ROI but don't see traction from current approaches.</p></article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Misaligned Goals</h3><p>Product, ops, support, and delivery teams working towards different objectives.</p></article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Hidden Waste</h3><p>Delays and rework hidden in plain sight reduce efficiency.</p></article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">Overwhelmed Teams</h3><p>Too much process, not enough results — leads to burnout.</p></article>
+          <article class="panel" style="border-left:6px solid #d7263d; background: rgba(255,255,255,0.05);"><h3 style="color: #ffffff;">ROI Concerns</h3><p>Leaders want ROI but don't see traction from current approaches.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution (from index) -->
+    <section class="section" aria-label="How BVA cuts complexity" style="background:linear-gradient(to right, #4a4e69, #1d3557);color:#fff">
+      <div class="container">
+        <header class="section-head"><h2 style="color:#fff">How BVA Cuts Complexity</h2><p class="sub" style="color:rgba(255,255,255,.95)">Practical solutions for measurable results</p></header>
+        <div class="panels" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+          <article class="panel"><h3>90-Day Results</h3><p style="color: #494d69;">Measurable productivity gains in just three months.</p></article>
+          <article class="panel"><h3>No Framework Bloat</h3><p style="color: #494d69;">30% faster implementation without unnecessary processes.</p></article>
+          <article class="panel"><h3>App-Based Learning</h3><p style="color: #494d69;">Learn at your own pace with our mobile-friendly app.</p></article>
+          <article class="panel"><h3>ROI-Focused</h3><p style="color: #494d69;">Up to 60% profit increases through smarter prioritization.</p></article>
         </div>
       </div>
     </section>
@@ -307,6 +361,37 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
         <figure class="art" aria-hidden="true"><img src="Business-Training-Meeting.png" alt="" /></figure>
       </div>
     </section>
+
+  <!-- Business Agility Scorecard -->
+  <section class="section" id="bva-assessment" aria-labelledby="bva2-title">
+    <div class="container">
+      <div class="panel" role="region">
+        <header class="section-head"><h2 id="bva2-title">Business Agility Scorecard</h2><p class="sub">Measure what matters — in just 2 minutes.</p></header>
+        <div class="panel" style="padding:16px">
+          <p><strong>How Lean-Agile is your team — really?</strong> Take this quick scan to find out.</p>
+          <div class="cta-row"><button class="btn btn-primary" id="bva2Start">Start the 2-minute scan</button></div>
+          <div id="bva2Progress" style="display:none;margin-top:10px">
+            <div style="height:10px;background:#eef2f7;border-radius:999px;overflow:hidden"><span id="bva2Bar" style="display:block;height:10px;background:var(--support);width:0%"></span></div>
+            <div class="sub" id="bva2Step" style="text-align:center;margin-top:6px">0/5</div>
+          </div>
+          <form id="bva2Form" style="display:none;margin-top:10px">
+            <div id="bva2Question" class="sub">Loading…</div>
+            <div class="cta-row" style="margin-top:8px">
+              <button class="btn btn-outline" data-val="1" type="button">1</button>
+              <button class="btn btn-outline" data-val="2" type="button">2</button>
+              <button class="btn btn-outline" data-val="3" type="button">3</button>
+              <button class="btn btn-outline" data-val="4" type="button">4</button>
+              <button class="btn btn-outline" data-val="5" type="button">5</button>
+            </div>
+          </form>
+          <div id="bva2Results" style="display:none;margin-top:12px;text-align:center">
+            <p class="lead">Your Score: <strong id="bva2Score">0</strong>/25</p>
+            <div class="cta-row"><a class="btn btn-primary" href="#pricing">See recommended plan</a><a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Book a free strategy call</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
     <!-- Pricing (single source of truth) -->
     <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
@@ -331,28 +416,40 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
             <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3332937?price_id=4401583">Get Started Free</a>
           </article>
           <article class="plan highlight">
-            <header><h3>BVA Program App</h3><span class="badge">Popular</span></header>
-            <div class="price"><span class="amount">$47</span><span class="term">/month</span></div>
-            <ul class="features">
-              <li>Complete BVA content</li>
-              <li>60+ hours guided training*</li>
-              <li>Professional CE credits</li>
-              <li>Certificate of Completion</li>
-            </ul>
-            <a class="btn btn-primary" href="https://unlockleanagile.thinkific.com/enroll/3306293?price_id=4401598">Get Program</a>
-          </article>
-          <article class="plan new">
-            <header><h3>BVA Essentials App</h3><span class="badge" style="background:var(--support)">New</span></header>
+            <header><h3>BVA Essentials App</h3><span class="badge">Core Course</span></header>
             <div class="price">$197 <span class="term">or 3× $75</span></div>
             <ul class="features">
-              <li>~3 hours of structured content</li>
+              <li>~3–4 hours structured content</li>
               <li>Build an actionable plan in 30 days</li>
               <li>Deliver measurable improvements in 90 days</li>
+              <li>Certificate of Completion</li>
             </ul>
-            <a class="btn btn-outline" href="#enroll-essentials">Enroll in Essentials</a>
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/6048d5ed">Enroll in Essentials</a>
+          </article>
+          <article class="plan new">
+            <header><h3>Lean-Agile Mastery Series</h3><span class="badge" style="background:var(--support)">New</span></header>
+            <div class="price">Contact for Pricing</div>
+            <ul class="features">
+              <li>VS Management, VS Mapping, VS Networks</li>
+              <li>BLAST, BASE, BRIA modules</li>
+              <li>Advanced, practical methods</li>
+            </ul>
+            <a class="btn btn-outline" href="#contact">Request Details</a>
           </article>
         </div>
         <p class="sub">*20+ hrs app-based training with 60+ hrs online Lean, Agile & VSM for continued mastery.</p>
+      </div>
+    </section>
+
+    <!-- Stats (from index) -->
+    <section class="section stats-proof" aria-label="Backed by real-world success">
+      <div class="container">
+        <header class="section-head"><h2 style="color:#fff">Backed by Real-World Success</h2><p class="sub" style="color:#fff">Organizations implementing Lean-Agile practices (2020-2025)</p></header>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-number">20–50%</div><p>Productivity gains across organizations</p></div>
+          <div class="stat-card"><div class="stat-number">30–60%</div><p>Efficiency improvements depending on industry</p></div>
+          <div class="stat-card"><div class="stat-number">60%</div><p>Profit increases through smarter prioritization</p></div>
+        </div>
       </div>
     </section>
 
@@ -365,6 +462,20 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
           <article class="plan"><header><h3>4-Hour Workshop</h3><span class="badge">Best Value</span></header><div class="price">$325 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>Intro to the seven methods</li><li>Productivity & efficiency focus</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
           <article class="plan"><header><h3>8-Hour Workshop</h3><span class="badge">Best Value</span></header><div class="price">$500 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>Deeper dive + Value Stream Mapping</li><li>Practical exercises</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
           <article class="plan"><header><h3>3-Day Workshop</h3><span class="badge">Best Value</span></header><div class="price">$1,150 <span class="term">per student</span></div><ul class="features"><li>8 student minimum</li><li>30-day improvement plan</li><li>90-day measurable progress</li></ul><a class="btn btn-outline" href="#contact">Contact Us</a></article>
+        </div>
+        <div class="plans-grid" style="margin-top:12px">
+          <article class="plan">
+            <header><h3>BVA Program Implementation</h3><span class="badge">Available Now</span></header>
+            <p class="sub">Comprehensive programs for organizations seeking personalized, hands-on guidance.</p>
+            <div class="price">Contact for Pricing</div>
+            <ul class="features">
+              <li>Six expert-led workshops</li>
+              <li>20 hours support</li>
+              <li>Measurable results in 90 days</li>
+              <li>Proven by professionals worldwide</li>
+            </ul>
+            <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener">Contact Us</a>
+          </article>
         </div>
       </div>
     </section>
@@ -394,11 +505,28 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
       <div class="container">
         <h2>Real Stories. Real Results.</h2>
         <p class="sub">From leaders who deliver — and keep getting better.</p>
+        <div class="testimonial-track" aria-live="polite">
+          <div class="testimonial-card"><p>“A revelation—within 90 days, you'll see material organizational improvements and a pipeline for ongoing value growth.”</p><span class="who">— Robb Alexander</span></div>
+          <div class="testimonial-card"><p>“Transforms learning into action. A hands-on journey that energizes teams to deliver results.”</p><span class="who">— Thales Faggiano</span></div>
+          <div class="testimonial-card"><p>“Dynamite. Well-structured, practical, and fills the gap between theory and application.”</p><span class="who">— Jorge Valdés Garciatorres</span></div>
+          <div class="testimonial-card"><p>“By applying the BVA methodology, we avoided a 3–4 month delay and saved $1.4M.”</p><span class="who">— Mohamad Annan</span></div>
+          <div class="testimonial-card"><p>“One of the best 30-minute Lean/Agile overviews I’ve seen.”</p><span class="who">— Michelle Foley</span></div>
+          <div class="testimonial-card"><p>“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”</p><span class="who">— Tord Ronn</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Referrals / Reviews (additional content from index) -->
+    <section class="section" aria-label="Referrals and reviews">
+      <div class="container">
+        <header class="section-head"><h2>Real Stories. Real Results.</h2><p class="sub">From leaders who know how to deliver — and keep improving.</p></header>
         <div class="panels">
-          <blockquote class="panel">"A revelation—within 90 days, you'll see material organizational improvements and a pipeline for ongoing value growth."<br><cite>— Robb Alexander</cite></blockquote>
-          <blockquote class="panel">"Transforms learning into action. A hands-on journey that energizes teams to deliver results."<br><cite>— Thales Faggiano</cite></blockquote>
-          <blockquote class="panel">"Dynamite. Well-structured, practical, and fills the gap between theory and application."<br><cite>— Jorge Valdés Garciatorres</cite></blockquote>
-          <blockquote class="panel">"By applying the BVA methodology, we avoided a 3–4 month delay and saved $1.4M."<br><cite>— Mohamad Annan</cite></blockquote>
+          <blockquote class="panel">“One of the best 30-minute Lean/Agile overviews I’ve seen.”<br><cite>— Michelle Foley</cite></blockquote>
+          <blockquote class="panel">“Practical, flexible, and results-driven. Reinforces Agile as a toolkit.”<br><cite>— Tord Ronn</cite></blockquote>
+          <blockquote class="panel">“Engaging, bite-sized lessons that stick.”<br><cite>— Robb Alexander</cite></blockquote>
+          <blockquote class="panel">“Concise, accurate, and valuable—even for seasoned leaders.”<br><cite>— Rich Holmes</cite></blockquote>
+          <blockquote class="panel">“Short, engaging videos ensure everyone shares the basics.”<br><cite>— Stacey Bevill</cite></blockquote>
+          <blockquote class="panel">“Accessible and impactful on a tight schedule.”<br><cite>— Sumathi Arcot</cite></blockquote>
         </div>
       </div>
     </section>
@@ -484,6 +612,24 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
       </div>
     </div>
   </div>
+  
+  <!-- Install Gate Modal (parity with index) -->
+  <div aria-hidden="true" aria-label="Install the app to continue" class="modal" id="installGate" role="dialog" style="display:none">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div aria-modal="true" class="modal__dialog" role="document">
+      <button aria-label="Close" class="modal__close" data-close-modal type="button">×</button>
+      <div class="modal__body" style="padding:16px;color:#fff">
+        <h3 style="margin:0 0 8px">Install the App to Continue</h3>
+        <div class="install-steps" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));color:#e6eef7">
+          <div><h4>iOS (Safari)</h4><ol><li>Tap <strong>Share</strong>.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Open the app from your Home Screen.</li></ol></div>
+          <div><h4>Android (Chrome)</h4><ol><li>Tap <strong>⋮</strong> (Menu).</li><li>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li><li>Open the app from your Home Screen.</li></ol></div>
+          <div><h4>Desktop</h4><ol><li>Click the <strong>Install</strong> icon in the address bar.</li><li>Launch the installed app.</li></ol></div>
+        </div>
+        <p class="install-hint" style="color:#fbbf24"></p>
+        <div class="install-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="btn btn-primary" type="button">I’ve installed — continue</button></div>
+      </div>
+    </div>
+  </div>
 
   <!-- App JS (no frameworks) -->
   <script>
@@ -531,6 +677,52 @@ It’s quick, practical, and the perfect first step before unlocking the full BV
       tabs.forEach(t => t.setAttribute('aria-selected','false'));
       tab.setAttribute('aria-selected','true');
     }));
+
+    // Testimonials auto-scrolling carousel (duplicate content to loop)
+    const track = document.querySelector('.testimonial-track');
+    if (track) {
+      // Clone nodes to enable seamless loop
+      const cards = Array.from(track.children);
+      cards.forEach(card => track.appendChild(card.cloneNode(true)));
+      let offset = 0;
+      function step(){
+        offset += 0.5; // speed
+        track.scrollLeft = offset;
+        if (offset >= track.scrollWidth / 2) { offset = 0; }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // Simple Business Agility Scorecard interaction
+    const startBtn = document.getElementById('bva2Start');
+    const progressWrap = document.getElementById('bva2Progress');
+    const progressBar = document.getElementById('bva2Bar');
+    const stepLabel = document.getElementById('bva2Step');
+    const formEl = document.getElementById('bva2Form');
+    const qEl = document.getElementById('bva2Question');
+    const resultsEl = document.getElementById('bva2Results');
+    if (startBtn && progressWrap && progressBar && stepLabel && formEl && qEl && resultsEl) {
+      const questions = [
+        'Lean-Agile Foundations applied across teams',
+        'Value streams aligned to outcomes',
+        'Team collaboration across functions',
+        'Decision-making guided by metrics',
+        'End-to-end flow focus across value streams'
+      ];
+      let idx = 0; let score = 0;
+      function showQ(){ qEl.textContent = questions[idx]; stepLabel.textContent = `${idx+1}/5`; progressBar.style.width = `${((idx)/5)*100}%`; }
+      startBtn.addEventListener('click', () => {
+        startBtn.disabled = true; progressWrap.style.display = 'block'; formEl.style.display = 'block'; idx = 0; score = 0; showQ();
+      });
+      formEl.addEventListener('click', (e)=>{
+        const btn = e.target.closest('button[data-val]'); if(!btn) return;
+        score += parseInt(btn.dataset.val||'0',10);
+        idx++;
+        if(idx < questions.length){ showQ(); }
+        else { progressBar.style.width = '100%'; stepLabel.textContent = '5/5'; formEl.style.display = 'none'; resultsEl.style.display = 'block'; document.getElementById('bva2Score').textContent = String(score); }
+      });
+    }
 
     // Service worker (kept)
     if ("serviceWorker" in navigator) {
