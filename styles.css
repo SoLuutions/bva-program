@@ -3857,7 +3857,7 @@ header.scrolled .cr-global-nav-list .submenu-toggle:hover {
 /* ---------- Section 1: Online Training ---------- */
 #command-results-pricing .cr-pricing-section:first-of-type .cr-pricing-grid{
   display: grid;
-  grid-template-columns: repeat(2, minmax(320px, 420px));
+  grid-template-columns: repeat(3, minmax(300px, 420px));
   justify-content: center;
   justify-items: stretch;
   gap: 20px;
