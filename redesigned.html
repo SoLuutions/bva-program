@@ -53,7 +53,8 @@
       color: var(--ink);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden
     }
 
     img {
@@ -64,6 +65,10 @@
     a {
       color: inherit
     }
+
+    /* Guard against horizontal scroll on small viewports */
+    html, body { width: 100%; overflow-x: hidden; }
+    header, .hero, section, footer, .container { max-width: 100%; overflow-x: clip; }
 
     /* Utilities */
     .container {
@@ -141,7 +146,7 @@
     .nav {
       display: flex;
       align-items: center;
-      gap: 24px
+      gap: 18px
     }
 
     .nav-list {
@@ -159,10 +164,11 @@
       text-decoration: none;
       font-weight: 700;
       font-size: 15px;
-      background: none;
-      border: 0;
+      background: rgba(255,255,255,.6);
+      backdrop-filter: saturate(180%) blur(8px);
+      border: 1px solid rgba(0,0,0,.06);
       cursor: pointer;
-      padding: 8px 6px;
+      padding: 8px 10px;
       border-radius: 8px
     }
 
@@ -183,21 +189,23 @@
       justify-content: center;
       gap: 8px;
       min-height: 44px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 800;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-weight: 700;
       text-decoration: none;
       border: 1px solid transparent;
       cursor: pointer;
       transition: .2s
     }
 
+    /* Align primary button with index.html */
     .btn-primary {
       background: var(--accent);
       color: #fff;
       box-shadow: 0 6px 16px rgba(123, 104, 238, .35)
     }
 
+    /* Align outline button with index.html */
     .btn-outline {
       background: #fff;
       color: var(--secondary);
@@ -215,12 +223,39 @@
 
     /* Hover brand color per request */
     .btn-primary:hover {
-      background: #f19857
+      background: #6b5cf0
     }
 
     .btn-secondary:hover {
-      background: #f19857
+      background: #e6914a
     }
+
+    /* Support-colored primary actions (header + mobile sidenav shortcuts) */
+    .nav-cta .btn,
+    .sidenav .sidenav__link.primary {
+      background: var(--support);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(244, 162, 97, .4)
+    }
+    .sidenav .sidenav__link.primary:hover { background: #e6914a }
+
+    /* Desktop header: force support color on three primary links */
+    .nav a[href="#pricing"],
+    .nav a#auth-button,
+    .nav a#register-button {
+      background: var(--support);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(244, 162, 97, .4)
+    }
+    .nav a[href="#pricing"]:hover,
+    .nav a#auth-button:hover,
+    .nav a#register-button:hover { background: #e6914a }
+
+    /* Hamburger animation: rotate icon when expanded */
+    .nav-toggle i { transition: transform .2s ease; }
+    .nav-toggle[aria-expanded="true"] i { transform: rotate(90deg); }
 
     .has-submenu {
       position: relative
@@ -251,32 +286,67 @@
       visibility: visible
     }
 
+    /* Right SideNav (non-React equivalent of MDB SideNav) */
+    .sidenav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(92vw, 420px);
+      background: rgba(255,255,255,.85);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-left: 1px solid #e6ebf2;
+      box-shadow: -10px 0 30px rgba(0,0,0,.12);
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      z-index: 10010;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .sidenav.open { transform: translateX(0); }
+    .sidenav__head { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid #eef2f7; }
+    .sidenav__title { font-weight: 900; color: var(--secondary); margin: 0; }
+    .sidenav__close { border:0; background:transparent; width:40px; height:40px; border-radius:10px; cursor:pointer; }
+    .sidenav__menu { padding: 10px; overflow:auto; list-style: none; }
+    .sidenav__link, .sidenav__toggle { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; text-decoration:none; color:var(--ink); border:1px solid rgba(230,235,242,.9); background: rgba(255,255,255,.85); cursor:pointer; font-weight:700; }
+    .sidenav__link:hover, .sidenav__toggle:hover { background:#f8fafc; }
+    .sidenav__collapse { display:none; padding-left:10px; margin-top:6px; list-style: none; }
+    .sidenav__collapse.open { display:grid; gap:6px; }
+    .sidenav__backdrop { position: fixed; inset: 0; background: rgba(255,255,255,.7); backdrop-filter: saturate(180%) blur(8px); opacity:0; visibility:hidden; transition:.2s; z-index:10005; }
+    .sidenav__backdrop.open { opacity:1; visibility:visible; }
+    .submenu, .submenu li { list-style: none; }
+
     /* Mobile nav */
     @media (max-width: 900px) {
       .nav-toggle {
         display: inline-flex
       }
 
+      /* Lighter, centered mobile menu */
       .nav {
         position: fixed;
-        inset: 64px 0 auto 0;
+        top: 64px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        width: min(92vw, 720px);
         background: #ffffff;
-        border-bottom: 1px solid #e5e7eb;
+        border: 1px solid #e6ebf2;
+        border-radius: 14px;
         display: grid;
-        gap: 12px;
-        padding: 12px 20px;
-        transform: translateY(-120%);
+        gap: 10px;
+        padding: 12px 14px;
         transition: .25s;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, .08)
+        box-shadow: 0 12px 30px rgba(0, 0, 0, .10)
       }
 
       .nav.open {
-        transform: none
+        transform: translate(-50%, 0)
       }
 
       .nav-list {
         flex-direction: column;
-        align-items: flex-start
+        align-items: stretch;
+        gap: 8px
       }
 
       .nav-cta {
@@ -287,14 +357,31 @@
         position: static;
         opacity: 1;
         visibility: visible;
-        background: #f8fafc;
+        background: #f9fbff;
         color: var(--secondary);
-        border: 1px solid #e5e7eb
+        border: 1px solid #e6ebf2;
+        border-radius: 10px;
+        padding: 6px
       }
 
       .submenu a {
-        color: var(--secondary)
+        color: var(--secondary);
+        padding: 8px 10px;
+        border-radius: 8px
       }
+
+      /* Add spacing to the three primary links */
+      .sidenav .sidenav__link.primary { margin-bottom: 8px; }
+    }
+
+    /* Fix About the Founder layout on mobile */
+    @media (max-width: 900px) {
+      #about .panel { grid-template-columns: 1fr !important; }
+      #about .panel > div:first-child { height: auto !important; }
+      #about .panel > div:first-child img { width: 100%; height: auto; object-fit: cover; border-radius: 16px; }
+    }
+    @media (min-width: 901px) {
+      #about .panel > div:first-child img { max-width: 340px; max-height: 260px; width: 100%; height: auto; object-fit: cover; border-radius: 16px; }
     }
 
     /* Hero */
@@ -489,8 +576,9 @@
     .checklist-grid .art img {
       width: 100%;
       height: auto;
-      max-height: 320px;
-      object-fit: contain
+      max-height: 360px;
+      object-fit: cover;
+      border-radius: 16px
     }
 
     /* Checklist hover color */
@@ -921,6 +1009,34 @@
     </div>
   </header>
 
+  <!-- Right SideNav (HTML equivalent of the provided React MDB code) -->
+  <div class="sidenav__backdrop" id="sideNavBackdrop" hidden></div>
+  <aside class="sidenav" id="sideNav" aria-hidden="true" aria-label="Site menu">
+    <div class="sidenav__head">
+      <h3 class="sidenav__title">Menu</h3>
+      <button class="sidenav__close" type="button" aria-label="Close" data-close-sidenav>
+        ×
+      </button>
+    </div>
+    <div class="sidenav__menu">
+      <a class="sidenav__link primary" href="#pricing">View Plans</a>
+      <a class="sidenav__link primary" href="https://1a01-gary.systeme.io/dashboard/en/login">Log in</a>
+      <a class="sidenav__link primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register</a>
+
+      <button class="sidenav__toggle" type="button" aria-expanded="false" data-collapse="side-cat-2">
+        <span>More</span>
+      </button>
+      <div class="sidenav__collapse" id="side-cat-2">
+        <a class="sidenav__link" href="#about">About</a>
+        <a class="sidenav__link" href="https://www.commandresults.com/books/">Books</a>
+        <a class="sidenav__link" href="#workshops">Workshops</a>
+        <a class="sidenav__link" href="https://www.commandresults.com/blog/">Blog</a>
+        <a class="sidenav__link" href="#contact">Contact</a>
+        <a class="sidenav__link" href="https://app.commandresults.com">BVA Program</a>
+      </div>
+    </div>
+  </aside>
+
   <!-- Hero -->
   <section class="hero" aria-label="Hero">
     <div class="container hero-inner">
@@ -1054,8 +1170,8 @@
         <h2 id="pricing-title">Plans & Pricing</h2>
         <p class="sub">Flexible options for individuals and teams.</p>
         <div class="pricing-tabs" role="tablist" aria-label="Billing toggle">
-          <button class="tab" role="tab" aria-selected="true" data-bill="monthly">Monthly</button>
-          <button class="tab" role="tab" aria-selected="false" data-bill="annual">Annual</button>
+          <button class="tab" role="tab" aria-selected="true" data-bill="payin3">Pay in 3</button>
+          <button class="tab" role="tab" aria-selected="false" data-bill="onetime">One time</button>
         </div>
         <div class="plans-grid" data-billing="monthly">
           <article class="plan">
@@ -1442,16 +1558,45 @@
 
   <!-- App JS (no frameworks) -->
   <script>
-    // Mobile nav
+    // Mobile nav → open right SideNav
     const navToggle = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('main-nav');
-    if (navToggle && nav) {
+    const sideNav = document.getElementById('sideNav');
+    const sideBackdrop = document.getElementById('sideNavBackdrop');
+    function openSide() {
+      if (!sideNav || !sideBackdrop) return;
+      sideNav.classList.add('open');
+      sideNav.setAttribute('aria-hidden', 'false');
+      sideBackdrop.classList.add('open');
+      sideBackdrop.hidden = false;
+    }
+    function closeSide() {
+      if (!sideNav || !sideBackdrop) return;
+      sideNav.classList.remove('open');
+      sideNav.setAttribute('aria-hidden', 'true');
+      sideBackdrop.classList.remove('open');
+      sideBackdrop.hidden = true;
+      if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (navToggle) {
       navToggle.addEventListener('click', () => {
         const expanded = navToggle.getAttribute('aria-expanded') === 'true';
         navToggle.setAttribute('aria-expanded', String(!expanded));
-        nav.classList.toggle('open');
+        if (expanded) closeSide(); else openSide();
       });
     }
+    document.querySelector('[data-close-sidenav]')?.addEventListener('click', closeSide);
+    sideBackdrop?.addEventListener('click', closeSide);
+
+    // Collapses in SideNav
+    document.querySelectorAll('.sidenav__toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-collapse');
+        const panel = id ? document.getElementById(id) : null;
+        if (!panel) return;
+        const open = panel.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    });
 
     // Submenu
     const submenuBtn = document.querySelector('.submenu-toggle');
@@ -1480,11 +1625,12 @@
     const dts = document.querySelectorAll('.accordion details');
     dts.forEach(dt => dt.addEventListener('toggle', () => { if (dt.open) dts.forEach(other => { if (other !== dt) other.open = false; }); }));
 
-    // Pricing tabs
+    // Pricing tabs: Pay in 3 vs One time (toggle aria state)
     const tabs = document.querySelectorAll('.pricing .tab');
     tabs.forEach(tab => tab.addEventListener('click', () => {
       tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
       tab.setAttribute('aria-selected', 'true');
+      // Placeholder: hook plan price changes if needed
     }));
 
     // Testimonials auto-scrolling carousel (duplicate content to loop)
@@ -1503,7 +1649,7 @@
       requestAnimationFrame(step);
     }
 
-    // Simple Business Agility Scorecard interaction
+    // Business Agility Scorecard interaction (parity with index: start → quiz → lead → results)
     const startBtn = document.getElementById('bva2Start');
     const progressWrap = document.getElementById('bva2Progress');
     const progressBar = document.getElementById('bva2Bar');
@@ -1511,6 +1657,15 @@
     const formEl = document.getElementById('bva2Form');
     const qEl = document.getElementById('bva2Question');
     const resultsEl = document.getElementById('bva2Results');
+    const leadHtml = `
+      <div id="bva2Lead" style="margin-top:10px">
+        <p class="sub">Where should we send your tailored plan?</p>
+        <div class="cta-row" style="justify-content:stretch">
+          <input type="text" id="bva2Name" placeholder="Full name" style="flex:1;min-width:0;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+          <input type="email" id="bva2Email" placeholder="Email" style="flex:1;min-width:0;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+          <button class="btn btn-primary" id="bva2SeeResults" type="button">See my results</button>
+        </div>
+      </div>`;
     if (startBtn && progressWrap && progressBar && stepLabel && formEl && qEl && resultsEl) {
       const questions = [
         'Lean-Agile Foundations applied across teams',
@@ -1520,16 +1675,42 @@
         'End-to-end flow focus across value streams'
       ];
       let idx = 0; let score = 0;
-      function showQ() { qEl.textContent = questions[idx]; stepLabel.textContent = `${idx + 1}/5`; progressBar.style.width = `${((idx) / 5) * 100}%`; }
+      function showQ() {
+        qEl.textContent = questions[idx];
+        stepLabel.textContent = `${idx + 1}/5`;
+        progressBar.style.width = `${(idx / 5) * 100}%`;
+      }
       startBtn.addEventListener('click', () => {
-        startBtn.disabled = true; progressWrap.style.display = 'block'; formEl.style.display = 'block'; idx = 0; score = 0; showQ();
+        startBtn.style.display = 'none';
+        progressWrap.style.display = 'block';
+        formEl.style.display = 'block';
+        idx = 0; score = 0; showQ();
       });
       formEl.addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-val]'); if (!btn) return;
         score += parseInt(btn.dataset.val || '0', 10);
         idx++;
         if (idx < questions.length) { showQ(); }
-        else { progressBar.style.width = '100%'; stepLabel.textContent = '5/5'; formEl.style.display = 'none'; resultsEl.style.display = 'block'; document.getElementById('bva2Score').textContent = String(score); }
+        else {
+          progressBar.style.width = '100%';
+          stepLabel.textContent = '5/5';
+          formEl.style.display = 'none';
+          // Inject lead capture before results
+          const wrap = formEl.parentElement;
+          if (wrap && !document.getElementById('bva2Lead')) {
+            wrap.insertAdjacentHTML('beforeend', leadHtml);
+            const seeBtn = document.getElementById('bva2SeeResults');
+            seeBtn?.addEventListener('click', () => {
+              const name = (document.getElementById('bva2Name')||{}).value || '';
+              const email = (document.getElementById('bva2Email')||{}).value || '';
+              // Simple validate
+              if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { alert('Please enter a valid email.'); return; }
+              resultsEl.style.display = 'block';
+              document.getElementById('bva2Score').textContent = String(score);
+              document.getElementById('bva2Lead').style.display = 'none';
+            });
+          }
+        }
       });
     }
 
