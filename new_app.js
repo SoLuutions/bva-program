@@ -468,3 +468,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize
   initFromURL();
 })();
+// Reviewer form submission splash
+const reviewerForm = document.querySelector('.reviewer-form');
+const loader = document.getElementById('reviewer-loader');
+
+if (reviewerForm && loader) {
+  reviewerForm.addEventListener('submit', () => {
+    loader.classList.add('active');
+  });
+}
+// Reviewer form submission splash with next-tick submit
+(function () {
+  const form = document.querySelector('.reviewer-form');
+  const loader = document.getElementById('reviewer-loader');
+  if (!form || !loader) return;
+
+  let handingOff = false;
+  form.addEventListener('submit', (e) => {
+    if (handingOff) return;        // allow the native submit on second pass
+    e.preventDefault();            // stop the immediate navigation
+    loader.classList.add('active'); // show overlay now
+
+    // Force a paint before leaving the page
+    requestAnimationFrame(() => {
+      handingOff = true;
+      setTimeout(() => form.submit(), 50); // submit natively -> preserves redirect/cookies
+    });
+  });
+})();

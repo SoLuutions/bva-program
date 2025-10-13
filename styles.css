@@ -1193,3 +1193,76 @@ header, .site-header, .header-inner {
   background: #fbfcfe;
 }
 .reviewer-form .btn { min-width: 200px; }
+
+/* ===============================
+   Reviewer Access Section (2025-10)
+   =============================== */
+
+/* Container spacing below pricing cards */
+.reviewer-access {
+  margin-top: 40px;             /* adds breathing room below the pricing grid */
+  display: flex;
+  justify-content: center;
+}
+
+/* Align width with pricing cards grid */
+.reviewer-access .panel {
+  width: min(860px, 100%);      /* matches pricing cards container width */
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  padding: 24px;
+}
+
+/* Inner layout */
+.reviewer-access .section-head {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.reviewer-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reviewer-form input[name="token"] {
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fbfcfe;
+  font-size: 1rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.reviewer-form input[name="token"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.reviewer-form .btn {
+  min-width: 210px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .reviewer-access .panel {
+    margin-inline: 10px;
+    padding: 20px;
+  }
+  .reviewer-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .reviewer-form input[name="token"],
+  .reviewer-form .btn {
+    width: 100%;
+  }
+}
