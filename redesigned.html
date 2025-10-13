@@ -440,6 +440,33 @@
         </div>
         <p class="sub">*20+ hrs app-based training with 60+ hrs online Lean, Agile &amp; VSM for continued mastery.</p>
       </div>
+      <!-- Reviewer Token Gate -->
+<div class="reviewer-access">
+  <div class="panel">
+    <header class="section-head" style="margin-bottom:8px">
+      <h3>Reviewer Access</h3>
+      <p class="sub">Have a reviewer token? Unlock the reviewers area below.</p>
+    </header>
+
+    <form class="reviewer-form" action="https://app.commandresults.com/api/reviewer/verify" method="post" novalidate>
+      <input
+        type="text"
+        name="token"
+        inputmode="latin"
+        autocomplete="one-time-code"
+        placeholder="Enter reviewer token (e.g., RVW-2025-001)"
+        required
+        aria-label="Reviewer token"
+      />
+      <button class="btn btn-primary" type="submit">Unlock Reviewers Page</button>
+    </form>
+
+    <p class="sub" style="text-align:center;margin-top:8px">
+      Issues with your token? Email <a href="mailto:info@commandresults.com">info@commandresults.com</a>.
+    </p>
+  </div>
+</div>
+
     </section>
     <!-- Stats (from index) -->
     <section aria-label="Backed by real-world success" class="section stats-proof">

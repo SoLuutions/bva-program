@@ -1176,3 +1176,31 @@ header, .site-header, .header-inner {
   margin-top: 10px;
 }
 #what-is-lean-agile .cta-row { margin-top: 18px; }
+/* Reviewer token gate */
+.reviewer-access { margin-top: 14px; }
+.reviewer-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.reviewer-form input[name="token"] {
+  flex: 1;
+  min-width: 260px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+.reviewer-form .btn { min-width: 200px; }
+/* Reviewer token gate */
+.reviewer-access { margin-top: 14px; }
+.reviewer-access .panel { max-width: 860px; margin: 12px auto 0; }
+.reviewer-form {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
+.reviewer-form input[name="token"]{
+  flex: 1; min-width: 260px;
+  padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fbfcfe;
+}
+.reviewer-form .btn { min-width: 200px; }
