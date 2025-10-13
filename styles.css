@@ -1193,7 +1193,17 @@ header, .site-header, .header-inner {
   background: #fbfcfe;
 }
 .reviewer-form .btn { min-width: 200px; }
-
+/* Reviewer token gate */
+.reviewer-access { margin-top: 14px; }
+.reviewer-access .panel { max-width: 860px; margin: 12px auto 0; }
+.reviewer-form {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
+.reviewer-form input[name="token"]{
+  flex: 1; min-width: 260px;
+  padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fbfcfe;
+}
+.reviewer-form .btn { min-width: 200px; }
 /* ===============================
    Reviewer Access Section (2025-10)
    =============================== */
@@ -1266,3 +1276,24 @@ header, .site-header, .header-inner {
     width: 100%;
   }
 }
+/* Reviewer verification splash overlay */
+.reviewer-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.reviewer-loader.active { display: flex; opacity: 1; }
+
+.reviewer-loader-content { text-align: center; color: var(--secondary); font-weight: 600; }
+.spinner {
+  width: 48px; height: 48px; border: 4px solid rgba(42,157,143,.25);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 1s linear infinite; margin: 0 auto 10px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
