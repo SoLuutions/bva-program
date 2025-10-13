@@ -1154,3 +1154,25 @@ header, .site-header, .header-inner {
 @media (max-width: 640px) {
   .footer-logo { width: 300px; }
 }
+
+/* Generic */
+#what-is-lean-agile .section-head h2,
+#video-intros .section-head h2,
+#referrals .section-head h2 { letter-spacing: -.02em; }
+
+#what-is-lean-agile .sub,
+#video-intros .sub,
+#referrals .sub { color: var(--muted); }
+
+
+/* Lean-Agile intro */
+#what-is-lean-agile {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef6f4 100%);
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+#what-is-lean-agile p.sub {
+  max-width: 78ch;
+  margin-top: 10px;
+}
+#what-is-lean-agile .cta-row { margin-top: 18px; }

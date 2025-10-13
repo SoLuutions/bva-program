@@ -916,3 +916,263 @@ header, .site-header, .header-inner {
   font-size: 1.4rem;
   line-height: 1;
 }
+
+
+/* Courses tabs */
+.course-tabs { margin-top: 4px; }
+.course-panels { margin-top: 10px; }
+.course-panels .course-panel { display: none; }
+.course-panels .course-panel.active { display: grid; }
+
+
+/* === Clean Layout Overrides (2025-10-13) ===
+   Goal: match earlier, neater version with less visual noise.
+*/
+:root {
+  --gap-grid: 16px; /* a touch more breathing room */
+}
+
+/* Container slightly narrower for calmer line lengths */
+.container { max-width: 1060px; }
+
+/* Header/Nav: lighter by default; hover shows affordance */
+.nav a,
+.nav button.submenu-toggle {
+  background: transparent;
+  backdrop-filter: none;
+  border-color: transparent;
+}
+.nav a:hover,
+.nav button.submenu-toggle:hover {
+  background: rgba(0,0,0,.04);
+  border-color: transparent;
+}
+
+/* Keep the three primary header CTAs visually distinct via support color */
+.nav a[href="#pricing"],
+.nav a#auth-button,
+.nav a#register-button {
+  background: var(--support);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(244,162,97,.35);
+}
+.nav a[href="#pricing"]:hover,
+.nav a#auth-button:hover,
+.nav a#register-button:hover { background: #e6914a; }
+
+/* Hero/media: reduce heavy drop shadow */
+.hero-media { box-shadow: 0 12px 32px rgba(0,0,0,.18); }
+
+/* Cards: softer shadows + clearer borders */
+.panel, .plan, .testimonial-card, .newsletter-card, .stat-card {
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  border-color: #e9eef5;
+}
+
+/* Panels spacing */
+.panels { gap: 16px; }
+.panel { border-radius: 14px; padding: 16px; }
+
+/* Pricing badges/outlines -> subtle focus ring, not hard outlines */
+.plan.highlight { outline: none; box-shadow: 0 0 0 2px rgba(42,157,143,.2); }
+.plan.new { outline: none; box-shadow: 0 0 0 2px rgba(244,162,97,.25); }
+.plan .badge { padding: 3px 8px; font-size: .72rem; }
+
+/* Testimonials & Newsletter: remove gradient border treatments */
+.testimonial-card,
+.newsletter-card {
+  background: #fff;
+  border: 1px solid #e9eef5;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+/* Newsletter inputs: calmer background */
+.newsletter input[type="text"],
+.newsletter input[type="email"],
+.newsletter input[type="tel"] {
+  background: #fbfcfe;
+  border-color: #e6ebf2;
+}
+
+/* FAQ blocks: slightly lighter */
+.accordion details { background: #fbfcff; border-color: #e6ebf2; }
+
+/* Buttons: gentle hover animation */
+.btn:hover { transform: translateY(-1px); filter: saturate(104%); }
+
+/* Hamburger: reduce visual weight a bit */
+.nav-toggle { font-size: 1.3rem; width: 2.8rem; height: 2.8rem; }
+
+
+/* === CTA & Footer Refresh (2025-10-13) === */
+
+/* CTA section sizing/typography */
+.cta-accelerate {
+  background: #fafafa;
+  text-align: center;
+  padding-top: 84px;
+  padding-bottom: 84px;
+}
+.cta-accelerate h2 {
+  font-size: 2.4rem;
+  line-height: 1.2;
+  margin: 0 0 14px;
+}
+.cta-accelerate .cta-subtext {
+  font-size: 1.15rem;
+  max-width: 820px;
+  margin: 0 auto 36px;
+  color: #353a47;
+}
+.cta-accelerate .cta-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-accelerate .cta-btn {
+  min-width: 230px;
+  padding: 14px 22px;
+  font-size: 1rem;
+}
+
+/* Footer base */
+.site-footer {
+  background: #1f1f1f;
+  color: #eaeaea;
+  position: relative;
+}
+.site-footer a { color: #eaeaea; }
+.site-footer a:hover { color: #2a9d8f; }
+
+/* Grid layout */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 32px;
+  padding: 56px 0 24px;
+}
+.footer-col h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col li + li { margin-top: 8px; }
+
+/* Brand column */
+.footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.footer-logo {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 8px;
+  background: #2a9d8f; color: #fff; font-weight: 700;
+}
+.footer-brand-text { font-weight: 600; font-size: 1.1rem; }
+.footer-blurb { color: #cfcfcf; max-width: 520px; line-height: 1.7; }
+
+/* Meta row */
+.footer-meta {
+  border-top: 1px solid rgba(42,157,143,.45);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0;
+  gap: 16px;
+}
+.meta-links a { margin-right: 22px; }
+.meta-links a:last-child { margin-right: 0; }
+
+.footer-social { display: flex; align-items: center; gap: 10px; }
+.social-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border: 1px solid rgba(234,234,234,.18);
+  border-radius: 8px;
+}
+.social-icon:hover { border-color: #2a9d8f; }
+
+/* Bottom strip */
+.footer-bottom { padding: 8px 0 24px; }
+.footer-sep { border: none; border-top: 1px solid rgba(234,234,234,.12); margin: 0 0 10px; }
+.footer-bottom p { text-align: center; color: #cfcfcf; margin: 0; }
+
+/* Back-to-top button positioning in footer */
+.site-footer .to-top {
+  position: absolute; right: 18px; bottom: 18px;
+  color: #eaeaea;
+}
+.site-footer .to-top:hover { color: #2a9d8f; }
+
+/* Responsive */
+@media (max-width: 980px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-meta { flex-direction: column; align-items: flex-start; }
+  .cta-accelerate h2 { font-size: 2rem; }
+  .cta-accelerate .cta-subtext { font-size: 1.05rem; }
+}
+
+
+/* === Footer Logo Adjustment (2025-10-13) === */
+.footer-logo {
+  width: 130px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+.footer-brand { gap: 0; }
+
+
+/* === Footer Logo Final Update (2025-10-13) === */
+.footer-logo {
+  width: 400px;
+  height: auto;
+  background: none !important;
+  border: none !important;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+  display: block;
+  margin-bottom: 18px;
+}
+@media (max-width: 768px) {
+  .footer-logo { width: 280px; }
+}
+
+/* === Footer Logo Adjustment for Text Alignment === */
+.footer-logo {
+  width: 600px; /* increased from 520px */
+  height: auto;
+  background: none !important;
+  border: none !important;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+  display: block;
+  margin-bottom: 18px;
+}
+@media (max-width: 980px) {
+  .footer-logo { width: 420px; }
+}
+@media (max-width: 640px) {
+  .footer-logo { width: 300px; }
+}
+
+/* Generic */
+#what-is-lean-agile .section-head h2,
+#video-intros .section-head h2,
+#referrals .section-head h2 { letter-spacing: -.02em; }
+
+#what-is-lean-agile .sub,
+#video-intros .sub,
+#referrals .sub { color: var(--muted); }
+
+
+/* Lean-Agile intro */
+#what-is-lean-agile {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef6f4 100%);
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+#what-is-lean-agile p.sub {
+  max-width: 78ch;
+  margin-top: 10px;
+}
+#what-is-lean-agile .cta-row { margin-top: 18px; }

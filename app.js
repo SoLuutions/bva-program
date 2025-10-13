@@ -427,3 +427,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if ("serviceWorker" in navigator) {
       // navigator.serviceWorker.register('/sw.js'); // optional
     }
+
+// Courses tabs: Workbooks / Apps / Free Stuff
+(function() {
+  const courseTabs = document.querySelectorAll('.course-tabs .tab');
+  const panels = document.querySelectorAll('.course-panels .course-panel');
+
+  function showPanel(key) {
+    panels.forEach(p => {
+      const active = p.getAttribute('data-tab') === key;
+      p.classList.toggle('active', active);
+    });
+    courseTabs.forEach(t => {
+      const selected = t.getAttribute('data-tab-target') === key;
+      t.setAttribute('aria-selected', String(selected));
+    });
+  }
+
+  // Deep link support: ?catalog=apps|workbooks|free or #courses-&lt;tab&gt;
+  function initFromURL() {
+    const usp = new URLSearchParams(window.location.search);
+    const q = (usp.get('catalog') || '').toLowerCase();
+    const hash = (window.location.hash || '').toLowerCase();
+    const viaHash = hash.startsWith('#courses-') ? hash.replace('#courses-', '') : '';
+    const key = ['workbooks', 'apps', 'free'].includes(q) ? q :
+                ['workbooks', 'apps', 'free'].includes(viaHash) ? viaHash : 'workbooks';
+    showPanel(key);
+  }
+
+  courseTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const key = tab.getAttribute('data-tab-target');
+      if (!key) return;
+      showPanel(key);
+      // update hash without scrolling
+      history.replaceState(null, '', '#courses-' + key);
+    });
+  });
+
+  // Initialize
+  initFromURL();
+})();
