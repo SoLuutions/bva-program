@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hash = (window.location.hash || '').toLowerCase();
     const viaHash = hash.startsWith('#courses-') ? hash.replace('#courses-', '') : '';
     const key = ['workbooks', 'apps', 'free'].includes(q) ? q :
-                ['workbooks', 'apps', 'free'].includes(viaHash) ? viaHash : 'workbooks';
+                ['workbooks', 'apps', 'free'].includes(viaHash) ? viaHash : 'apps';
     showPanel(key);
   }
 
