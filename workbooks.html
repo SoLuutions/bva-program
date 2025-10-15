@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Lean-Agile Workbooks | Command Results</title>
+  <meta name="description" content="Register to access free Lean-Agile workbooks with practical exercises, templates, and worksheets to accelerate your team's performance immediately." />
+  
+  <!-- Fonts / Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      --ink: #101827;
+      --muted: #6b7280;
+      --bg: #f6f8fb;
+      --panel: #fff;
+      --primary: #2A9D8F;
+      --primary-2: #37b3a6;
+      --secondary: #6c5cf5;
+      --accent: #f4a261;
+      --ring: rgba(42,157,143,.28);
+      --ok: #16a34a;
+      --warn: #ea580c;
+      --border: #e7ecf3;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+    
+    html, body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: var(--secondary);
+      color: #fff;
+      box-shadow: 0 10px 24px var(--ring);
+    }
+    
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: rgba(42,157,143,0.1);
+    }
+
+    /* Sticky Header Styles */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      padding: 12px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand img {
+      height: 40px;
+      width: auto;
+    }
+
+    .nav-list {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-list a {
+      font-weight: 600;
+      color: var(--ink);
+      transition: color 0.2s ease;
+    }
+
+    .nav-list a:hover {
+      color: var(--primary);
+    }
+
+    .has-submenu {
+      position: relative;
+    }
+
+    .submenu-toggle {
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .submenu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 8px 0;
+      min-width: 200px;
+      display: none;
+      list-style: none;
+    }
+
+    .has-submenu:hover .submenu {
+      display: block;
+    }
+
+    .submenu li {
+      margin: 0;
+    }
+
+    .submenu a {
+      display: block;
+      padding: 8px 16px;
+      font-weight: 500;
+    }
+
+    .submenu a:hover {
+      background: rgba(42,157,143,0.1);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+    
+    header.hero {
+      position: relative;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      overflow: hidden;
+      padding: 42px 0;
+    }
+    
+    .hero .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+    
+    .eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,.14);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      font-size: 0.875rem;
+    }
+    
+    h1 {
+      margin: .5rem 0 0;
+      font-size: clamp(1.7rem, 1.1rem + 2.7vw, 2.8rem);
+      line-height: 1.1;
+      font-weight: 800;
+    }
+    
+    h2 {
+      font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .hero p.sub {
+      margin: .5rem 0 0;
+      color: #eefdfb;
+      font-size: 1.125rem;
+    }
+    
+    .sub {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    
+    .lead {
+      font-size: 1.125rem;
+      font-weight: 500;
+    }
+    
+    .cta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    
+    .section {
+      padding: 42px 0;
+    }
+    
+    .section-head {
+      max-width: 860px;
+      margin: 0 auto 12px;
+      text-align: center;
+    }
+    
+    .muted {
+      color: var(--muted);
+    }
+    
+    /* Workbook Benefits */
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    
+    .benefit {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .benefit-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(42,157,143,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+    
+    /* Workbooks Grid */
+    .workbooks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    
+    .workbook-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+    
+    .workbook-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+    
+    .workbook-card header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .badge {
+      font-size: .75rem;
+      background: #eef7ff;
+      border: 1px solid #dfe9f7;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 700;
+    }
+    
+    .workbook-card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      flex-grow: 1;
+    }
+    
+    .workbook-card .cta-row {
+      margin-top: auto;
+    }
+    
+    /* Workbook Preview */
+    .workbook-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+    
+    .preview-image {
+      background: #f1f5f9;
+      border-radius: 12px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 1.25rem;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    
+    .testimonial {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    
+    .testimonial footer {
+      margin-top: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+    
+    /* FAQ */
+    .accordion details {
+      background: #fbfcff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 0 0 12px;
+    }
+    
+    .accordion summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .accordion summary::after {
+      content: "+";
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+    
+    .accordion details[open] summary::after {
+      content: "−";
+    }
+    
+    .accordion summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    
+    .modal.open {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 1000px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .modal-close:hover {
+      background: #f1f5f9;
+    }
+    
+    .modal-body {
+      padding: 0;
+    }
+    
+    .workbook-viewer {
+      height: 500px;
+      width: 100%;
+      border: none;
+      border-radius: 0 0 16px 16px;
+    }
+    
+    .limited-access-notice {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 24px;
+      text-align: center;
+    }
+
+    /* Footer Styles */
+    .site-footer {
+      background: #1f2937;
+      color: #fff;
+      margin-top: 60px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      padding: 40px 0;
+    }
+
+    .footer-col h3 {
+      color: #fff;
+      margin-bottom: 16px;
+      font-size: 1.125rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col a {
+      color: #d1d5db;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--primary);
+    }
+
+    .footer-logo {
+      height: 40px;
+      width: auto;
+      margin-bottom: 16px;
+    }
+
+    .footer-blurb {
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    .footer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-top: 1px solid #374151;
+    }
+
+    .meta-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .meta-links a {
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .footer-bottom {
+      background: #111827;
+      padding: 20px 0;
+    }
+
+    .footer-sep {
+      border: none;
+      border-top: 1px solid #374151;
+      margin-bottom: 16px;
+    }
+
+    .footer-bottom p {
+      color: #9ca3af;
+      text-align: center;
+      margin: 0;
+    }
+
+    .to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.2s ease;
+      z-index: 100;
+    }
+
+    .to-top:hover {
+      background: var(--primary-2);
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 960px) {
+      .hero .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .workbooks-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .workbook-preview {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-content {
+        max-width: 95%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-meta {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .meta-links {
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav.active {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 20px;
+      }
+
+      .nav-list {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .has-submenu {
+        width: 100%;
+      }
+
+      .submenu {
+        position: static;
+        box-shadow: none;
+        background: #f8fafc;
+        display: none;
+        width: 100%;
+      }
+
+      .has-submenu:hover .submenu,
+      .has-submenu.active .submenu {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .cta-row {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .modal-body {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Header -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img alt="Command Results logo" src="https://d1yei2z3i6k35z.cloudfront.net/14469673/68d2bb2595ba3_Logo.png" />
+      </a>
+      <button aria-controls="main-nav" aria-expanded="false" class="nav-toggle"><span class="sr-only">Toggle
+          navigation</span><i class="fa-solid fa-bars"></i></button>
+      <nav aria-label="Primary" class="nav" id="main-nav">
+        <ul class="nav-list">
+          <li><a href="#workbooks">View Workbooks</a></li>
+          <li><a href="https://1a01-gary.systeme.io/dashboard/en/login" id="auth-button">Log in</a></li>
+          <li><a href="https://1a01-gary.systeme.io/80e7228b" id="register-button">Register</a></li>
+          <li class="has-submenu">
+            <button aria-expanded="false" aria-haspopup="true" class="submenu-toggle">More</button>
+            <ul aria-label="More submenu" class="submenu">
+              <li><a href="#about">About</a></li>
+              <li><a href="https://www.commandresults.com/books/">Books</a></li>
+              <li><a href="#workshops">Workshops</a></li>
+              <li><a href="https://www.commandresults.com/blog/">Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="https://app.commandresults.com">BVA Program</a></li>
+              <li><a href="https://commandresults.com/bvap-resources/business-value-accelerator-guide/">BVA Guide</a>
+              </li>
+              <li><a href="https://commandresults.com/bvap-resources/bvap-executive-brief/">Executive Brief</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container grid">
+      <div>
+        <span class="eyebrow">Free Workbooks</span>
+        <h1>Practical Lean-Agile Workbooks For Immediate Results</h1>
+        <p class="sub">Register to access 5 complete workbooks with exercises, templates, and worksheets to cut waste, improve flow, and deliver measurable value.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#workbooks">Register to Access Workbooks</a>
+          <a class="btn btn-outline" href="#preview" style="border-color: rgba(255,255,255,0.5); color: #fff;">Preview a Workbook</a>
+        </div>
+        <p class="muted" style="margin:.75rem 0 0; color: rgba(255,255,255,0.8)">Free registration • Instant access • Team-friendly resources</p>
+      </div>
+      <figure class="card" aria-hidden="true" style="overflow: hidden; border-radius: 12px;">
+        <img src="http://app.commandresults.com/woman-with-headset-video-call-laptop.jpg" 
+             alt="Professional woman with headset on a video call using laptop" 
+             style="width: 100%; height: 280px; object-fit: cover; display: block;">
+      </figure>
+    </div>
+  </header>
+
+  <!-- Benefits -->
+  <section class="section" id="benefits">
+    <div class="container">
+      <header class="section-head">
+        <h2>Why These Workbooks Deliver Immediate Results</h2>
+        <p class="muted">Each workbook is designed with practical exercises you can implement today.</p>
+      </header>
+      <div class="benefits">
+        <div class="benefit">
+          <div class="benefit-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <h3>Video-Guided</h3>
+          <p class="muted">Follow along with video walkthroughs of key Lean-Agile practices.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">
+            <i class="fas fa-file-powerpoint"></i>
+          </div>
+          <h3>Editable PPTX Files</h3>
+          <p class="muted">Fully editable PowerPoint files you can customize for your team.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Team-Friendly</h3>
+          <p class="muted">Discussion points and exercises designed for cross-functional teams.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">
+            <i class="fas fa-tasks"></i>
+          </div>
+          <h3>Action-Oriented</h3>
+          <p class="muted">Step-by-step guidance with clear action prompts and exercises.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workbooks -->
+  <section class="section" id="workbooks">
+    <div class="container">
+      <header class="section-head">
+        <h2>5 Complete Lean-Agile Workbooks</h2>
+        <p class="muted">Register once to access all workbooks - completely free.</p>
+      </header>
+      
+      <div class="workbooks-grid">
+        <article class="workbook-card">
+          <header>
+            <h3>Lean-Agile Practices (HeyGen-based video)</h3>
+            <span class="badge">PPTX Workbook</span>
+          </header>
+          <p class="sub">Guided video walkthrough of key Lean-Agile practices.</p>
+          <ul>
+            <li>Streaming video demonstrations</li>
+            <li>Action prompts for immediate application</li>
+            <li>Team discussion points</li>
+            <li>Follow-along exercises</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register to Access</a>
+          </div>
+        </article>
+        
+        <article class="workbook-card">
+          <header>
+            <h3>Lean-Agile Practices Workbook (Slideshow with Audio)</h3>
+            <span class="badge">PPTX Workbook</span>
+          </header>
+          <p class="sub">Slide-based workbook with audio narration.</p>
+          <ul>
+            <li>Downloadable slides for offline use</li>
+            <li>Audio narration of key concepts</li>
+            <li>Exercises & notes sections</li>
+            <li>Self-paced learning format</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register to Access</a>
+          </div>
+        </article>
+        
+        <article class="workbook-card">
+          <header>
+            <h3>VS Mapping Workbook</h3>
+            <span class="badge">PPTX Workbook</span>
+          </header>
+          <p class="sub">Value Stream Mapping exercises and templates.</p>
+          <ul>
+            <li>Step-by-step mapping guidance</li>
+            <li>Printable templates for workshops</li>
+            <li>Facilitator tips and best practices</li>
+            <li>Common pitfalls to avoid</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register to Access</a>
+          </div>
+        </article>
+        
+        <article class="workbook-card">
+          <header>
+            <h3>VSM Workbook</h3>
+            <span class="badge">PPTX Workbook</span>
+          </header>
+          <p class="sub">Companion workbook for VSM practice and analysis.</p>
+          <ul>
+            <li>Before/after mapping templates</li>
+            <li>Bottleneck analysis worksheets</li>
+            <li>Improvement backlog templates</li>
+            <li>Metrics tracking guides</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register to Access</a>
+          </div>
+        </article>
+        
+        <article class="workbook-card">
+          <header>
+            <h3>BRIA Process Workbook</h3>
+            <span class="badge">PPTX Workbook</span>
+          </header>
+          <p class="sub">Business Risk & Impact Analysis process guide and worksheets.</p>
+          <ul>
+            <li>Risk identification frameworks</li>
+            <li>Impact scoring matrices</li>
+            <li>Mitigation planning templates</li>
+            <li>Case studies and examples</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register to Access</a>
+            <button class="btn btn-outline preview-workbook" data-workbook="bria">Preview Workbook</button>
+          </div>
+        </article>
+        
+        <article class="workbook-card" style="background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff;">
+          <header>
+            <h3 style="color: #fff;">Complete Workbook Bundle</h3>
+            <span class="badge" style="background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.3);">All 5 Workbooks</span>
+          </header>
+          <p style="color: rgba(255,255,255,0.9);">Get immediate access to all 5 workbooks with one registration.</p>
+          <ul style="color: rgba(255,255,255,0.9);">
+            <li>All 5 workbooks in PPTX format</li>
+            <li>Bonus facilitator guide</li>
+            <li>Team implementation checklist</li>
+            <li>Priority access to future workbooks</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d" style="background: #fff; color: var(--primary);">Register for All Workbooks</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workbook Preview -->
+  <section class="section" id="preview" style="background: #f8fafc;">
+    <div class="container">
+      <div class="workbook-preview">
+        <div>
+          <h2>See Exactly What You're Getting</h2>
+          <p class="lead">Each workbook includes practical exercises, templates, and guidance you can implement immediately with your team.</p>
+          <p>Preview our BRIA Process Workbook to see the quality and practical approach of our resources.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register for All Workbooks</a>
+            <button class="btn btn-outline preview-workbook" data-workbook="bria">Preview BRIA Workbook</button>
+          </div>
+        </div>
+        <div class="preview-image">
+          <i class="fas fa-file-powerpoint" style="font-size: 3rem; margin-bottom: 16px;"></i>
+          <h3>BRIA Process Workbook</h3>
+          <p style="margin: 8px 0 16px;">Business Risk & Impact Analysis</p>
+          <button class="btn btn-outline preview-workbook" data-workbook="bria">
+            Preview This Workbook
+          </button>
+          <p style="font-size: 0.875rem; margin-top: 12px; color: var(--muted);">Limited preview • Full version after registration</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <header class="section-head">
+        <h2>Teams That Transformed With These Workbooks</h2>
+        <p class="muted">Real results from organizations using these practical resources.</p>
+      </header>
+      <div class="testimonials">
+        <div class="testimonial">
+          <p>"The VS Mapping Workbook helped us identify $250K in hidden process waste in just one workshop. The templates made facilitation effortless."</p>
+          <footer>
+            <div class="avatar">JD</div>
+            <div>
+              <strong>Jamie Davis</strong>
+              <div class="sub">Operations Director, FinTech</div>
+            </div>
+          </footer>
+        </div>
+        <div class="testimonial">
+          <p>"We used the BRIA Process Workbook to assess a major project risk and avoided a potential 4-month delay. The impact scoring matrix was invaluable."</p>
+          <footer>
+            <div class="avatar">SP</div>
+            <div>
+              <strong>Sarah Peterson</strong>
+              <div class="sub">Project Manager, Healthcare</div>
+            </div>
+          </footer>
+        </div>
+        <div class="testimonial">
+          <p>"The Lean-Agile Practices video workbook got our entire team on the same page in one session. The discussion points sparked important conversations."</p>
+          <footer>
+            <div class="avatar">MR</div>
+            <div>
+              <strong>Michael Roberts</strong>
+              <div class="sub">Product Lead, SaaS</div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <header class="section-head">
+        <h2>Frequently Asked Questions</h2>
+        <p class="muted">Everything you need to know about our free workbooks.</p>
+      </header>
+      <div class="accordion">
+        <details>
+          <summary>Are these workbooks really free?</summary>
+          <p>Yes, all 5 workbooks are completely free to access. We believe in removing barriers to implementing Lean-Agile practices.</p>
+        </details>
+        <details>
+          <summary>Why do I need to register?</summary>
+          <p>Registration helps us understand how our resources are being used and allows us to notify you when we release new workbooks and updates.</p>
+        </details>
+        <details>
+          <summary>What format are the workbooks in?</summary>
+          <p>All workbooks are provided as editable PowerPoint (PPTX) files that you can customize for your specific team needs.</p>
+        </details>
+        <details>
+          <summary>Can I use these with my team?</summary>
+          <p>Absolutely! These workbooks are designed for team use with discussion points, exercises, and templates that work well in group settings.</p>
+        </details>
+        <details>
+          <summary>How current are these workbooks?</summary>
+          <p>All workbooks have been updated in 2024 with the latest Lean-Agile practices and real-world examples from organizations we've worked with.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section" style="background: var(--primary); color: #fff;">
+    <div class="container">
+      <div class="section-head">
+        <h2>Start Implementing Lean-Agile Practices Today</h2>
+        <p style="color: rgba(255,255,255,0.9);">Register now to access all 5 workbooks and begin seeing results with your team immediately.</p>
+        <div class="cta-row" style="justify-content: center; margin-top: 20px;">
+          <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d" style="background: #fff; color: var(--primary);">Register for Free Access</a>
+          <a class="btn btn-outline" href="https://calendly.com/cgrupp55/20min" target="_blank" rel="noopener" style="border-color: #fff; color: #fff;">Book a Strategy Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer from index.html -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col brand">
+        <div class="footer-brand">
+          <img class="footer-logo" src="https://d1yei2z3i6k35z.cloudfront.net/14469673/68d2bb2595ba3_Logo.png"
+            alt="Command Results Logo" />
+        </div>
+        <p class="footer-blurb">
+          Empowering businesses to deliver more value, faster and smarter, through proven Lean-Agile practices and value
+          stream management.
+        </p>
+      </div>
+      <div class="footer-col links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#books">Books</a></li>
+          <li><a href="#solutions">Solutions</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col resources">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#bva-program">BVA Program</a></li>
+          <li><a href="#pricing">BVA Pricing</a></li>
+          <li><a href="https://www.commandresults.com/bvap-guide/" target="_blank">BVA Guide</a></li>
+          <li><a href="https://www.commandresults.com/bvap-executive-brief/" target="_blank">BVA Executive Brief</a>
+          </li>
+          <li><a href="https://www.commandresults.com/create/" target="_blank">CREATE Media</a></li>
+          <li><a href="#services">Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-meta">
+      <nav class="meta-links" aria-label="Footer">
+        <a href="https://www.commandresults.com/privacy-policy/" target="_blank">Privacy Policy</a>
+        <a href="https://www.commandresults.com/cookies-settings/" target="_blank">Cookies Settings</a>
+        <a href="https://www.commandresults.com/terms-of-service/" target="_blank">Terms of Service</a>
+      </nav>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/cecil-gary-rupp-0a8b233/" target="_blank" rel="noopener"
+          aria-label="LinkedIn" class="social-icon">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:info@commandresults.com" aria-label="Email" class="social-icon">
+          <i class="fa-regular fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <hr class="footer-sep" />
+        <p>© 2024 Command Results / All Rights Reserved</p>
+      </div>
+    </div>
+
+    <a class="to-top" href="#top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
+  </footer>
+
+  <!-- Workbook Preview Modal -->
+  <div class="modal" id="workbookModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>BRIA Process Workbook Preview</h3>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe 
+          class="workbook-viewer" 
+          src="https://view.officeapps.live.com/op/embed.aspx?src=https://d1yei2z3i6k35z.cloudfront.net/14469673/68efa451d4123_BRIA-Workbook-CommandResults_Final_V1.pptx" 
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+        
+        <div class="limited-access-notice">
+          <p><strong>This is a limited preview.</strong> The complete BRIA Process Workbook includes:</p>
+          <ul style="text-align: left; display: inline-block; margin: 10px 0;">
+            <li>Full editable PowerPoint file</li>
+            <li>All worksheets and templates</li>
+            <li>Complete case studies</li>
+            <li>Facilitator guide for team workshops</li>
+          </ul>
+          <div class="cta-row" style="justify-content: center; margin-top: 16px;">
+            <a class="btn btn-primary" href="https://1a01-gary.systeme.io/80e7228b-991f175d">Register for Full Access</a>
+            <a class="btn btn-outline" href="https://d1yei2z3i6k35z.cloudfront.net/14469673/68efa451d4123_BRIA-Workbook-CommandResults_Final_V1.pptx" download>Download Full Workbook</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Modal functionality
+    const modal = document.getElementById('workbookModal');
+    const modalClose = document.getElementById('modalClose');
+    const previewButtons = document.querySelectorAll('.preview-workbook');
+    
+    // Open modal when preview buttons are clicked
+    previewButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+      });
+    });
+    
+    // Close modal when close button is clicked
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('open');
+      document.body.style.overflow = ''; // Restore scrolling
+    });
+    
+    // Close modal when clicking outside content
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        modal.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+    
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', !expanded);
+      nav.classList.toggle('active');
+    });
+
+    // Submenu toggle for mobile
+    const submenuToggle = document.querySelector('.submenu-toggle');
+    const hasSubmenu = document.querySelector('.has-submenu');
+    
+    if (submenuToggle) {
+      submenuToggle.addEventListener('click', () => {
+        hasSubmenu.classList.toggle('active');
+      });
+    }
+    
+    // Exit-intent: scroll to workbooks
+    let shownExit = false;
+    document.addEventListener('mouseout', (e) => {
+      if (shownExit) return;
+      if (!e.toElement && !e.relatedTarget && e.clientY <= 10) {
+        shownExit = true;
+        document.querySelector('#workbooks').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  </script>
+</body>
+</html>
