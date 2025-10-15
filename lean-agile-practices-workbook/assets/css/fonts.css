@@ -1,0 +1,25 @@
+/* fonts.css */
+
+/* Josefin Sans Regular */
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('fonts/JosefinSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Josefin Sans Bold */
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('fonts/JosefinSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Josefin Sans Light */
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('fonts/JosefinSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
