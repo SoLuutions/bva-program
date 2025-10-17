@@ -192,3 +192,59 @@ a { color: inherit; text-decoration: none; }
 .reviewer-loader-content{text-align:center;color:var(--secondary);font-weight:600;}
 .spinner{width:48px;height:48px;border:4px solid rgba(42,157,143,.25);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
+/* Bulk Licensing Section */
+.bulk-licensing {
+  background: #f9fafb;
+  padding: var(--space-section-y) 0;
+}
+
+.bulk-table-wrapper {
+  background: #fff;
+  border: 1px solid #e9eef5;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.bulk-pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.bulk-pricing-table th {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.bulk-pricing-table td {
+  padding: 12px 16px;
+  border-top: 1px solid #e9eef5;
+  color: var(--ink);
+}
+
+.bulk-pricing-table tr:nth-child(even) {
+  background: #f7fafc;
+}
+
+.bulk-pricing-table tr:hover {
+  background: rgba(42, 157, 143, 0.08);
+}
+
+.bulk-licensing .link-accent {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .bulk-pricing-table th, .bulk-pricing-table td {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
