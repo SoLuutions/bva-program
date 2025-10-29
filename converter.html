@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ARW → JPG/PNG Converter (Client‑Only)</title>
+  <style>
+    :root { --fg:#0f172a; --muted:#64748b; --bg:#f8fafc; --card:#ffffff; --accent:#4f46e5; }
+    * { box-sizing: border-box; }
+    html,body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--fg); background:var(--bg); }
+    .container { max-width: 980px; margin: 0 auto; padding: 24px; }
+    .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .card { background:var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+    .title { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .h1 { font-weight:800; font-size:28px; }
+    .muted { color:var(--muted); font-size:13px; }
+    .drop { border:2px dashed #cbd5e1; border-radius:16px; padding:32px; text-align:center; cursor:pointer; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid #e5e7eb; background:#fff; cursor:pointer; font-weight:600; }
+    .btn.primary { background:var(--accent); border-color:var(--accent); color:white; }
+    .btn.danger { background:#ef4444; border-color:#ef4444; color:white; }
+    .btn:disabled { opacity:.6; cursor:not-allowed; }
+    .row-2 { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    .setting { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .list { max-height:220px; overflow:auto; border:1px solid #e5e7eb; border-radius:12px; padding:8px; }
+    .item { display:flex; align-items:center; justify-content:space-between; padding:6px 4px; font-size:14px; }
+    .progress { height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
+    .bar { height:100%; width:0%; background:var(--accent); transition: width .2s ease; }
+    label.switch { position:relative; display:inline-block; width:44px; height:24px; }
+    label.switch input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background:#e5e7eb; border-radius:999px; transition:.2s; }
+    .slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; top:3px; background:white; border-radius:50%; transition:.2s; box-shadow:0 1px 2px rgba(0,0,0,.2); }
+    label.switch input:checked + .slider { background:var(--accent); }
+    label.switch input:checked + .slider:before { transform: translateX(20px); }
+    .footer { text-align:center; font-size:12px; color:var(--muted); padding:20px 0 8px; }
+    .range { width:100%; }
+    /* Make the file input clearly visible and clickable */
+    input[type="file"].picker { border:1px solid #e5e7eb; padding:8px; border-radius:10px; background:#fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">
+      <div class="h1">ARW → JPG/PNG Converter</div>
+      <div class="row">
+        <input id="fileInput" class="picker" type="file" multiple
+               accept=".arw,.ARW,.cr2,.CR2,.nef,.NEF,.dng,.DNG,.raf,.RAF,.rw2,.RW2,application/octet-stream" />
+        <button id="clearBtn" class="btn danger" disabled>🗑️ Clear</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div id="drop" class="drop">
+        <div style="font-weight:700; font-size:18px;">Drag & drop your .ARW (or other RAW) files here</div>
+        <div class="muted">or use the visible file picker at the top</div>
+      </div>
+      <div class="muted" style="margin-top:8px;">All processing happens locally in your browser. No uploads.</div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:20px; font-weight:700; margin-bottom:10px;">Settings</div>
+      <div class="row-2">
+        <div class="setting">
+          <div>Output format</div>
+          <div>
+            <label><input type="radio" name="fmt" value="image/jpeg" checked> JPG</label>
+            <span style="width:10px; display:inline-block;"></span>
+            <label><input type="radio" name="fmt" value="image/png"> PNG</label>
+          </div>
+        </div>
+        <div class="setting">
+          <div>Use camera white balance</div>
+          <label class="switch"><input id="wbCamera" type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="setting">
+          <div>Auto‑brighten</div>
+          <label class="switch"><input id="autoBright" type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="setting">
+          <div>Half‑size output (faster, smaller)</div>
+          <label class="switch"><input id="halfSize" type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="setting" id="jpegRow">
+          <div>JPEG quality: <span id="qLabel">92</span></div>
+          <input id="q" class="range" type="range" min="50" max="100" step="1" value="92" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="title" style="margin-bottom:10px;">
+        <div style="font-size:20px; font-weight:700;">Files <span class="muted" id="fileCount">(0)</span></div>
+        <button id="convertBtn" class="btn primary" disabled>⬇️ Convert & download ZIP</button>
+      </div>
+      <div id="list" class="list"></div>
+      <div style="margin-top:12px; display:none;" id="progWrap">
+        <div class="progress"><div id="bar" class="bar"></div></div>
+        <div class="muted" id="pct">0%</div>
+      </div>
+      <div class="muted" style="margin-top:8px;">Note: EXIF metadata is not preserved in the JPG/PNG export.</div>
+    </div>
+
+    <div class="footer">Powered by LibRaw (WebAssembly). Runs fully in‑browser. <span class="muted">If decoding fails, ensure the LibRaw CDN path matches your chosen version.</span></div>
+  </div>
+
+  <!-- Dependencies via CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <!-- LibRaw-WASM (ESM build). If this exact path 404s, check the package docs/CDN for the latest file name. -->
+  <script type="module">
+    // IMPORTANT: use a pinned version to avoid CDN path changes
+    import LibRaw from 'https://cdn.jsdelivr.net/npm/libraw-wasm@1.0.4/dist/libraw-wasm.esm.js';
+
+    const state = { files: [] };
+
+    const els = {
+      drop: document.getElementById('drop'),
+      input: document.getElementById('fileInput'),
+      clearBtn: document.getElementById('clearBtn'),
+      list: document.getElementById('list'),
+      fileCount: document.getElementById('fileCount'),
+      convertBtn: document.getElementById('convertBtn'),
+      progWrap: document.getElementById('progWrap'),
+      bar: document.getElementById('bar'),
+      pct: document.getElementById('pct'),
+      q: document.getElementById('q'),
+      qLabel: document.getElementById('qLabel'),
+      jpegRow: document.getElementById('jpegRow'),
+      wbCamera: document.getElementById('wbCamera'),
+      autoBright: document.getElementById('autoBright'),
+      halfSize: document.getElementById('halfSize'),
+    };
+
+    const fmtRadios = Array.from(document.querySelectorAll('input[name="fmt"]'));
+
+    function updateList() {
+      els.list.innerHTML = state.files.map((f) => (
+        `<div class="item"><span title="${f.name}" style="max-width:70%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block;">${f.name}</span><span class="muted">${(f.size/1048576).toFixed(2)} MB</span></div>`
+      )).join('');
+      els.fileCount.textContent = `(${state.files.length})`;
+      els.convertBtn.disabled = state.files.length === 0;
+      els.clearBtn.disabled = state.files.length === 0;
+    }
+
+    function onFiles(files) {
+      const arr = Array.from(files || []);
+      if (!arr.length) return;
+      state.files.push(...arr);
+      updateList();
+    }
+
+    // Visible picker always works
+    els.input.addEventListener('change', (e)=> onFiles(e.target.files));
+
+    // Drag & drop (optional)
+    els.drop.addEventListener('dragover', (e)=>{ e.preventDefault(); els.drop.style.borderColor = '#94a3b8'; });
+    els.drop.addEventListener('dragleave', ()=>{ els.drop.style.borderColor = '#cbd5e1'; });
+    els.drop.addEventListener('drop', (e)=>{
+      e.preventDefault(); els.drop.style.borderColor = '#cbd5e1'; onFiles(e.dataTransfer.files);
+    });
+
+    // Clear button
+    els.clearBtn.addEventListener('click', () => { state.files = []; updateList(); els.input.value = ''; });
+
+    // Show/hide JPEG quality row based on format
+    function getFormat(){ return (fmtRadios.find(r=>r.checked) || {}).value || 'image/jpeg'; }
+    fmtRadios.forEach(r => r.addEventListener('change', ()=>{
+      els.jpegRow.style.display = (getFormat() === 'image/jpeg') ? 'flex' : 'none';
+    }));
+
+    els.q.addEventListener('input', ()=> { els.qLabel.textContent = els.q.value; });
+
+    function readFile(file){
+      return new Promise((resolve, reject)=>{
+        const fr = new FileReader();
+        fr.onload = ()=> resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsArrayBuffer(file);
+      });
+    }
+
+    function rgbToRgbaImageData(rgb, width, height){
+      const rgba = new Uint8ClampedArray(width*height*4);
+      let ri = 0;
+      for (let i=0;i<rgba.length;i+=4){
+        rgba[i]=rgb[ri++]; rgba[i+1]=rgb[ri++]; rgba[i+2]=rgb[ri++]; rgba[i+3]=255;
+      }
+      return new ImageData(rgba, width, height);
+    }
+
+    async function decodeRawToCanvas(file, settings){
+      const buf = new Uint8Array(await readFile(file));
+      const raw = new LibRaw();
+      await raw.open(buf, settings);
+      const { data, width, height } = await raw.imageData();
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      const im = rgbToRgbaImageData(data, width, height);
+      ctx.putImageData(im, 0, 0);
+      return canvas;
+    }
+
+    function canvasToBlob(canvas, mime, quality){
+      return new Promise(res => canvas.toBlob(res, mime, quality));
+    }
+
+    async function convertAll(){
+      if (!state.files.length) return;
+      els.convertBtn.disabled = true;
+      els.progWrap.style.display = '';
+      setProgress(0);
+
+      const zip = new JSZip();
+      const total = state.files.length;
+
+      const librawSettings = {
+        useCameraWb: els.wbCamera.checked,
+        useAutoWb: !els.wbCamera.checked,
+        noAutoBright: !els.autoBright.checked,
+        outputColor: 1,   // sRGB
+        outputBps: 8,     // 8-bit output
+        halfSize: els.halfSize.checked,
+        userFlip: -1,
+        userQual: 3,
+      };
+
+      try {
+        for (let i=0;i<total;i++){
+          const f = state.files[i];
+          const canvas = await decodeRawToCanvas(f, librawSettings);
+
+          if (els.halfSize.checked){
+            const tmp = document.createElement('canvas');
+            tmp.width = Math.floor(canvas.width/2);
+            tmp.height = Math.floor(canvas.height/2);
+            const tctx = tmp.getContext('2d');
+            tctx.drawImage(canvas, 0, 0, tmp.width, tmp.height);
+            canvas.width = tmp.width; canvas.height = tmp.height;
+            canvas.getContext('2d').drawImage(tmp, 0, 0);
+          }
+
+          const fmt = getFormat();
+          const q = fmt === 'image/jpeg' ? (parseInt(els.q.value, 10)/100) : undefined;
+          const blob = await canvasToBlob(canvas, fmt, q);
+          const base = f.name.replace(/\.[^.]+$/i, '');
+          const ext = fmt === 'image/png' ? 'png' : 'jpg';
+          zip.file(`${base}.${ext}`, blob);
+          setProgress(Math.round(((i+1)/total)*100));
+        }
+
+        const out = await zip.generateAsync({ type:'blob' });
+        saveAs(out, `converted_${Date.now()}.zip`);
+      } catch (err){
+        console.error(err);
+        alert('Conversion failed on one or more files. See console for details.');
+      } finally {
+        els.convertBtn.disabled = false;
+      }
+    }
+
+    function setProgress(p){ els.bar.style.width = p + '%'; els.pct.textContent = p + '%'; }
+
+    els.convertBtn.addEventListener('click', convertAll);
+
+    // Initialize
+    els.jpegRow.style.display = (getFormat() === 'image/jpeg') ? 'flex' : 'none';
+    updateList();
+  </script>
+</body>
+</html>
